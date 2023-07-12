@@ -10,11 +10,11 @@ function loadLocale(lang?: string) {
             messages = en_US;
             break;
         case 'cn':
-            locale = 'zh';
+            locale = 'cn';
             messages = zh_CN;
             break;
         default:
-            locale = 'zh';
+            locale = 'cn';
             messages = zh_CN;
             break;
     }

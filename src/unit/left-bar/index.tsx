@@ -8,8 +8,10 @@ import { FormattedMessage } from 'react-intl';
 import Popover from '@mui/material/Popover';
 import MainBox from '../main-box';
 import { Route, useNavigate, Routes } from "react-router-dom";
-import Test from '../../views/test';
+import CreateView from '../../views/test';
 import SetBox from '../set-box';
+import ClusterManagerTab from '../cluster-manager/tab';
+import CreateClusterTab from '../create-cluster/tab';
 
 function LeftBar() {
   const link = useNavigate();
@@ -28,6 +30,12 @@ function LeftBar() {
   let [drawer, setDrawer] = useState({
     show: true,
   });
+  function matchTabClass(idx: number) {
+    if(tab.cur === idx) {
+      return "tab-selected";
+    }
+    return "tab-unselected";
+  }
   function handleTabClick(idx: number, path?: string) {
     if (path) {
       routeTo(path);
@@ -63,28 +71,30 @@ function LeftBar() {
     <div className='left-bar'>
       <div className="column-container" id="left-bar">
         <div id="top">
-          <SeoFolder
+          <SeoFolder className={matchTabClass(0)}
             onClick={() => handleTabClick(0, "/main")}
             size="30"
             tabIndex={0}
           ></SeoFolder>
-          <FolderPlus
-            onClick={() => handleTabClick(1, "/test")}
+          <FolderPlus className={matchTabClass(1)}
+            onClick={() => handleTabClick(1, "/create")}
             size="30"
             tabIndex={1}
           ></FolderPlus>
-          <Search
+          <Search className={matchTabClass(2)}
             onClick={() => handleTabClick(2)}
             size="30"
             tabIndex={2}
           ></Search>
-          <DatabaseEnter
+          <DatabaseEnter className={matchTabClass(3)}
             onClick={() => handleTabClick(3)}
             size="30"
             tabIndex={3}
           ></DatabaseEnter>
-          <Import onClick={() => handleTabClick(4)} size="30" tabIndex={4} />
-          <Export onClick={() => handleTabClick(5)} size="30" tabIndex={5} />
+          <Import className={matchTabClass(4)}
+            onClick={() => handleTabClick(4)} size="30" tabIndex={4} />
+          <Export  className={matchTabClass(5)}
+            onClick={() => handleTabClick(5)} size="30" tabIndex={5} />
         </div>
         <div id="foot">
           <Help size="30" tabIndex={-1} />
@@ -113,20 +123,21 @@ function LeftBar() {
             <span>
               <FormattedMessage id={tabs[tab.cur].key}></FormattedMessage>
             </span>
+            <div className='btn'>{tab.cur==0?(<FolderPlus size={20}></FolderPlus>):null}</div>
           </div>
-          <div className='cluster'>∨ online-mall-plus</div>
-          <div className='apps'>cloud-gateway</div>
-          <div className='apps'>centre-service</div>
-          <div className='apps'>order-service</div>
-          <div className='apps'>message-service</div>
-          <div className='apps'>star-service</div>
+          {tab.cur==0?
+          (<ClusterManagerTab></ClusterManagerTab>):null
+          }
+          {tab.cur==1?
+          (<CreateClusterTab></CreateClusterTab>):null
+          }
         </div>
       ) : null}
       <div className='column-container' id='workstation'>
         <Routes>
           <Route path="/" Component={MainBox} />
           <Route path="/main" Component={MainBox} />
-          <Route path="/test" Component={Test} />
+          <Route path="/create" Component={CreateView} />
         </Routes>
       </div>
     </div>

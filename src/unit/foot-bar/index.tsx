@@ -1,10 +1,7 @@
-import { Component, ReactNode } from "react";
-import { setLang } from "../../store/lang/lang.reducer";
-import store, { RootState } from "../../store/store";
+import { RootState } from "../../store/store";
 import { Gitee } from '../icons';
 import './style.css'
 import {TipsOne, Github} from '@icon-park/react';
-import { useAppSelector } from "../../store/hook";
 import { connect } from "react-redux";
 
 // TodoList.js
@@ -12,6 +9,11 @@ import { connect } from "react-redux";
 function mapStateToProps(state:RootState) {
   const { langReducer } = state;
   return { lang: langReducer.lang };
+}
+
+function openBrowser(url:string) {
+  const w = window.open('_black') as Window;
+  w.location.href = url //这样就可以跳转了
 }
 
 function FootBar(props:{lang:string}) {
@@ -23,8 +25,12 @@ function FootBar(props:{lang:string}) {
         </div>
         <div id='right'>
           <TipsOne size="20"/>
-          <Github size="20"/>
-          <Gitee></Gitee>
+          <Github onClick={()=>{
+            openBrowser("https://github.com/Evanpatchouli/vcluster")
+          }} size="20"/>
+          <Gitee onClick={()=>{
+            openBrowser("https://gitee.com/jun-laner/vcluster")
+          }}></Gitee>
         </div>
       </div>
     )

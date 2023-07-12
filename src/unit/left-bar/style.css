@@ -10,23 +10,38 @@
   min-width: 200px;
   width: -moz-fit-content;
   width: fit-content;
-  background: rgb(27, 27, 27);
+  background: rgb(24, 24, 24);
 
   justify-content: flex-start;
 
   color: #e3e3e3;
 
-  > * {
-    padding-left: 1.5rem;
-  }
-
   #tab-title {
+    padding-left: 1rem;
+    padding-right: 1rem;
     display: flex;
     /* border: 1px solid rgb(255, 255, 255); */
     height: 50px;
-    justify-content: left;
     align-items: center;
     border-bottom: 1px solid rgb(40, 40, 40);
+    justify-content: space-between;
+
+    > * {
+      height: 24px;
+    }
+
+    .btn {
+      display: flex;
+      padding: 4px 4px 1px 4px;
+      border-radius: 5px;
+      &:hover {
+        cursor: pointer;
+        background-color: #313131;
+      }
+      > * {
+        align-items: center;
+      }
+    }
   }
 
   .cluster {
@@ -85,10 +100,11 @@
       padding-top: 12px;
       padding-bottom: 12px;
 
-      &:focus {
-        color: #fff;
-        border-left: 3px solid rgb(128, 128, 255);
-      }
+    }
+
+    .tab-selected {
+      color: #fff;
+      border-left: 3px solid rgb(128, 128, 255);
     }
   }
 
@@ -121,6 +137,6 @@
 }
 
 #drawer::-webkit-resizer {
-  background-color: rgb(27, 27, 27);
+  background-color: rgb(24, 24, 24);
 }
 

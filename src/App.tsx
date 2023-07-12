@@ -10,10 +10,29 @@ import { HashRouter, Link, Route, Router, Routes } from "react-router-dom";
 import Test from "./views/test";
 import LeftBar from "./unit/left-bar";
 import FootBar from "./unit/foot-bar";
-import MainBox from "./unit/main-box";
 
+import { HotKeys } from "react-hotkeys";
+import { useNavigate } from "react-router";
+
+const keyMap = {
+  GET_HELP: "ctrl+h",
+  DELETE_NODE: ["del", "backspace"]
+};
 
 function App() {
+  const link = useNavigate();
+  const routeTo = (path: string) => {
+    link(path, {replace: true});
+  }
+
+  const keyHandler = {
+    GET_HELP: ()=> {
+      console.log("seek help");
+      routeTo("/")
+    }
+  }
+
+
   const [greetMsg, setGreetMsg] = useState("");
   const [pkg, setPkg] = useState("");
   const [port, setPort] = useState(0);
@@ -40,6 +59,7 @@ function App() {
   }
 
   return (
+    <HotKeys keyMap={keyMap} handlers={keyHandler}>
     <div className="container">
       <LeftBar></LeftBar>
       <FootBar></FootBar>
@@ -100,6 +120,7 @@ function App() {
         </HashRouter>
       </div> */}
     </div>
+    </HotKeys>
   );
 }
 

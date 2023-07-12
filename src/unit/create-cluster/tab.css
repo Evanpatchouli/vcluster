@@ -1,0 +1,15 @@
+.create-cluster-tab {
+
+  .line {
+    padding-left: 1rem;
+    > * {
+      padding-right: 1rem;
+
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(50, 50, 50);
+    }
+  }
+}
