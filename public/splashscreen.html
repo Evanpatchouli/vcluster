@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img src="./tauri.svg" class="splash-logo" alt="splash-logo">
+</body>
+</html>
+<style>
+body {
+    background: none;
+}
+.splash-logo {
+  position: absolute;
+  height: 40vmin;
+  left: calc(50vw - 20vmin);
+  top: calc(50vh - 20vmin);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .splash-logo {
+    animation: splash-logo-spin infinite 1s linear;
+  }
+}
+
+.splash-link {
+  color: #61dafb;
+}
+
+@keyframes splash-logo-spin {
+  0% {
+    opacity: 0%;
+    transform: rotate(0deg);
+  }
+  50% {
+    opacity: 100%;
+    transform: rotate(180deg);
+  }
+  100% {
+    opacity: 0%;
+    transform: rotate(360deg);
+  }
+}
+
+</style>

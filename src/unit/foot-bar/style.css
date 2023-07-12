@@ -1,0 +1,52 @@
+/* * {
+  border: 1px solid black;
+} */
+
+.foot-bar {
+  width: 100%;
+  height: 30px;
+  background: rgb(27, 27, 27);
+  color: #ffffffc1;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  > div {
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    > * {
+      color: #ffffffc1;
+      &:hover {
+        cursor: pointer;
+        color: #fff;
+      }
+    }
+  }
+
+  #left {
+    margin-left: 24px;
+    overflow: hidden;
+    font-size: 14px;
+    
+    > * {
+      margin-right: 12px;
+
+      &:hover {
+        cursor:auto;
+        color: #ffffffc1;
+      }
+    }
+  }
+
+  #right {
+    margin-right: 24px;
+    flex-direction: row-reverse;
+
+    > * {
+      margin-left: 12px;
+    }
+  }
+}

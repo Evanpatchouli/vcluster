@@ -1,0 +1,20 @@
+.logo.vite:hover {
+  filter: drop-shadow(0 0 2em #747bff);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafb);
+}
+
+/* .ct-btn {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+  margin-top: 1rem;
+} */
+
+.left-bar {
+  width: 100%;
+  background-color: rgb(32, 32, 32);
+  padding: 0;
+}
