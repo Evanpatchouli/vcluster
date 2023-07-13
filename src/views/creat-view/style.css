@@ -1,0 +1,74 @@
+.CreateView {
+  /* height: calc(100vh - 30px - 2px); */
+  display: flex;
+  justify-content: center;
+
+  .form {
+    display: flex;
+    align-items: left;
+    padding-top: 24px;
+    /**下面这个删了表单就会贴顶*/
+    /* justify-content: center; */
+    flex-direction: column;
+    /* border: 1px white solid; */
+    min-width: 400px;
+  }
+
+  .plain-row {
+    display: flex;
+    /* border: 1px white solid;   */
+    justify-content: space-between;
+    flex-direction: row;
+
+    > *:nth-child(n+2) {
+      margin-left: 6px;
+    }
+  }
+
+  .row {
+    margin: 0px 0px 10px 0px;
+    display: flex;
+    /* border: 1px white solid;   */
+    justify-content: space-between;
+    flex-direction: row;
+    
+    /* > * {
+      margin-right: 12px;
+    } */
+  }
+
+  .row#sub-app-top {
+    margin-top: 8px;
+  }
+
+  .path {
+    width: 100%;
+  }
+
+  .htitle {
+    &::selection {
+      background: none;
+    }
+    padding-bottom: 0px;
+  }  
+
+  *::selection {
+    background: rgb(166, 166, 166);
+  }
+
+  .desc {
+    min-width: 400px;
+    min-height: 50px;
+  }
+
+  .subpp-port {
+    width: 100px;
+  }
+  
+}
+
+/** hidden input number counter*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

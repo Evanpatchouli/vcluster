@@ -13,5 +13,10 @@
         ]
       }
     ]
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not samsung <= 21"
+  ]
 }

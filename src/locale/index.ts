@@ -14,8 +14,8 @@ function loadLocale(lang?: string) {
             messages = zh_CN;
             break;
         default:
-            locale = 'cn';
-            messages = zh_CN;
+            locale = 'en';
+            messages = en_US;
             break;
     }
     return { locale, messages };

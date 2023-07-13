@@ -21,7 +21,7 @@ If you want to compile it from source code, you should prepare the envirnment wi
 **Dev-env:**
 - windows-10-64bit
 - node 16.17.1
-- rust 1.66.1
+- rust 1.70.0
 
 **Stack:**
 - typescript 4.9.5

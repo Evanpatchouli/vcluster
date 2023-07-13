@@ -4,12 +4,25 @@
 )]
 
 mod model;
+mod interface;
 
 mod cmd;
-use cmd::{launch,kill};
+use cmd::{launch,kill,create_cluster};
 
 mod util;
 use util::logger;
+
+extern crate rbatis;
+use rbatis::RBatis;
+use rbdc_sqlite::driver::SqliteDriver;
+
+#[macro_use]
+extern crate lazy_static;
+
+lazy_static! {
+  // Rbatis类型变量 RB，用于数据库查询
+  static ref RB: RBatis = RBatis::new();
+}
 
 
 
@@ -33,6 +46,7 @@ async fn close_splashscreen(window: tauri::Window) {
 }
 
 fn main() {
+    RB.init(SqliteDriver{},"sqlite://vcluster.db").unwrap();
     let import_config = CustomMenuItem::new("import_config".to_string(), "导入配置");
     let file_menu = Submenu::new("文件", Menu::new().add_item(import_config).add_native_item(MenuItem::Copy)
     .add_native_item(MenuItem::Paste)
@@ -70,6 +84,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
           close_splashscreen,
           greet,
+          create_cluster,
           launch,
           kill])
         .menu(menu)

@@ -7,16 +7,19 @@ import { FormattedMessage } from 'react-intl';
 
 import {Alert, Snackbar} from '@mui/material';
 import { HashRouter, Link, Route, Router, Routes } from "react-router-dom";
-import Test from "./views/test";
+import Test from "./views/creat-view";
 import LeftBar from "./unit/left-bar";
 import FootBar from "./unit/foot-bar";
 
 import { HotKeys } from "react-hotkeys";
 import { useNavigate } from "react-router";
+import { useAppDispatch } from "./store/hook";
+import { setLang } from "./store/lang/lang.reducer";
 
 const keyMap = {
   GET_HELP: "ctrl+h",
-  DELETE_NODE: ["del", "backspace"]
+  SWITCH_LANG_CN: ["ctrl+l+c"],
+  SWITCH_LANG_EN: ["ctrl+l+e"],
 };
 
 function App() {
@@ -29,6 +32,12 @@ function App() {
     GET_HELP: ()=> {
       console.log("seek help");
       routeTo("/")
+    },
+    SWITCH_LANG_CN: ()=> {
+      useAppDispatch(setLang("cn"));
+    },
+    SWITCH_LANG_EN: ()=> {
+      useAppDispatch(setLang("en"));
     }
   }
 

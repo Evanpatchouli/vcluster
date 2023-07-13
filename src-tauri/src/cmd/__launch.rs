@@ -17,7 +17,7 @@ pub fn launch(pkg_config_path: &str) {
     serde_json::from_str(&data).unwrap()
   };
   dbg!(&config);
-  for app in config.apps.iter() {
-    run_script(&app.start.path, &app.start.script, Some(&app.log), Some(&app.name));
+  for app in config.apps.unwrap().iter() {
+    run_script(&app.start.clone().unwrap().path.unwrap(), &app.start.clone().unwrap().script.unwrap(), Some(&app.log.clone().unwrap()), Some(&app.name.clone().unwrap()));
   }
 }

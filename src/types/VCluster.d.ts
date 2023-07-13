@@ -5,13 +5,14 @@ declare namespace VCluster {
     /** description of this app*/
     desc: string;
     /** which net-port will this app use*/
-    port: number;
+    port?: number;
     start: {
       /** the directory where to execute the script*/
       path: string;
       /** executable command or script path, shouldn't `with > file`*/
       script: string;
-    }
+    };
+    log: string;
   }
   type PkgConfig = {
     name: string;
@@ -19,3 +20,4 @@ declare namespace VCluster {
     apps: ServiceConfig[]
   }
 }
+

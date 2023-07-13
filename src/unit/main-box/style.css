@@ -14,15 +14,18 @@
   align-items: flex-start;
   flex-direction: column;
 
-  > * {
-    margin-left: 4rem;
-    margin-top: 1rem;
-    transition: all 0.3s ease-out;
-
+  /* *:nth-child(n+2) */
+  > *:nth-child(n) {
     &:hover {
       color: white !important;
       cursor: pointer;
     }
+  }
+
+  > * {
+    margin-left: 4rem;
+    margin-top: 1rem;
+    transition: all 0.3s ease-out;
 
     > * {
       padding-right: 1rem;
@@ -30,5 +33,26 @@
   }
   > *:first-child {
     margin-top: 3rem;
+  }
+
+  .hotkey-item {
+    &:hover {
+      > *:nth-child(3) {  
+        > *:nth-child(odd) {
+          background-color: #5e5e5e;
+        }
+      }
+    }
+    > *:nth-child(3) {
+      > * {
+        margin-right: 0.5rem;
+      }
+
+      > *:nth-child(odd) {
+        padding: 3px 6px 3px 6px;
+        border-radius: 3px;
+        background-color: #313131;
+      }
+    }
   }
 }

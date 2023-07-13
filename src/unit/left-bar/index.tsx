@@ -8,16 +8,14 @@ import { FormattedMessage } from 'react-intl';
 import Popover from '@mui/material/Popover';
 import MainBox from '../main-box';
 import { Route, useNavigate, Routes } from "react-router-dom";
-import CreateView from '../../views/test';
+import CreateView from '../../views/creat-view';
 import SetBox from '../set-box';
 import ClusterManagerTab from '../cluster-manager/tab';
 import CreateClusterTab from '../create-cluster/tab';
 
 function LeftBar() {
   const link = useNavigate();
-  const routeTo = (path: string) => {
-    link(path, {replace: true});
-  }
+  const routeTo = (path: string) => link(path, {replace: true});
   const tabs = [
     { key: 'cluster-manager' },
     { key: 'create-cluster' },
@@ -29,6 +27,7 @@ function LeftBar() {
   let [tab, setTab] = useState({ cur: 0});
   let [drawer, setDrawer] = useState({
     show: true,
+    id: 'drawer-opened'
   });
   function matchTabClass(idx: number) {
     if(tab.cur === idx) {
@@ -40,11 +39,14 @@ function LeftBar() {
     if (path) {
       routeTo(path);
     }
-    setTab({cur: idx});
-    if(idx == tab.cur && drawer.show) { 
-      setDrawer({show: false});
-    } else {
-      setDrawer({show: true});
+    const switchtabs = [0,1,2,3,4,5];
+    if (switchtabs.includes(idx)) {
+      setTab({cur: idx});
+      if(idx == tab.cur && drawer.show) { 
+        setDrawer({show: false, id: 'drawer-closed'});
+      } else {
+        setDrawer({show: true, id: 'drawer-opened'});
+      }
     }
   }
   const [setting, setSetting] = useState(false);
@@ -55,16 +57,6 @@ function LeftBar() {
   };
   function handleSettingClose() {
     setSetting(false)
-  }
-
-  const [langbox, setLangbox] = useState(false);
-  const [langAnchor, setLangAnchor] = useState<Element|null>(null);
-  const handleLangboxClick = (event: React.MouseEvent) => {
-    setLangAnchor(event.currentTarget);
-    setLangbox(true)
-  };
-  function handleLangboxClose() {
-    setLangbox(false)
   }
 
   return (
@@ -97,7 +89,8 @@ function LeftBar() {
             onClick={() => handleTabClick(5)} size="30" tabIndex={5} />
         </div>
         <div id="foot">
-          <Help size="30" tabIndex={-1} />
+          <Help size="30" tabIndex={-1}
+          onClick={()=>handleTabClick(-1, "/main")}/>
           <User size="30" tabIndex={-2} />
           <Setting size="30" tabIndex={-3} onClick={handleSettingClick} />
         </div>
@@ -117,13 +110,18 @@ function LeftBar() {
           <SetBox></SetBox>
         </Popover>
       </div>
-      {drawer.show ? (
-        <div className="column-container" id="drawer">
+      {/** 改用id来控制展开与收缩*/}
+      {drawer.show||!drawer.show ? (
+        <div className="column-container" id={drawer.id}>
           <div id="tab-title">
-            <span>
+            <div>
               <FormattedMessage id={tabs[tab.cur].key}></FormattedMessage>
-            </span>
-            <div className='btn'>{tab.cur==0?(<FolderPlus size={20}></FolderPlus>):null}</div>
+            </div>
+            {tab.cur==0?(<div className='btn'
+            onClick={()=>{
+              handleTabClick(1);
+              routeTo("/create");
+            }}><FolderPlus size={20}/></div>):null}
           </div>
           {tab.cur==0?
           (<ClusterManagerTab></ClusterManagerTab>):null

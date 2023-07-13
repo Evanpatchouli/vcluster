@@ -9,6 +9,10 @@ const en_US = {
   "database-tool": "Database Tool",
   "import-cluster": "Import Cluster",
   "export-cluster": "Export Cluster",
+  "submit": "submit",
+  "confirm": "confirm",
+  "cancel": "cancel",
+  "reset": "reset",
   "create": "create",
   "create a cluster": "create a cluster",
   "import": "import",
@@ -19,10 +23,17 @@ const en_US = {
   "Ctrl+Alt+O": "open an existing apps-cluster",
   "Ctrl+Alt+I": "import an outside apps-clustet",
   "Ctrl+H": "need help and learn this app",
+  "Ctrl+L+C": "switch language to Chinese",
+  "Ctrl+L+E": "switch language to English",
+  "Configure this cluster": "Configure this cluster",
   "please input cluster name...": "please input cluster name...",
   "please input description...": "please input description...",
   "please input sub-app name...": "please input sub-app name...",
+  "current-dir where to execute script...": "current-dir where to execute script...",
+  "the commands or relative path of the script file to start app...": "the commands or relative path of thescript file to start app...",
+  "sub-app log file relative path, default is current-dir/log.txt": "sub-app log file relative path, default is current-dir/log.txt",
   "Add sub-app": "Add sub-app",
+  "sub-app port": "sub-app port"
 }
 export {
   en_US
