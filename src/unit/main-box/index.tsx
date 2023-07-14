@@ -7,7 +7,7 @@ import {FolderPlus, FolderOpen,
 function MainBox() {
   return(
     <div className="main-box">
-      <h1><FormattedMessage id='title'/></h1>
+      <h1 className='title'><FormattedMessage id='title'/></h1>
       <div className='hotkey-item'>
         <span><FolderPlus></FolderPlus></span>
         <span><FormattedMessage id='Ctrl+Alt+N'></FormattedMessage></span>

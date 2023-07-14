@@ -3,7 +3,10 @@ import "./style.css";
 import React, { Fragment } from "react";
 import { Delete } from "@icon-park/react";
 import { ServiceConfig } from "../../model/VCluster";
-import { createCluster } from "../../api";
+import { createCluster, getall_cluster } from "../../api";
+import { closeMsg, showMsg } from "../../store/msg/msg.reducer";
+import { useAppDispatch } from "../../store/hook";
+import { msg2s } from "../../util/util";
 
 function CreatView() {
   const intl = useIntl();
@@ -131,11 +134,14 @@ function CreatView() {
       <form className="form"
       onSubmit={async (e)=>{
         e.preventDefault();
-        console.log("submit");
         const form = getForm();
-        console.log(form);
         const res = await createCluster(form);
-        console.table(res);
+        console.log(res);
+        if (res.ok) {
+          msg2s(intl.formatMessage({
+            id: "create successfully",
+          }), "success");
+        }
       }}>
         <h1 className="htitle"><FormattedMessage id="Configure this cluster"/></h1>
         <div className="row">

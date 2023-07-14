@@ -13,6 +13,10 @@ const en_US = {
   "confirm": "confirm",
   "cancel": "cancel",
   "reset": "reset",
+  "delete": "delete",
+  "Delete": "Delete",
+  "edit": "edit",
+  "Edit": "Edit",
   "create": "create",
   "create a cluster": "create a cluster",
   "import": "import",
@@ -33,7 +37,9 @@ const en_US = {
   "the commands or relative path of the script file to start app...": "the commands or relative path of thescript file to start app...",
   "sub-app log file relative path, default is current-dir/log.txt": "sub-app log file relative path, default is current-dir/log.txt",
   "Add sub-app": "Add sub-app",
-  "sub-app port": "sub-app port"
+  "sub-app port": "sub-app port",
+  "create successfully": "create successfully",
+  "You have no cluster.": "You have no cluster."
 }
 export {
   en_US

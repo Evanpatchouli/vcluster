@@ -1,4 +1,6 @@
 export class ServiceConfig  {
+  id?: string = '';
+  cluster_id?: string = '';
   /** name of this app*/
   name: string = 'sub-app';
   /** description of this app*/

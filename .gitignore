@@ -1,3 +1,7 @@
+vcluster.de
+vcluster.de-shm
+vcluster.de-wal
+
 # Logs
 logs
 *.log

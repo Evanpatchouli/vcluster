@@ -1,31 +1,57 @@
 import { HandleDown, HandleRight } from "@icon-park/react";
-import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import React from "react";
+import { Alert, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Popover, Snackbar } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import './style.css'
+import * as Api from '../../api';
+import { FormattedMessage } from "react-intl";
 
 function Tab() {
-  const pkgs: VCluster.PkgConfig[] | null = [
-    { name: "cluster-1", desc: "", apps: [
-      { name: "app1", desc: "", port: 3000,
-        start: { path: "", script: "" }
-      },
-      { name: "app2", desc: "", port: 3000,
-        start: { path: "", script: "" }
-      },
-      { name: "app3", desc: "", port: 3000,
-        start: { path: "", script: "" }
-      }
-    ] },
-    { name: "cluster-2", desc: "", apps: [
-      { name: "app1", desc: "", port: 3000,
-        start: { path: "", script: "" }
-      }
-    ] },
-    { name: "cluster-3", desc: "", apps: [
-      { name: "app1", desc: "", port: 3000,
-        start: { path: "", script: "" }
-      }
-    ] },
-  ];
+  const [pkgs, setPkgs] = useState<VCluster.PkgConfig[]>([]);
+
+  useEffect(() => {
+    Api.getall_cluster().then(result=>{
+      console.log(result);
+      setPkgs(result.data as VCluster.PkgConfig[]);
+    })
+  }, []);
+
+  const [pkgMenu, setPkgMenu] = useState<VCluster.PkgMenu>({
+    show: false,
+    anchor: { top: 0, left: 0},
+    idx: 0,
+    id: ""
+  });
+
+  const showPkgMenu = (e: React.MouseEvent, idx: number, id: String) => {
+    setPkgMenu(pre => {
+      return {
+        show: true,
+        anchor: {
+          top: e.clientY,
+          left: e.clientX
+        },
+        idx: idx,
+        id: id
+      };
+    })
+  }
+
+  const closePkgMenu = () => {
+    setPkgMenu(pre => {
+      return {
+        ...pre,
+        show: false,
+      };
+    })   
+  }
+
+  const delPkg = async ()=> {
+    const res = await Api.del_cluster_by_pk(pkgMenu.id);
+    if (res.ok) {
+      setPkgs(pkgs.filter((p,idx) => idx !== pkgMenu.idx))
+    }
+    closePkgMenu();
+  }
 
   const [open, setOpen] = React.useState(-1);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -37,11 +63,13 @@ function Tab() {
   };
 
   return (
-    <div>
+    <div className="cluster-manager-tab">
+      {pkgs.length==0? <div className="no-cluster"><FormattedMessage id="You have no cluster."/></div> : null}
       {pkgs.map((pkg, idx) => {
         return (
           <List key={idx}>
             <ListItemButton onClick={()=>handleClick(idx)}
+            onContextMenu={(e)=>showPkgMenu(e,idx, pkg.id as String)}
             selected={selectedIndex === idx}>
               <ListItemText primary={open===idx ? 
                 <span>
@@ -71,6 +99,27 @@ function Tab() {
           </List>
         );
       })}
+      <Popover
+        className="pkg-menu-wrap"
+          open={pkgMenu.show}
+          onClose={closePkgMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={pkgMenu.anchor}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <div className="pkg-menu">
+            <div><FormattedMessage id="Edit"/></div>
+            <div
+            onClick={delPkg}><FormattedMessage id="Delete"/></div>
+          </div>
+        </Popover>
     </div>
   );
 }

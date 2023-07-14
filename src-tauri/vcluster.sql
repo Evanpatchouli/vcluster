@@ -1,19 +1,25 @@
-use crate::RB;
+/*
+ Navicat Premium Data Transfer
 
-pub async fn main() {
-  db_init().await;
-}
+ Source Server         : vcluster
+ Source Server Type    : SQLite
+ Source Server Version : 3035005
+ Source Schema         : main
 
-async fn db_init() {
-  let rb = RB.clone();
-  let sql = 
-r#"
+ Target Server Type    : SQLite
+ Target Server Version : 3035005
+ File Encoding         : 65001
+
+ Date: 14/07/2023 09:30:36
+*/
+
 PRAGMA foreign_keys = false;
 
 -- ----------------------------
 -- Table structure for cluster
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS "cluster" (
+DROP TABLE IF EXISTS "cluster";
+CREATE TABLE "cluster" (
   "id" text NOT NULL,
   "name" text,
   "desc" text,
@@ -24,7 +30,8 @@ CREATE TABLE IF NOT EXISTS "cluster" (
 -- ----------------------------
 -- Table structure for subapp
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS "subapp" (
+DROP TABLE IF EXISTS "subapp";
+CREATE TABLE "subapp" (
   "id" text NOT NULL,
   "cluster_id" text,
   "name" text,
@@ -37,6 +44,3 @@ CREATE TABLE IF NOT EXISTS "subapp" (
 );
 
 PRAGMA foreign_keys = true;
-"#;
-  rb.exec(sql, vec![]).await.unwrap();
-}

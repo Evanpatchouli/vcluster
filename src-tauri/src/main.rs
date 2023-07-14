@@ -7,7 +7,7 @@ mod model;
 mod interface;
 
 mod cmd;
-use cmd::{launch,kill,create_cluster};
+use cmd::{launch,kill,create_cluster,getall_cluster,del_cluster_by_pk};
 
 mod util;
 use util::logger;
@@ -45,8 +45,10 @@ async fn close_splashscreen(window: tauri::Window) {
   window.get_window("main").unwrap().show().unwrap();
 }
 
-fn main() {
-    RB.init(SqliteDriver{},"sqlite://vcluster.db").unwrap();
+#[tokio::main]
+async fn main() {
+    RB.init(SqliteDriver{},"sqlite://../vcluster.db").unwrap();
+    util::init().await;
     let import_config = CustomMenuItem::new("import_config".to_string(), "导入配置");
     let file_menu = Submenu::new("文件", Menu::new().add_item(import_config).add_native_item(MenuItem::Copy)
     .add_native_item(MenuItem::Paste)
@@ -85,6 +87,8 @@ fn main() {
           close_splashscreen,
           greet,
           create_cluster,
+          getall_cluster,
+          del_cluster_by_pk,
           launch,
           kill])
         .menu(menu)

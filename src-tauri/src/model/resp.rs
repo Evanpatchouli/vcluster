@@ -12,20 +12,20 @@ pub struct Resp<'a, T> {
 
 #[allow(dead_code,unused_variables)]
 pub fn ok<'a>(msg: &'a str, code: i32) -> Resp<'a,()> {
-  Resp { ok: true, code, r#type: None, msg, data: () }
+  Resp { ok: true, code, r#type: Some(200), msg, data: () }
 }
 
 #[allow(dead_code,unused_variables)]
 pub fn ok_data<'a, T>(msg: &'a str, code: i32, data: T) -> Resp<'a,T> {
-  Resp { ok: true, code, r#type: None, msg, data }
+  Resp { ok: true, code, r#type: Some(200), msg, data }
 }
 
 #[allow(dead_code,unused_variables)]
 pub fn fail<'a>(msg: &'a str, code: i32) -> Resp<'a,()> {
-  Resp { ok: false, code, r#type: None, msg, data: () }
+  Resp { ok: false, code, r#type: Some(400), msg, data: () }
 }
 
 #[allow(dead_code,unused_variables)]
 pub fn fail_data<'a, T>(msg: &'a str, code: i32, data: T) -> Resp<'a,T> {
-  Resp { ok: false, code, r#type: None, msg, data }
+  Resp { ok: false, code, r#type: Some(400), msg, data }
 }

@@ -13,6 +13,10 @@ const zh_CN = {
   "confirm": "确认",
   "cancel": "取消",
   "reset": "重置",
+  "delete": "删除",
+  "Delete": "删除",
+  "edit": "编辑",
+  "Edit": "编辑",
   "create": "新建",
   "create a cluster": "新建一个集群",
   "import": "导入",
@@ -33,7 +37,9 @@ const zh_CN = {
   "the commands or relative path of the script file to start app...": "用以启动子应用的命令或脚本文件的相对路径...",
   "sub-app log file relative path, default is current-dir/log.txt": "子应用的日志文件相对路径，默认当前目录/log.txt",
   "Add sub-app": "添加子应用",
-  "sub-app port": "子应用端口"
+  "sub-app port": "子应用端口",
+  "create successfully": "创建成功",
+  "You have no cluster.": "你还没有集群."
 }
 export {
   zh_CN

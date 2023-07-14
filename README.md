@@ -1,6 +1,27 @@
-# VCluster
+<h1 align="center">VCluster</h1>
 
+<p align="center">
 A React + Tauri App as visualizer of apps cluster on windows.
+</p>
+
+<p align="center">
+  <a href="#"><img alt="vcluster" src="https://img.shields.io/badge/VCluster-beta--0.0.1-green.svg"></a>
+  <a href="#"><img alt="License" src="https://img.shields.io/badge/license-GPL3-green.svg"></a>
+  <a href="#"><img alt="platform" src="https://img.shields.io/badge/platform-windows-blue.svg"></a>
+  <a href="#"><img alt="NodeJS" src="https://img.shields.io/badge/NodeJS-16.17+-black.svg"></a>
+  <a href="#"><img alt="Rust" src="https://img.shields.io/badge/Rust-1.70-black.svg"></a>
+</p>
+<p align="center">
+  <a href="#"><img alt="React" src="https://img.shields.io/badge/React-18-%23005fff.svg"/></a>
+  <a href="#"><img alt="Redux" src="https://img.shields.io/badge/Redux-8.1-%23005fff.svg"></a>
+  <a href="#"><img alt="Tauri" src="https://img.shields.io/badge/Tauri-1.4-%23005fff.svg"></a>
+  <a href="#"><img alt="Mui" src="https://img.shields.io/badge/Mui-5.13-%23005fff.svg"></a>
+  <a href="#"><img alt="Rbatis" src="https://img.shields.io/badge/Rbatis-4.3-%23005fff.svg"></a>
+</p>
+
+## Notice
+
+This software is still under development, please wait until the firset released version in the short future.
 
 ## Platform Support
 
@@ -12,7 +33,9 @@ Both chinese and english are supported. The default language is english, and you
 
 ## Installation
 
-Download the setup .exe or .msi and install it. You can also download and use the portable app.
+Download the setup .exe or .msi and install it(wait until the release version). 
+
+You can also download and use the portable app.
 
 If you want to compile it from source code, you should prepare the envirnment with rust and node.
 
@@ -40,3 +63,20 @@ If you want to compile it from source code, you should prepare the envirnment wi
 
 **IDE:**
 - VsCode
+
+## Hotkeys
+
+- `ctrl` + `h` -  need help and learn this app
+- `ctrl` + `alt` + `n` -  create a new apps-cluster
+- `ctrl` + `alt` + `o` -  open an existing apps-cluster
+- `ctrl` + `alt` + `i` -  import an outside apps-clustet
+- `ctrl` + `l` + `c` -  switch language to Chinese
+- `ctrl` + `l` + `e` -  switch language to English
+
+## Usage
+
+1. Create a new cluster
+2. Configure the cluster created
+3. Start up the cluster
+4. Observe the cluster
+5. Shutdown the cluster

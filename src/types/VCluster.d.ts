@@ -1,5 +1,7 @@
 declare namespace VCluster {
   type ServiceConfig = {
+    id?: string;
+    cluster_id?: string;
     /** name of this app*/
     name: string;
     /** description of this app*/
@@ -12,12 +14,31 @@ declare namespace VCluster {
       /** executable command or script path, shouldn't `with > file`*/
       script: string;
     };
-    log: string;
+    log?: string;
   }
   type PkgConfig = {
+    id?: string;
     name: string;
     desc: string;
     apps: ServiceConfig[]
+  }
+
+  type Resp<T> = {
+    ok: boolean;
+    code: number;
+    type: number|null;
+    msg: string;
+    data: T|null;
+  }
+
+  type PkgMenu = { 
+    idx: number;
+    id: String;
+    show: boolean;
+    anchor: {
+      top: number;
+      left: number;
+    }
   }
 }
 
