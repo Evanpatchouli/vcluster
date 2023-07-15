@@ -4,6 +4,8 @@ import './style.css'
 import {TipsOne, Github} from '@icon-park/react';
 import { connect } from "react-redux";
 
+import { open } from '@tauri-apps/api/shell';
+
 // TodoList.js
 
 function mapStateToProps(state:RootState) {
@@ -11,9 +13,10 @@ function mapStateToProps(state:RootState) {
   return { lang: langReducer.lang };
 }
 
-function openBrowser(url:string) {
-  const w = window.open('_black') as Window;
-  w.location.href = url //这样就可以跳转了
+async function openBrowser(url:string) {
+  // const w = window.open('_black') as Window;
+  // w.location.href = url // This way is to open a new webview window
+  await open(url);
 }
 
 function FootBar(props:{lang:string}) {

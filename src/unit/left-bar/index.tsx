@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import './style.css'
 import {SeoFolder, FolderPlus, Search, DatabaseEnter,
-  Login as Import, Help, Logout as Export,
-  User, Setting
+  Login as Import, Help, 
+  User, Setting, Platte, Terminal
 } from '@icon-park/react';
 import { FormattedMessage } from 'react-intl';
 import Popover from '@mui/material/Popover';
 import MainBox from '../main-box';
 import { Route, useNavigate, Routes } from "react-router-dom";
+import TestBox from '../../views/test-view';
 import CreateView from '../../views/creat-view';
 import SetBox from '../set-box';
 import ClusterManagerTab from '../cluster-manager/tab';
 import CreateClusterTab from '../create-cluster/tab';
+import TerminalTab from '../terminal-tab';
+import Shell from '../../views/shell';
 
 function LeftBar() {
   const link = useNavigate();
@@ -22,7 +25,8 @@ function LeftBar() {
     { key: 'search' },
     { key: 'database-tool' },
     { key: 'import-cluster' },
-    { key: 'export-cluster' },
+    { key: 'Terminal' },
+    { key: 'Test-playground' },
   ]
   let [tab, setTab] = useState({ cur: 0});
   let [drawer, setDrawer] = useState({
@@ -39,7 +43,7 @@ function LeftBar() {
     if (path) {
       routeTo(path);
     }
-    const switchtabs = [0,1,2,3,4,5];
+    const switchtabs = [0,1,2,3,4,5,6];
     if (switchtabs.includes(idx)) {
       setTab({cur: idx});
       if(idx == tab.cur && drawer.show) { 
@@ -64,7 +68,7 @@ function LeftBar() {
       <div className="column-container" id="left-bar">
         <div id="top">
           <SeoFolder className={matchTabClass(0)}
-            onClick={() => handleTabClick(0, "/main")}
+            onClick={() => handleTabClick(0, "/")}
             size="30"
             tabIndex={0}
           ></SeoFolder>
@@ -85,8 +89,10 @@ function LeftBar() {
           ></DatabaseEnter>
           <Import className={matchTabClass(4)}
             onClick={() => handleTabClick(4)} size="30" tabIndex={4} />
-          <Export  className={matchTabClass(5)}
-            onClick={() => handleTabClick(5)} size="30" tabIndex={5} />
+          <Terminal  className={matchTabClass(5)}
+            onClick={() => handleTabClick(5, "/shell")} size="30" tabIndex={5} />
+          <Platte  className={matchTabClass(6)}
+            onClick={() => handleTabClick(6, "test")} size="30" tabIndex={5} />
         </div>
         <div id="foot">
           <Help size="30" tabIndex={-1}
@@ -129,13 +135,18 @@ function LeftBar() {
           {tab.cur==1?
           (<CreateClusterTab></CreateClusterTab>):null
           }
+          {tab.cur==5?
+          (<TerminalTab></TerminalTab>):null
+          }
         </div>
       ) : null}
       <div className='column-container' id='workstation'>
         <Routes>
-          <Route path="/" Component={MainBox} />
+        <Route path="/" Component={MainBox} />
+          <Route path="/test" Component={TestBox} />
           <Route path="/main" Component={MainBox} />
           <Route path="/create" Component={CreateView} />
+          <Route path="/shell" Component={Shell} />
         </Routes>
       </div>
     </div>

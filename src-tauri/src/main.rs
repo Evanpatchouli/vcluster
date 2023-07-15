@@ -2,12 +2,13 @@
     all(not(debug_assertions), target_os = "windows"),
     windows_subsystem = "windows"
 )]
-
 mod model;
 mod interface;
 
 mod cmd;
 use cmd::{launch,kill,create_cluster,getall_cluster,del_cluster_by_pk};
+
+mod store;
 
 mod util;
 use util::logger;
@@ -47,8 +48,6 @@ async fn close_splashscreen(window: tauri::Window) {
 
 #[tokio::main]
 async fn main() {
-    RB.init(SqliteDriver{},"sqlite://../vcluster.db").unwrap();
-    util::init().await;
     let import_config = CustomMenuItem::new("import_config".to_string(), "导入配置");
     let file_menu = Submenu::new("文件", Menu::new().add_item(import_config).add_native_item(MenuItem::Copy)
     .add_native_item(MenuItem::Paste)
@@ -73,6 +72,8 @@ async fn main() {
           tauri::async_runtime::spawn(async move {
             // initialize your app here instead of sleeping :)
             logger::console("Initializing...");
+            RB.init(SqliteDriver{},"sqlite:vcluster.db").unwrap();
+            util::init().await;
             std::thread::sleep(std::time::Duration::from_secs(1));
             logger::console("Done initializing.");
 
@@ -90,6 +91,7 @@ async fn main() {
           getall_cluster,
           del_cluster_by_pk,
           launch,
+          store::state::get,
           kill])
         .menu(menu)
         .on_menu_event(|event| {
@@ -106,6 +108,7 @@ async fn main() {
               }
             }
           })
+        .plugin(tauri_plugin_store::Builder::default().build())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

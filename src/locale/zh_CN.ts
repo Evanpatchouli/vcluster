@@ -6,6 +6,8 @@ const zh_CN = {
   "cluster-manager" : "集群管理器",
   "create-cluster": "创建新集群",
   "search": "搜索",
+  "Terminal": "终端命令行",
+  "Test-playground": "测试演练场",
   "database-tool": "数据库工具",
   "import-cluster": "导入集群",
   "export-cluster": "导出集群",
@@ -17,6 +19,11 @@ const zh_CN = {
   "Delete": "删除",
   "edit": "编辑",
   "Edit": "编辑",
+  "Export": "导出",
+  "Start": "开始",
+  "Restart": "重新开始",
+  "Launch": "启动",
+  "Relaunch": "重启",
   "create": "新建",
   "create a cluster": "新建一个集群",
   "import": "导入",
@@ -39,7 +46,8 @@ const zh_CN = {
   "Add sub-app": "添加子应用",
   "sub-app port": "子应用端口",
   "create successfully": "创建成功",
-  "You have no cluster.": "你还没有集群."
+  "You have no cluster.": "你还没有集群.",
+  "please fill in completely": "请填写完整"
 }
 export {
   zh_CN

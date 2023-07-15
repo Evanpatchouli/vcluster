@@ -1,25 +1,9 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : vcluster
- Source Server Type    : SQLite
- Source Server Version : 3035005
- Source Schema         : main
-
- Target Server Type    : SQLite
- Target Server Version : 3035005
- File Encoding         : 65001
-
- Date: 14/07/2023 09:30:36
-*/
-
 PRAGMA foreign_keys = false;
 
 -- ----------------------------
 -- Table structure for cluster
 -- ----------------------------
-DROP TABLE IF EXISTS "cluster";
-CREATE TABLE "cluster" (
+CREATE TABLE IF NOT EXISTS "cluster" (
   "id" text NOT NULL,
   "name" text,
   "desc" text,
@@ -30,8 +14,7 @@ CREATE TABLE "cluster" (
 -- ----------------------------
 -- Table structure for subapp
 -- ----------------------------
-DROP TABLE IF EXISTS "subapp";
-CREATE TABLE "subapp" (
+CREATE TABLE IF NOT EXISTS "subapp" (
   "id" text NOT NULL,
   "cluster_id" text,
   "name" text,

@@ -12,16 +12,40 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "shell": {
-        "all": false,
-        "open": true
+        "all": true,
+        "open": true,
+        "execute": true,
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "cmd",
+            "cmd": "cmd",
+            "args": ["/c", { "validator": "\\S+" }]
+          },
+          {
+            "name": "cmdk",
+            "cmd": "cmd",
+            "args": ["/k", { "validator": "\\S+" }]
+          },
+          {
+            "name": "npm",
+            "cmd": "npm",
+            "args": [{ "validator": "\\S+" }]
+          },
+          {
+            "name": "node",
+            "cmd": "node",
+            "args": []
+          }
+        ]
       }
     },
     "bundle": {
       "active": true,
       "category": "DeveloperTool",
-      "copyright": "",
+      "copyright": "Copyright © 2023 evanpatchouli",
       "deb": {
         "depends": []
       },
@@ -42,8 +66,10 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
-      "shortDescription": "",
+      "resources": [
+        "assets/**/*"
+      ],
+      "shortDescription": "A React + Tauri App as visualizer of apps cluster on windows",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,

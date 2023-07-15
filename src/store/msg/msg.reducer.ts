@@ -1,34 +1,47 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { MSG_ACTIONS_TYPES } from './msg.actions';
-import { loadLocale } from '../../locale';
-import { useAppDispatch } from '../hook';
+import { AlertColor } from '@mui/material';
+import MsgState from './msg.state';
+import { clearTimeout } from 'timers';
 
-export const counterSlice = createSlice({
+type ShowMsgPayload = { 
+  content: string; 
+  severity: AlertColor;
+  counter: NodeJS.Timeout|null
+}
+
+type MsgReducer = {
+  showMsg: (state: MsgState, action: PayloadAction<ShowMsgPayload>) => MsgState,
+  closeMsg: (state: MsgState, action: PayloadAction) => MsgState
+}
+
+export const counterSlice = createSlice<MsgState,MsgReducer,"msg">({
   name: 'msg',
   initialState: {
     state: false,
     content: "",
-    severity: "info"
+    severity: "info",
+    counter: null
   },
   reducers: {
-    showMsg: (state, action: PayloadAction<{content:string;severity:"info"|"success"|"warning"|"error"}>) => {
-      const { type, payload } = action;
-      console.log(type);
+    showMsg: (state: MsgState, action: PayloadAction<ShowMsgPayload>) => {
+      const { payload } = action;
+      if (state.counter) {
+        window.clearTimeout(state.counter);
+      }
       state = {
         state: true,
         content: payload.content,
-        severity: payload.severity
-      };
+        severity: payload.severity,
+        counter: payload.counter
+      }; 
       return state;
     },
-    closeMsg: (state, action: PayloadAction) => {
-      const { type, payload } = action;
-      console.log(type);
+    closeMsg: (state: MsgState, action: PayloadAction) => {
       state = {
         ...state,
-        state: false
+        state: false,
+        counter: null
       };
-      console.log(state);
       return state;
     },
   },

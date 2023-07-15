@@ -16,16 +16,23 @@ const keyMap = {
   GET_HELP: "ctrl+h",
   SWITCH_LANG_CN: ["ctrl+l+c"],
   SWITCH_LANG_EN: ["ctrl+l+e"],
+  GO_TEST: ["ctrl+d+t"],
+  OPEN_TERMINAL: ["ctrl+alt+t"]
 };
 
 function App() {
   const link = useNavigate();
 
   const keyHandler = {
+    GO_TEST: ()=> {
+      console.log("hot-key");
+      routeTo("/test", link);
+    },
     CREATE_CLUSTER: ()=> {
       routeTo("/create", link);
     },
     GET_HELP: ()=> {
+      console.log("hot-key");
       routeTo("/", link);
     },
     SWITCH_LANG_CN: ()=> {
@@ -33,6 +40,10 @@ function App() {
     },
     SWITCH_LANG_EN: ()=> {
       useAppDispatch(setLang("en"));
+    },
+    OPEN_TERMINAL: ()=> {
+      console.log("open terminal");
+      routeTo("/shell", link);
     }
   }
 

@@ -6,6 +6,8 @@ const en_US = {
   "cluster-manager" : "Cluster Manager",
   "create-cluster": "Create a cluster",
   "search": "Search",
+  "Terminal": "Terminal",
+  "Test-playground": "Test-playground",
   "database-tool": "Database Tool",
   "import-cluster": "Import Cluster",
   "export-cluster": "Export Cluster",
@@ -17,6 +19,11 @@ const en_US = {
   "Delete": "Delete",
   "edit": "edit",
   "Edit": "Edit",
+  "Export": "Export",
+  "Start": "Start",
+  "Restart": "Restart",
+  "Launch": "Launch",
+  "Relaunch": "Relaunch",
   "create": "create",
   "create a cluster": "create a cluster",
   "import": "import",
@@ -39,7 +46,8 @@ const en_US = {
   "Add sub-app": "Add sub-app",
   "sub-app port": "sub-app port",
   "create successfully": "create successfully",
-  "You have no cluster.": "You have no cluster."
+  "You have no cluster.": "You have no cluster.",
+  "please fill in completely": "please fill in completely"
 }
 export {
   en_US

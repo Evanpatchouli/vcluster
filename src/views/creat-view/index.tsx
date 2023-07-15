@@ -135,6 +135,11 @@ function CreatView() {
       onSubmit={async (e)=>{
         e.preventDefault();
         const form = getForm();
+        if (!form.name||!form.apps) {
+          return msg2s(intl.formatMessage({
+            id: "Please fill in completely",
+          }), "warning")
+        }
         const res = await createCluster(form);
         console.log(res);
         if (res.ok) {

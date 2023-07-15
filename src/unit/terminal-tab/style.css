@@ -1,13 +1,18 @@
-.create-cluster-tab {
+
+.terminal-tab {
 
   .line {
     /* transition: all 10.5s ease; */
     padding-top: 1rem;
     padding-bottom: 1rem;
     padding-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: left;
     > * {
       padding-right: 1rem;
     }
+
 
     &:hover {
       cursor: pointer;

@@ -1,4 +1,4 @@
-use std::env::current_dir;
+use std::{env::current_dir, process::Command};
 
 use crate::util::logger;
 
@@ -9,7 +9,7 @@ use crate::util::logger;
 pub fn kill(port: u16) {
   logger::info(&format!("Try shutting the port {} down...", &port.to_string()));
   let assets_dir = format!("{}\\assets", current_dir().unwrap().to_str().unwrap());
-  let proces = std::process::Command::new("cmd")
+  let proces = Command::new("cmd")
   .current_dir(assets_dir)
   .args(&["/C", "kill.bat", &port.to_string(), ">> kill.log"])
   .output()

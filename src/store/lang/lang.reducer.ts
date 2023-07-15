@@ -11,13 +11,11 @@ export const counterSlice = createSlice({
   reducers: {
     setLang: (state, action: PayloadAction<string>) => {
       const { type, payload } = action;
-      console.log(action);
       state = {
         ...state,
         lang: loadLocale(payload).locale,
         messages: loadLocale(payload).messages
       };
-      console.log(`current language: ${state.lang}`);
       return state;
     },
   },

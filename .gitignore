@@ -1,6 +1,6 @@
-vcluster.de
-vcluster.de-shm
-vcluster.de-wal
+vcluster.db
+vcluster.db-shm
+vcluster.db-wal
 
 # Logs
 logs

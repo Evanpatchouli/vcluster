@@ -1,5 +1,5 @@
 import { HandleDown, HandleRight } from "@icon-park/react";
-import { Alert, Collapse, List, ListItemButton, ListItemIcon, ListItemText, Popover, Snackbar } from "@mui/material";
+import { Collapse, List, ListItemButton, ListItemText, Popover } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import './style.css'
 import * as Api from '../../api';
@@ -10,7 +10,7 @@ function Tab() {
 
   useEffect(() => {
     Api.getall_cluster().then(result=>{
-      console.log(result);
+      // console.log(result);
       setPkgs(result.data as VCluster.PkgConfig[]);
     })
   }, []);
@@ -48,16 +48,20 @@ function Tab() {
   const delPkg = async ()=> {
     const res = await Api.del_cluster_by_pk(pkgMenu.id);
     if (res.ok) {
-      setPkgs(pkgs.filter((p,idx) => idx !== pkgMenu.idx))
+      setPkgs(pkgs.filter((p,idx) => idx !== pkgMenu.idx));
+      if(pkgMenu.idx == selectedIndex){
+        setOpen(-1);
+        setSelectedIndex(-1);
+      }
     }
     closePkgMenu();
   }
 
   const [open, setOpen] = React.useState(-1);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
   const handleClick = (idx: number) => {
-    console.log(`idx: ${idx}`);
+    // console.log(`idx: ${idx}`);
     setOpen(idx!=open ? idx : -1);  // check is the clicked cluster opened? if is, close it.
     setSelectedIndex(idx);
   };
@@ -115,9 +119,11 @@ function Tab() {
           }}
         >
           <div className="pkg-menu">
+            <div><FormattedMessage id="Launch"/></div>
+            <div><FormattedMessage id="Relaunch"/></div>
             <div><FormattedMessage id="Edit"/></div>
-            <div
-            onClick={delPkg}><FormattedMessage id="Delete"/></div>
+            <div><FormattedMessage id="Export"/></div>
+            <div onClick={delPkg}><FormattedMessage id="Delete"/></div>
           </div>
         </Popover>
     </div>

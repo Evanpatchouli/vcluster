@@ -23,6 +23,10 @@ A React + Tauri App as visualizer of apps cluster on windows.
 
 This software is still under development, please wait until the firset released version in the short future.
 
+## Latest News
+
+1. Terminal is integrated
+
 ## Platform Support
 
 Support only the windows-10-64bit, exactly linuxs do not need it. Macos is not under consideration in short-term.

@@ -1,0 +1,35 @@
+.test {
+  display: flex;
+  justify-content:center;
+  flex-direction: column;
+  padding-top: 0;
+  background: white;
+
+  *::selection {
+    background-color: gainsboro;
+  }
+
+  .btn {
+    height: 28px;
+  }
+
+  .line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px 10px 0px;
+
+    > * {
+      margin: 0px 4px 0px 4px;
+    }
+  }
+
+}
+
+.test input {
+  text-indent: 1rem;
+}
+
+/* * {
+  border: 1px solid black;
+} */

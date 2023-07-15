@@ -3,19 +3,27 @@ import { useAppDispatch } from "../store/hook";
 import { showMsg, closeMsg } from "../store/msg/msg.reducer";
 import { useNavigate } from "react-router";
 import { NavigateFunction } from "react-router-dom";
+import { AlertColor } from "@mui/material";
+import { Command } from "@tauri-apps/api/shell";
+
+export const msg = (content: string, severity:AlertColor)=>{
+  useAppDispatch(showMsg({
+    content, severity, counter:null
+  }));
+}
 
 /**
  * message will disappear after 2 seconds
  * @param content message content
  * @returns 
  */
-export const msg2s = (content: string, severity:"info"|"success"|"warning"|"error")=>{
-  useAppDispatch(showMsg({
-    content, severity
-  }));
-  setTimeout(()=>{
+export const msg2s = (content: string, severity:AlertColor)=>{
+  let counter = setTimeout(()=>{
     useAppDispatch(closeMsg());
-  }, 2000)
+  }, 2000);
+  useAppDispatch(showMsg({
+    content, severity, counter
+  }));
 }
 
 /**
@@ -24,18 +32,20 @@ export const msg2s = (content: string, severity:"info"|"success"|"warning"|"erro
  * @param msec milliseconds timeout
  * @returns 
  */
-export const msgms = (content: string, severity:"info"|"success"|"warning"|"error", msec?: number)=>{
+export const msgms = (content: string, severity:AlertColor, msec?: number)=>{
   if (msec && msec < 0) {
     return console.warn("timout cannot be negative");
   }
-  useAppDispatch(showMsg({
-    content, severity
-  }));
+  let counter: NodeJS.Timeout|null = null;
   if(msec) {
-    setTimeout(()=>{
+    counter = setTimeout(()=>{
       useAppDispatch(closeMsg());
     }, msec)
   }
+  useAppDispatch(showMsg({
+    content, severity, counter
+  }));
+
 }
 
 /**
@@ -44,4 +54,34 @@ export const msgms = (content: string, severity:"info"|"success"|"warning"|"erro
  */
 export const routeTo = (path: string, link: NavigateFunction) => {
   link(path, {replace: true});
+}
+
+// export const cmdonce = (context: string)=> {
+//   let command = new Command("cmd",["/c",context]);
+//   command.on('close', data => {
+//     console.log(`command finished with code ${data.code} and signal ${data.signal}`)
+//   });
+//   command.stdout.on('data', line => {
+//     // console.log(`line? ${line=="\r"}`);
+//     if(line!='\r') { 
+//       console.log(`command stdout: "${line}"`);
+//       msg2s(line, "success");
+//     }
+//   });
+//   command.on("error", err => {
+//     console.error(err);
+//     // msg2s(err, "error");
+//   });
+//   command.stderr.on('data', line => {
+//     console.log(`command stderr: "${line}"`);
+//     // msg2s(line, "error");
+//   })
+//   const child = await command.spawn().catch(e => msg2s(e, "error"));
+//   if (child){
+//     console.log('pid:', child.pid);
+//   }
+// }
+
+export default {
+  msg, msg2s, msgms, routeTo
 }

@@ -11,3 +11,22 @@ export const getall_cluster = async () => {
 export const del_cluster_by_pk = async (pk: String) => {
   return await invoke<VCluster.Resp<null>>("del_cluster_by_pk", { pk });
 }
+
+export const MyState = {
+  get: async ()=> {
+    return await invoke<{}>("get", { });
+  },
+
+  change: async (state: {user:String})=> {
+    return await invoke<{}>("change", { state });
+  }
+}
+
+const Api = {
+  createCluster,
+  getall_cluster,
+  del_cluster_by_pk,
+  MyState
+}
+
+export default Api;

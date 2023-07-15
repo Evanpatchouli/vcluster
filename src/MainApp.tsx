@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 import { HashRouter } from "react-router-dom";
 import App from "./App";
 import { connect } from "react-redux";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, AlertColor } from "@mui/material";
 import MsgState from "./store/msg/msg.state";
 import { closeMsg } from "./store/msg/msg.reducer";
 
@@ -21,6 +21,8 @@ function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
   }
   document.addEventListener('contextmenu', handleContextMenu);
 
+  const niubi = "error";
+
   useAppDispatch(setLang(props.lang));
   return (
     <IntlProvider
@@ -31,7 +33,7 @@ function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
       <HashRouter>
         <App />
         <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}} open={props.msg.state}>
-          <Alert severity="success"
+          <Alert severity={props.msg.severity}
           onClose={() => {
             console.log("close msg");
             useAppDispatch(closeMsg());
