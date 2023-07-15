@@ -72,6 +72,7 @@ If you want to compile it from source code, you should prepare the envirnment wi
 
 - `ctrl` + `h` -  need help and learn this app
 - `ctrl` + `alt` + `n` -  create a new apps-cluster
+- `ctrl` + `alt` + `t` -  open the vcluster terminal
 - `ctrl` + `alt` + `o` -  open an existing apps-cluster
 - `ctrl` + `alt` + `i` -  import an outside apps-clustet
 - `ctrl` + `l` + `c` -  switch language to Chinese

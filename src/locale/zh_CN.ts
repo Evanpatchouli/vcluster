@@ -32,6 +32,7 @@ const zh_CN = {
   "create a template": "新建一个模板",
   "Ctrl+Alt+N": "创建一个新的应用集群",
   "Ctrl+Alt+O": "打开一个存在的应用集群",
+  "Ctrl+Alt+T": "打开vcluster终端",
   "Ctrl+Alt+I": "导入一个外部的应用集群",
   "Ctrl+H": "需要帮助和学习这个软件",
   "Ctrl+L+C": "切换语言到中文",

@@ -2,13 +2,10 @@ import { FolderPlus, Help, Login as Import, ListAdd, PageTemplate } from "@icon-
 import { FormattedMessage } from "react-intl";
 import './style.css'
 import React from "react";
+import { tauri } from "@tauri-apps/api";
 
 function Tab() {
-  const pkgs: VCluster.PkgConfig[] | null = [
-    { name: "foo", desc: "", apps: [] },
-  ];
-
-  return (
+  return(
     <div className="terminal-tab">
       <div className="line">
         <div>vcluster clean</div>
@@ -27,7 +24,7 @@ function Tab() {
         <Help size={20}></Help>
       </div>
     </div>
-  );
+  )
 }
 
 export default Tab;

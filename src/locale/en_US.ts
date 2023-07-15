@@ -32,6 +32,7 @@ const en_US = {
   "create a template": "create a template",
   "Ctrl+Alt+N": "create a new apps-cluster",
   "Ctrl+Alt+O": "open an existing apps-cluster",
+  "Ctrl+Alt+T": "open the vcluster terminal",
   "Ctrl+Alt+I": "import an outside apps-clustet",
   "Ctrl+H": "need help and learn this app",
   "Ctrl+L+C": "switch language to Chinese",

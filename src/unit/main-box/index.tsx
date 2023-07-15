@@ -17,6 +17,13 @@ function MainBox() {
       </div>
       <div className='hotkey-item'>
         <span><FolderOpen></FolderOpen></span>
+        <span><FormattedMessage id='Ctrl+Alt+T'></FormattedMessage></span>
+        <span>
+          <span>Ctrl</span><span>+</span><span>Alt</span><span>+</span><span>T</span>
+        </span>
+      </div>
+      <div className='hotkey-item'>
+        <span><FolderOpen></FolderOpen></span>
         <span><FormattedMessage id='Ctrl+Alt+O'></FormattedMessage></span>
         <span>
           <span>Ctrl</span><span>+</span><span>Alt</span><span>+</span><span>O</span>
