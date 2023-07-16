@@ -48,7 +48,8 @@ const en_US = {
   "sub-app port": "sub-app port",
   "create successfully": "create successfully",
   "You have no cluster.": "You have no cluster.",
-  "please fill in completely": "please fill in completely"
+  "please fill in completely": "please fill in completely",
+  "All of the clusters overview": "All of the clusters overview"
 }
 export {
   en_US

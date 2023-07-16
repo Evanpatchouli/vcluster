@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import _langReducer from './lang/lang.reducer';
 import _msgReducer from './msg/msg.reducer';
+import _clustersReducer from './clusters/clusters.reducer';
 
 const store = configureStore({
   reducer: {
     langReducer: _langReducer,
-    msgReducer: _msgReducer
+    msgReducer: _msgReducer,
+    clustersReducer: _clustersReducer
   },
 });
 
@@ -16,5 +18,6 @@ export type AppDispatch = typeof store.dispatch;
 
 export const langReducer = _langReducer;
 export const msgReducer = _msgReducer;
+export const clustersReducer = _clustersReducer;
 
 export default store;

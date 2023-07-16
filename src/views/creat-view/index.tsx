@@ -137,7 +137,7 @@ function CreatView() {
         const form = getForm();
         if (!form.name||!form.apps) {
           return msg2s(intl.formatMessage({
-            id: "Please fill in completely",
+            id: "please fill in completely",
           }), "warning")
         }
         const res = await createCluster(form);

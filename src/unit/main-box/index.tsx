@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import './style.css'
 import {FolderPlus, FolderOpen,
-  Login as Import, Help, Chinese, English
+  Login as Import, Help, Chinese, English, Terminal
 } from '@icon-park/react';
 
 function MainBox() {
@@ -16,7 +16,7 @@ function MainBox() {
         </span>
       </div>
       <div className='hotkey-item'>
-        <span><FolderOpen></FolderOpen></span>
+        <span><Terminal></Terminal></span>
         <span><FormattedMessage id='Ctrl+Alt+T'></FormattedMessage></span>
         <span>
           <span>Ctrl</span><span>+</span><span>Alt</span><span>+</span><span>T</span>

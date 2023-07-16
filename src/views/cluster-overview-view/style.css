@@ -1,0 +1,21 @@
+.cluster-overview-view {
+  /* background: white; */
+  /* border: 10px yellow solid; */
+  height: 100px !important;
+
+  .title {
+    /* color: black; */
+    /* color: white; */
+  }
+
+  > .chart {
+    /* border: 1px solid black !important; */
+    height: 100% !important;
+  }
+
+  overflow: hidden;
+}
+
+/* * {
+  border: 1px solid black !important;
+} */

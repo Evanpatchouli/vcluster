@@ -48,7 +48,8 @@ const zh_CN = {
   "sub-app port": "子应用端口",
   "create successfully": "创建成功",
   "You have no cluster.": "你还没有集群.",
-  "please fill in completely": "请填写完整"
+  "please fill in completely": "请填写完整",
+  "All of the clusters overview": "全部集群的概览"
 }
 export {
   zh_CN

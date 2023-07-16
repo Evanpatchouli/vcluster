@@ -19,13 +19,24 @@ A React + Tauri App as visualizer of apps cluster on windows.
   <a href="#"><img alt="Rbatis" src="https://img.shields.io/badge/Rbatis-4.3-%23005fff.svg"></a>
 </p>
 
+<p align="center">
+  <img alt="overview" src="https://evan-oss-bucket1.oss-cn-hangzhou.aliyuncs.com/vcluster/overview.png" />
+</p>
+<p align="center">
+  <img alt="create" src="https://evan-oss-bucket1.oss-cn-hangzhou.aliyuncs.com/vcluster/create.png" />
+</p>
+<p align="center">
+  <img alt="shell" src="https://evan-oss-bucket1.oss-cn-hangzhou.aliyuncs.com/vcluster/shell.png" />
+</p>
+
 ## Notice
 
 This software is still under development, please wait until the firset released version in the short future.
 
 ## Latest News
 
-1. Terminal is integrated
+1. Clusters shown with Echarts
+2. Terminal is integrated
 
 ## Platform Support
 

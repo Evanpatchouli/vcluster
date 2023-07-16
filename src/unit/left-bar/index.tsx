@@ -9,6 +9,7 @@ import Popover from '@mui/material/Popover';
 import MainBox from '../main-box';
 import { Route, useNavigate, Routes } from "react-router-dom";
 import TestBox from '../../views/test-view';
+import ClusterOverView from '../../views/cluster-overview-view';
 import CreateView from '../../views/creat-view';
 import SetBox from '../set-box';
 import ClusterManagerTab from '../cluster-manager/tab';
@@ -68,7 +69,7 @@ function LeftBar() {
       <div className="column-container" id="left-bar">
         <div id="top">
           <SeoFolder className={matchTabClass(0)}
-            onClick={() => handleTabClick(0, "/")}
+            onClick={() => handleTabClick(0, "/main")}
             size="30"
             tabIndex={0}
           ></SeoFolder>
@@ -92,7 +93,7 @@ function LeftBar() {
           <Terminal  className={matchTabClass(5)}
             onClick={() => handleTabClick(5, "/shell")} size="30" tabIndex={5} />
           <Platte  className={matchTabClass(6)}
-            onClick={() => handleTabClick(6, "test")} size="30" tabIndex={5} />
+            onClick={() => handleTabClick(6, "test")} size="30" tabIndex={6} />
         </div>
         <div id="foot">
           <Help size="30" tabIndex={-1}
@@ -144,7 +145,7 @@ function LeftBar() {
         <Routes>
         <Route path="/" Component={MainBox} />
           <Route path="/test" Component={TestBox} />
-          <Route path="/main" Component={MainBox} />
+          <Route path="/main" Component={ClusterOverView} />
           <Route path="/create" Component={CreateView} />
           <Route path="/shell" Component={Shell} />
         </Routes>

@@ -4,14 +4,22 @@ import React, { useEffect, useState } from "react";
 import './style.css'
 import * as Api from '../../api';
 import { FormattedMessage } from "react-intl";
+import { connect } from "react-redux";
+import { RootState, clustersReducer } from '../../store/store';
+import { useAppDispatch } from '../../store/hook';
+import { setClusters, moveOne } from "../../store/clusters/clusters.reducer";
 
-function Tab() {
-  const [pkgs, setPkgs] = useState<VCluster.PkgConfig[]>([]);
+function mapStateToProps(state: RootState) {
+  const { clustersReducer } = state;
+  return { pkgs: clustersReducer.clusters };
+}
 
+function Tab({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
+  const dispatch = useAppDispatch;
   useEffect(() => {
     Api.getall_cluster().then(result=>{
       // console.log(result);
-      setPkgs(result.data as VCluster.PkgConfig[]);
+      dispatch(setClusters(result.data as VCluster.PkgConfig[]));
     })
   }, []);
 
@@ -48,7 +56,7 @@ function Tab() {
   const delPkg = async ()=> {
     const res = await Api.del_cluster_by_pk(pkgMenu.id);
     if (res.ok) {
-      setPkgs(pkgs.filter((p,idx) => idx !== pkgMenu.idx));
+      dispatch(moveOne(pkgMenu.idx));
       if(pkgMenu.idx == selectedIndex){
         setOpen(-1);
         setSelectedIndex(-1);
@@ -130,4 +138,4 @@ function Tab() {
   );
 }
 
-export default Tab;
+export default connect(mapStateToProps)(Tab);

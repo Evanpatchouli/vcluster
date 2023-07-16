@@ -78,7 +78,7 @@ async fn main() {
             logger::console("Done initializing.");
 
             // After it's done, close the splashscreen and display the main window
-            thread::sleep(time::Duration::from_millis(0));
+            thread::sleep(time::Duration::from_millis(1000));
             splashscreen_window.close().unwrap();
             main_window.show().unwrap();
           });
