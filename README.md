@@ -33,10 +33,11 @@ A React + Tauri App as visualizer of apps cluster on windows.
 
 This software is still under development, please wait until the firset released version in the short future.
 
-## Latest News
+## Latest Progress
 
-1. Clusters shown with Echarts
-2. Terminal is integrated
+1. Validate with Zod.js
+2. Clusters shown with Echarts
+3. Terminal is integrated
 
 ## Platform Support
 

@@ -85,11 +85,11 @@ const Shell = (props = {}) => {
         console.log(`command stderr: "${line}"`);
       })
       command.spawn().catch(e => pushtermLine(e));
-
     }
   }
   const cmdrun = async (context: string)=> {
-    let kind = "default"
+    pushtermLine(`$ ${context}`);
+    let kind = "default";
     if(context.startsWith('cd')){
       kind = "cd";
     }

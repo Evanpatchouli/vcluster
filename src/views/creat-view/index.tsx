@@ -2,19 +2,19 @@ import { FormattedMessage, useIntl } from "react-intl";
 import "./style.css";
 import React, { Fragment } from "react";
 import { Delete } from "@icon-park/react";
-import { ServiceConfig } from "../../model/VCluster";
+import { PkgConfig, ServiceConfig } from "../../model/VCluster";
 import { createCluster, getall_cluster } from "../../api";
 import { closeMsg, showMsg } from "../../store/msg/msg.reducer";
 import { useAppDispatch } from "../../store/hook";
 import { msg2s } from "../../util/util";
+import { PkgValidor, ZodErrorMessage } from "./valid";
+import { ZodErrorMap } from "zod";
 
 function CreatView() {
   const intl = useIntl();
   const [apps, setApps] = React.useState<VCluster.ServiceConfig[]>([new ServiceConfig()]);
   const [appDoms, setAppDoms] = React.useState(getAppDoms);
-  const [pkg, setPkg] = React.useState<VCluster.PkgConfig>({
-    name: '', desc: '', apps
-  })
+  const [pkg, setPkg] = React.useState<VCluster.PkgConfig>(new PkgConfig())
   const getForm = ()=> {
     let form = pkg;
     form.apps = apps;
@@ -135,10 +135,12 @@ function CreatView() {
       onSubmit={async (e)=>{
         e.preventDefault();
         const form = getForm();
-        if (!form.name||!form.apps) {
-          return msg2s(intl.formatMessage({
-            id: "please fill in completely",
-          }), "warning")
+        console.log(form);
+        const valid_result = PkgValidor.safeParse(form);
+        if (!valid_result.success){
+          const firsetError: ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
+          console.error(firsetError.message);
+          return msg2s(firsetError.message, "warning");
         }
         const res = await createCluster(form);
         console.log(res);

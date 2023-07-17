@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { RootState, clustersReducer } from '../../store/store';
 import { useAppDispatch } from '../../store/hook';
 import { setClusters, moveOne } from "../../store/clusters/clusters.reducer";
+import { routeTo, msgms } from '../../util/util';
+import { useNavigate } from "react-router-dom";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -15,6 +17,7 @@ function mapStateToProps(state: RootState) {
 }
 
 function Tab({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
+    const link = useNavigate();
   const dispatch = useAppDispatch;
   useEffect(() => {
     Api.getall_cluster().then(result=>{
@@ -72,7 +75,15 @@ function Tab({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
     // console.log(`idx: ${idx}`);
     setOpen(idx!=open ? idx : -1);  // check is the clicked cluster opened? if is, close it.
     setSelectedIndex(idx);
+    routeTo(`/cluster/${pkgs[idx].id}`, link);
   };
+
+  const handleLanuchClick = async (id: String) => {
+    const res = await Api.launch_pkg_by_id(id);
+    if (!res.ok) {
+      msgms(res.msg, "error", 3000);
+    }
+  }
 
   return (
     <div className="cluster-manager-tab">
@@ -127,7 +138,7 @@ function Tab({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
           }}
         >
           <div className="pkg-menu">
-            <div><FormattedMessage id="Launch"/></div>
+            <div onClick={()=>handleLanuchClick(pkgMenu.id)}><FormattedMessage id="Launch"/></div>
             <div><FormattedMessage id="Relaunch"/></div>
             <div><FormattedMessage id="Edit"/></div>
             <div><FormattedMessage id="Export"/></div>

@@ -11,51 +11,15 @@ export default function Test() {
   const link = useNavigate();
   const store = new Store(".settings.dat");
   const [someKey,setSomeKey] = React.useState("");
-  const [cmd,setCmd] = React.useState("cmd");
-  const [str,setStr] = React.useState("node -v");
-  const [sth,setSth] = React.useState("");
   return (
     <div className="test">
       <div className="line">
-        <Button onClick={()=>routeTo("/shell",link)}>Shell</Button>
-      </div>
-      <div className="line">
-        <InputLabel style={{marginRight: '1rem'}}>{cmd}</InputLabel>
-        <InputBase className="input" onChange={(e)=>{
-          setStr(e.target.value)
-        }} value={str}></InputBase>
-        <Button
-        className="btn"
-        onClick={async ()=>{
-          let command = new Command(cmd, ["/c",str]);
-          command.on('close', data => {
-            console.log(`command finished with code ${data.code} and signal ${data.signal}`)
-          });
-          command.stdout.on('data', line => {
-            // console.log(`line? ${line=="\r"}`);
-            if(line!='\r') { 
-              console.log(`command stdout: "${line}"`);
-              msg2s(line, "success");
-            }
-          });
-          command.on("error", err => {
-            console.error(err);
-            // msg2s(err, "error");
-          });
-          command.stderr.on('data', line => {
-            console.log(`command stderr: "${line}"`);
-            // msg2s(line, "error");
-          })
-          const child = await command.spawn().catch(e => msg2s(e, "error"));
-          if (child){
-            console.log('pid:', child.pid);
-          }
-        }}>Run</Button>
+        <Button onClick={()=>routeTo("/shell",link)}>Go Shell</Button>
       </div>
       <div className="line">
         <Button className="btn"
         onClick={async()=>{
-          await store.set("some-key", 5);
+          await store.set("some-key", "5");
           msg2s("initialize successfully!", "success");
         }}>初始Store</Button>
         <Button className="btn"
@@ -68,43 +32,10 @@ export default function Test() {
         }} value={someKey}></InputBase>
         <Button className="btn"
           onClick={async()=>{
-          await store.set("some-key", { value: someKey });
+          await store.set("some-key", someKey);
           msg2s("update some-key successfully!", "success");
         }}>更新Store</Button>
       </div>
-      {/* <div className="line">
-        <InputBase placeholder="write some-thing..." className="input"
-        value={sth} onChange={(e)=>{ setSth(e.target.value)}}></InputBase>
-        <Button
-        onClick={async()=>{
-          const command = new Command('node', []);
-          
-          command.on('close', data => {
-            console.log(`command finished with code ${data.code} and signal ${data.signal}`)
-          });
-          command.stdout.on('data', line => {
-            // console.log(`line? ${line=="\r"}`);
-            if(line!='\r') { 
-              console.log(`command stdout: "${line}"`);
-              msg2s(line, "success");
-            }
-          });
-          command.on("error", err => {
-            console.error(err);
-            // msg2s(err, "error");
-          });
-          command.stderr.on('data', line => {
-            console.log(`command stderr: "${line}"`);
-            // msg2s(line, "error");
-          })
-          const child = await command.spawn()
-            .catch(e => msg2s(e, "error"));
-          if(child){
-            console.log(`success: ${child.pid}`);
-            await child.write(sth);
-          }
-        }}>写下</Button>
-      </div> */}
     </div>
   )
 }

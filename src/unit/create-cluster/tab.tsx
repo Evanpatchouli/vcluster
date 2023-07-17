@@ -1,13 +1,8 @@
 import { FolderPlus, Login as Import, ListAdd, PageTemplate } from "@icon-park/react";
 import { FormattedMessage } from "react-intl";
 import './tab.css'
-import React from "react";
 
 function Tab() {
-  const pkgs: VCluster.PkgConfig[] | null = [
-    { name: "foo", desc: "", apps: [] },
-  ];
-
   return (
     <div className="create-cluster-tab">
       <div className="line">

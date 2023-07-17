@@ -1,16 +1,27 @@
-.cluster-overview-view {
+.cluster-view {
   /* background: white; */
   /* border: 10px yellow solid; */
   height: 100px !important;
+  position: relative;
 
   .title {
     /* color: black; */
+    background-color: rgb(60, 60, 60);
     color: white;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 12px 16px 12px 12px;
+    border-radius: 0px 24px 24px 0px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1000;
   }
 
   > .chart {
     /* border: 1px solid black !important; */
     height: 100% !important;
+    width: 100% !important;
   }
 
   overflow: hidden;

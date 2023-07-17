@@ -1,5 +1,5 @@
 declare namespace VCluster {
-  type ServiceConfig = {
+  class ServiceConfig {
     id?: string;
     cluster_id?: string;
     /** name of this app*/
@@ -15,12 +15,20 @@ declare namespace VCluster {
       script: string;
     };
     log?: string;
+
+    buildfromApp(app: ServiceConfig): ServiceConfig;
+  
+    static newfromApp(app: ServiceConfig): ServiceConfig;
   }
-  type PkgConfig = {
+  class PkgConfig {
     id?: string;
-    name: string;
-    desc: string;
-    apps: ServiceConfig[]
+    name: string = "";
+    desc: string = "";
+    apps: ServiceConfig[] = [];
+
+    buildfromPkg(pkg: PkgConfig): PkgConfig;
+  
+    static newfromPkg(pkg: PkgConfig): PkgConfig;
   }
 
   type Resp<T> = {

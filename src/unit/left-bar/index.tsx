@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy } from 'react';
 import './style.css'
 import {SeoFolder, FolderPlus, Search, DatabaseEnter,
   Login as Import, Help, 
@@ -16,6 +16,7 @@ import ClusterManagerTab from '../cluster-manager/tab';
 import CreateClusterTab from '../create-cluster/tab';
 import TerminalTab from '../terminal-tab';
 import Shell from '../../views/shell';
+import ClusterView from '../../views/cluster-view';
 
 function LeftBar() {
   const link = useNavigate();
@@ -69,7 +70,7 @@ function LeftBar() {
       <div className="column-container" id="left-bar">
         <div id="top">
           <SeoFolder className={matchTabClass(0)}
-            onClick={() => handleTabClick(0, "/main")}
+            onClick={() => handleTabClick(0)}
             size="30"
             tabIndex={0}
           ></SeoFolder>
@@ -97,7 +98,7 @@ function LeftBar() {
         </div>
         <div id="foot">
           <Help size="30" tabIndex={-1}
-          onClick={()=>handleTabClick(-1, "/main")}/>
+          onClick={()=>handleTabClick(-1, "/help")}/>
           <User size="30" tabIndex={-2} />
           <Setting size="30" tabIndex={-3} onClick={handleSettingClick} />
         </div>
@@ -121,7 +122,11 @@ function LeftBar() {
       {drawer.show||!drawer.show ? (
         <div className="column-container" id={drawer.id}>
           <div id="tab-title">
-            <div>
+            <div className='text' onClick={()=>{
+              if(tab.cur==0){
+                routeTo("/overview");
+              }
+            }}>
               <FormattedMessage id={tabs[tab.cur].key}></FormattedMessage>
             </div>
             {tab.cur==0?(<div className='btn'
@@ -143,9 +148,11 @@ function LeftBar() {
       ) : null}
       <div className='column-container' id='workstation'>
         <Routes>
-        <Route path="/" Component={MainBox} />
+          <Route path="/" Component={MainBox} />
+          <Route path="/help" Component={MainBox} />
           <Route path="/test" Component={TestBox} />
-          <Route path="/main" Component={ClusterOverView} />
+          <Route path="/overview" Component={ClusterOverView} />
+          <Route path="/cluster/:id" Component={ClusterView} />
           <Route path="/create" Component={CreateView} />
           <Route path="/shell" Component={Shell} />
         </Routes>

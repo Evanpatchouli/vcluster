@@ -1,5 +1,6 @@
-mod __launch;
-pub use __launch::launch;
+mod launch;
+pub use launch::launch_pkg;
+pub use launch::launch_pkg_by_id;
 
 mod run_script;
 pub use run_script::run_script;

@@ -1,21 +1,21 @@
 import { useEffect, useRef } from "react";
 import * as echarts from "echarts";
+import { FormattedMessage } from "react-intl";
 import './style.css';
+import { useParams } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { connect } from "react-redux";
-import { FormattedMessage } from "react-intl";
-import { SpotData, SPOT_STATE, COLOR_MAP } from './model';
-import { useNavigate } from "react-router-dom";
-import { routeTo } from "../../util/util";
+import { COLOR_MAP, SPOT_STATE, SpotData } from "./model";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
   return { pkgs: clustersReducer.clusters };
 }
 
-function ClusterOverviewView({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
-  const chartRef = useRef<HTMLDivElement>(null);
-  const link = useNavigate();
+function ClusterView({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
+  const params = useParams<{id:string}>();
+  console.log(params) // {id: "2",name:"zora"}
+  const {id} = params;
 
   useEffect(() => {
     chartRef.current?.focus();
@@ -24,45 +24,20 @@ function ClusterOverviewView({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
       if (params.componentType === 'series') {
         if (params.seriesType === 'graph') {
           if (params.dataType === 'node') {
-            const data: SpotData = params.data as SpotData;
-            routeTo(`/cluster/${data.id}`, link);
+            console.log(params.data)
           }
         }
       }
     });
-    let spots = pkgs.map((pkg,idx) => {
-      let spot = new SpotData(pkg);
-      spot.SymbolSize(50).Draggable(true).State(SPOT_STATE.SLEEP);
-      // switch(idx) { //模拟不同状态的集群的颜色
-      //   case 0: {
-      //     spot.state = SPOT_STATE.WELL;break;
-      //   }
-      //   case 1: {
-      //     spot.state = SPOT_STATE.SLEEP;break;
-      //   }
-      //   case 2: {
-      //     spot.state = SPOT_STATE.SLEEP;break;
-      //   }
-      //   case 3: {
-      //     spot.state = SPOT_STATE.SLEEP;break;
-      //   }
-      //   case 4: {
-      //     spot.state = SPOT_STATE.WELL;break;
-      //   }
-      //   case 5: {
-      //     spot.state = SPOT_STATE.BAD;break;
-      //   }
-      //   case 6: {
-      //     spot.state = SPOT_STATE.WELL;break;
-      //   }
-      // }
-      const sizes = [0,40,60,80,100,120,140,160];
-      spot.symbolSize = sizes[pkg.apps.length]
-      if(pkg.apps.length > sizes.length){
-        spot.symbolSize = 200;
-      }
-      return spot;
-    })
+    let pkg = pkgs.find((pkg)=>pkg.id == id);
+    let spots: SpotData[] = [];
+    if (pkg) {
+      spots = pkg.apps.map((app,idx) => {
+        let spot = new SpotData(app);
+        spot.SymbolSize(80).Draggable(true).State(SPOT_STATE.SLEEP);
+        return spot;
+      })
+    }
     const data = spots;
     const edges: { source: number; target: number; }[] = [];
     let option = {
@@ -123,17 +98,15 @@ function ClusterOverviewView({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
     //   // console.log('links: ' + data.length);
     // }, 5000);
     chartInstance.setOption(option);
-  }, [pkgs]);
+  }, [id]);
 
+  const chartRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="cluster-overview-view" style={{ textAlign: "center" }}>
-      <h2 className="title">
-        <FormattedMessage id="All of the clusters overview"/>
-      </h2>
-      <div className="chart"
-      ref={chartRef}></div>
+    <div className="cluster-view">
+      <h2 className="title">{pkgs.find(pkg=>pkg.id==id)?.name}</h2>
+      <div className="chart" ref={chartRef}></div>
     </div>
-  );
+  )
 }
 
-export default connect(mapStateToProps)(ClusterOverviewView);
+export default connect(mapStateToProps)(ClusterView);
