@@ -1,3 +1,4 @@
+import { useIntl } from "react-intl";
 import { z } from "zod";
 
 export const PkgValidor = z.object({
@@ -20,11 +21,3 @@ export const PkgValidor = z.object({
 
 export type PkgFormType = z.infer<typeof PkgValidor>;
 
-export type ZodErrorMessage = {
-  code: string
-  minimum: number,
-  type: string,
-  inclusive: boolean,
-  message: string,
-  path: string[]
-}

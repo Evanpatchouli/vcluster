@@ -6,6 +6,7 @@ import React from "react";
 import { Command, Child } from '@tauri-apps/api/shell';
 import { Store } from "tauri-plugin-store-api";
 import { useNavigate } from "react-router-dom";
+import Api from "../../api";
 
 export default function Test() {
   const link = useNavigate();
@@ -35,6 +36,11 @@ export default function Test() {
           await store.set("some-key", someKey);
           msg2s("update some-key successfully!", "success");
         }}>更新Store</Button>
+      </div>
+      <div className="line">
+        <Button onClick={async ()=>{
+          await Api.launch_app_by_id("523815094480539656");
+        }}>Spawn</Button>
       </div>
     </div>
   )

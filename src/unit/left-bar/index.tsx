@@ -17,6 +17,7 @@ import CreateClusterTab from '../create-cluster/tab';
 import TerminalTab from '../terminal-tab';
 import Shell from '../../views/shell';
 import ClusterView from '../../views/cluster-view';
+import userView from '../../views/user-view';
 
 function LeftBar() {
   const link = useNavigate();
@@ -93,13 +94,14 @@ function LeftBar() {
             onClick={() => handleTabClick(4)} size="30" tabIndex={4} />
           <Terminal  className={matchTabClass(5)}
             onClick={() => handleTabClick(5, "/shell")} size="30" tabIndex={5} />
-          <Platte  className={matchTabClass(6)}
-            onClick={() => handleTabClick(6, "test")} size="30" tabIndex={6} />
+          {/* <Platte  className={matchTabClass(6)}
+            onClick={() => handleTabClick(6, "test")} size="30" tabIndex={6} /> */}
         </div>
         <div id="foot">
           <Help size="30" tabIndex={-1}
           onClick={()=>handleTabClick(-1, "/help")}/>
-          <User size="30" tabIndex={-2} />
+          <User size="30"
+          onClick={()=>handleTabClick(-3, "/user")} tabIndex={-2} />
           <Setting size="30" tabIndex={-3} onClick={handleSettingClick} />
         </div>
         <Popover
@@ -155,6 +157,7 @@ function LeftBar() {
           <Route path="/cluster/:id" Component={ClusterView} />
           <Route path="/create" Component={CreateView} />
           <Route path="/shell" Component={Shell} />
+          <Route path="/user" Component={userView} />
         </Routes>
       </div>
     </div>

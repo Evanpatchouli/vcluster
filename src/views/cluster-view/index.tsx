@@ -98,7 +98,7 @@ function ClusterView({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
     //   // console.log('links: ' + data.length);
     // }, 5000);
     chartInstance.setOption(option);
-  }, [id]);
+  }, [pkgs]);  // Before we bind id to useEffect, and that will cause the charts will not update if cluster is deleted.
 
   const chartRef = useRef<HTMLDivElement>(null);
   return (

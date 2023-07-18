@@ -48,5 +48,25 @@ declare namespace VCluster {
       left: number;
     }
   }
+
+  type AppMenu = { 
+    idx: number;
+    cluster_id: String;
+    id: String;
+    show: boolean;
+    anchor: {
+      top: number;
+      left: number;
+    }
+  }
+  
+  type ZodErrorMessage = {
+    code: string
+    minimum: number,
+    type: string,
+    inclusive: boolean,
+    message: string,
+    path: string[]
+  }
 }
 

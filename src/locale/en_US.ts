@@ -24,6 +24,7 @@ const en_US = {
   "Restart": "Restart",
   "Launch": "Launch",
   "Relaunch": "Relaunch",
+  "Stop": "Stop",
   "create": "create",
   "create a cluster": "create a cluster",
   "import": "import",
@@ -46,10 +47,19 @@ const en_US = {
   "sub-app log file relative path, default is current-dir/log.txt": "sub-app log file relative path, default is current-dir/log.txt",
   "Add sub-app": "Add sub-app",
   "sub-app port": "sub-app port",
+  "save as template": "save as template",
   "create successfully": "create successfully",
   "You have no cluster.": "You have no cluster.",
   "please fill in completely": "please fill in completely",
-  "All of the clusters overview": "All of the clusters overview"
+  "All of the clusters overview": "All of the clusters overview",
+  "cluster name cannot be empty": "cluster name cannot be empty",
+  "subapp name cannot be empty": "subapp name cannot be empty",
+  "port should be an integer": "port should be an integer",
+  "port should be larger than zero": "port should be larger than zero",
+  "start path cannot be empty": "start path cannot be empty",
+  "start script cannot be empty": "start script cannot be empty",
+  "username cannot be empty": "username cannot be empty",
+  "password cannot be empty": "password cannot be empty",
 }
 export {
   en_US

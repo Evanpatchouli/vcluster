@@ -37,7 +37,7 @@
 
 }
 
-.pkg-menu {
+.pkg-menu, .app-menu {
   width: 200px;
   background: rgb(32, 32, 32);
   border: 1px solid rgb(56, 56, 56);

@@ -6,7 +6,8 @@ mod model;
 mod interface;
 
 mod cmd;
-use cmd::{launch_pkg,launch_pkg_by_id,kill,create_cluster,getall_cluster,del_cluster_by_pk};
+use cmd::{launch_pkg,launch_pkg_by_id,kill,create_cluster,
+  getall_cluster,del_cluster_by_pk,del_app_by_pk,launch_app_by_id};
 
 mod store;
 
@@ -90,9 +91,11 @@ async fn main() {
           create_cluster,
           getall_cluster,
           del_cluster_by_pk,
+          del_app_by_pk,
           launch_pkg,
           launch_pkg_by_id,
           store::state::get,
+          launch_app_by_id,
           kill])
         .menu(menu)
         .on_menu_event(|event| {

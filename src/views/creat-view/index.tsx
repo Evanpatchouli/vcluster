@@ -3,12 +3,9 @@ import "./style.css";
 import React, { Fragment } from "react";
 import { Delete } from "@icon-park/react";
 import { PkgConfig, ServiceConfig } from "../../model/VCluster";
-import { createCluster, getall_cluster } from "../../api";
-import { closeMsg, showMsg } from "../../store/msg/msg.reducer";
-import { useAppDispatch } from "../../store/hook";
+import { createCluster } from "../../api";
 import { msg2s } from "../../util/util";
-import { PkgValidor, ZodErrorMessage } from "./valid";
-import { ZodErrorMap } from "zod";
+import { PkgValidor } from "./valid";
 
 function CreatView() {
   const intl = useIntl();
@@ -138,9 +135,11 @@ function CreatView() {
         console.log(form);
         const valid_result = PkgValidor.safeParse(form);
         if (!valid_result.success){
-          const firsetError: ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
+          const firsetError: VCluster.ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
           console.error(firsetError.message);
-          return msg2s(firsetError.message, "warning");
+          return msg2s(intl.formatMessage({
+            id: firsetError.message,
+          }), "warning");
         }
         const res = await createCluster(form);
         console.log(res);
@@ -187,6 +186,9 @@ function CreatView() {
               setApps([new ServiceConfig()]);
             }}>
               {intl.formatMessage({ id: "reset" })}
+            </button>
+            <button type="button">
+              {intl.formatMessage({ id: "save as template" })}
             </button>
           </div>
           <button type="button" onClick={addSubApp}>

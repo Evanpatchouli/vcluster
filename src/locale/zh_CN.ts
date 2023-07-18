@@ -24,6 +24,7 @@ const zh_CN = {
   "Restart": "重新开始",
   "Launch": "启动",
   "Relaunch": "重启",
+  "Stop": "停止",
   "create": "新建",
   "create a cluster": "新建一个集群",
   "import": "导入",
@@ -46,10 +47,19 @@ const zh_CN = {
   "sub-app log file relative path, default is current-dir/log.txt": "子应用的日志文件相对路径，默认当前目录/log.txt",
   "Add sub-app": "添加子应用",
   "sub-app port": "子应用端口",
+  "save as template": "存为模板",
   "create successfully": "创建成功",
   "You have no cluster.": "你还没有集群.",
   "please fill in completely": "请填写完整",
-  "All of the clusters overview": "全部集群的概览"
+  "All of the clusters overview": "全部集群的概览",
+  "cluster name cannot be empty": "集群名称不能为空",
+  "subapp name cannot be empty": "子应用名称不能为空",
+  "port should be an integer": "端口应当是一个整数",
+  "port should be larger than zero": "端口应当是一个正数",
+  "start path cannot be empty": "启动路径不能为空",
+  "start script cannot be empty": "启动脚本不能为空",
+  "username cannot be empty": "用户名不能为空",
+  "password cannot be empty": "密码不能为空"
 }
 export {
   zh_CN

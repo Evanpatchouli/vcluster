@@ -2,7 +2,7 @@ export class ServiceConfig  {
   id?: string = '';
   cluster_id?: string = '';
   /** name of this app*/
-  name: string = 'sub-app';
+  name: string = '';
   /** description of this app*/
   desc: string = '';
   /** which net-port will this app use*/

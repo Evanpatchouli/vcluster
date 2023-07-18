@@ -1,3 +1,5 @@
+// use std::{process::Stdio, io::{BufReader, BufRead}};
+
 use crate::util::logger;
 
 #[allow(unused)]
@@ -21,11 +23,33 @@ pub fn run_script(dir: &str, script: &str, outdir: Option<&str>, name: Option<&s
   }
   let proces = std::process::Command::new("cmd")
   .current_dir(dir)
-  .args(&["/K", script, ">>", log_path])
+  .args(&["/c", "start", "/b", script, ">>", log_path])
   .output()
   .expect(&format!("failed to execute {}", name.unwrap_or("script")));
 
   logger::info(&format!("status: {}", proces.status));
   logger::info(&format!("stdout: {}", String::from_utf8_lossy(&proces.stdout)));
   logger::errorMsg(&format!("stderr: {}", String::from_utf8_lossy(&proces.stderr)));
+
+  // let mut cmd = std::process::Command::new("cmd")
+  // .current_dir(dir)
+  // .args(&["/C",  script, ">>", log_path])
+  // .stdout(Stdio::piped())
+  // .spawn()
+  // .expect(&format!("failed to execute {}", name.unwrap_or("script")));
+
+  // let pid = cmd.id();
+  // let status = cmd.wait().unwrap();
+
+  // println!("pid: {}", pid);
+  // println!("status: {}", status);
+
+  // if let Some(stdout) = cmd.stdout {
+  //   let reader = BufReader::new(stdout);
+  //   for line in reader.lines() {
+  //       if let Ok(line) = line {
+  //           println!("stdout: {}", line);
+  //       }
+  //   }
+  // }
 }
