@@ -8,7 +8,18 @@ import { Store } from "tauri-plugin-store-api";
 import { useNavigate } from "react-router-dom";
 import Api from "../../api";
 
+import { emit, listen } from '@tauri-apps/api/event';
+import { invoke } from "@tauri-apps/api";
+
+import Axios from 'axios';
+
+
+listen('back-msg', (event) => {
+  console.log(event.payload);
+});
+
 export default function Test() {
+  
   const link = useNavigate();
   const store = new Store(".settings.dat");
   const [someKey,setSomeKey] = React.useState("");
@@ -40,7 +51,26 @@ export default function Test() {
       <div className="line">
         <Button onClick={async ()=>{
           await Api.launch_app_by_id("523815094480539656");
-        }}>Spawn</Button>
+        }}>Launch</Button>
+      </div>
+      <div className="line">
+        <Button onClick={async ()=>{
+          invoke("front_msg", {});
+          const resp = await Axios.get("http://localhost/evp-demo", {
+            method: "GET",
+          })
+          console.log(await resp.data);
+          // const resp = await fetch("http://localhost/evp-demo", {
+          //   method: "GET",
+          // })
+          // const decoder = new TextDecoder();
+          // if(resp.body){
+          //   const dataBytes = (await resp.body.getReader().read()).value
+          //   const dataString = decoder.decode(dataBytes);
+          //   const data = JSON.parse(dataString);
+          //   console.log(data);
+          // }
+        }}>Emit</Button>
       </div>
     </div>
   )

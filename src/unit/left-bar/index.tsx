@@ -94,8 +94,8 @@ function LeftBar() {
             onClick={() => handleTabClick(4)} size="30" tabIndex={4} />
           <Terminal  className={matchTabClass(5)}
             onClick={() => handleTabClick(5, "/shell")} size="30" tabIndex={5} />
-          {/* <Platte  className={matchTabClass(6)}
-            onClick={() => handleTabClick(6, "test")} size="30" tabIndex={6} /> */}
+          <Platte  className={matchTabClass(6)}
+            onClick={() => handleTabClick(6, "test")} size="30" tabIndex={6} />
         </div>
         <div id="foot">
           <Help size="30" tabIndex={-1}

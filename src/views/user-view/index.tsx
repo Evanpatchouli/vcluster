@@ -11,7 +11,7 @@ export default ()=> {
     <div className="user-view">
       {/* <p>After login, your data can be shared with azure</p> */}
       <div className='line'>
-        <img className='logo' alt="logo" src='/public/vcluster.png'></img>  
+        <img className='logo' alt="logo" src='/vcluster.png'></img>  
       </div>
       <div className='line'>
         <h1 className='h1'>Sign in to VCluster</h1>

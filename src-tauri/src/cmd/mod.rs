@@ -8,6 +8,7 @@ pub use run_script::run_script;
 
 mod __kill;
 pub use __kill::kill;
+pub use __kill::stop_pkg_by_id;
 
 mod cluster;
 pub use cluster::create_cluster;

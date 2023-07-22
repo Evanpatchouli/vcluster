@@ -28,6 +28,10 @@ export const kill_port = async (port: number) => {
   return await invoke("kill", { port });
 }
 
+export const stop_pkg_by_id = async (id: String) => {
+  return await invoke("stop_pkg_by_id", { id });
+}
+
 export const MyState = {
   get: async ()=> {
     return await invoke<{}>("get", { });
@@ -45,6 +49,7 @@ const Api = {
   del_cluster_by_pk,
   del_app_by_pk,
   launch_app_by_id,
+  stop_pkg_by_id,
   kill_port,
   MyState
 }

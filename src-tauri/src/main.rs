@@ -7,7 +7,8 @@ mod interface;
 
 mod cmd;
 use cmd::{launch_pkg,launch_pkg_by_id,kill,create_cluster,
-  getall_cluster,del_cluster_by_pk,del_app_by_pk,launch_app_by_id};
+  getall_cluster,del_cluster_by_pk,del_app_by_pk,launch_app_by_id,
+  stop_pkg_by_id};
 
 mod store;
 
@@ -47,6 +48,16 @@ async fn close_splashscreen(window: tauri::Window) {
   window.get_window("main").unwrap().show().unwrap();
 }
 
+#[tauri::command]
+fn front_msg(window: tauri::Window) {
+  window.emit_all("back-msg", Payload { message: "Tauri is awesome!".into() }).unwrap();
+}
+
+#[derive(Clone, serde::Serialize)]
+struct Payload {
+  message: String,
+}
+
 #[tokio::main]
 async fn main() {
     let import_config = CustomMenuItem::new("import_config".to_string(), "导入配置");
@@ -67,6 +78,7 @@ async fn main() {
     .add_submenu(submenu);
     tauri::Builder::default()
         .setup(|app| {
+          app.emit_all("back-msg", Payload { message: "Tauri is awesome!".into() }).unwrap();
           let splashscreen_window = app.get_window("splashscreen").unwrap();
           let main_window = app.get_window("main").unwrap();
           // we perform the initialization code on a new task so the app doesn't freeze
@@ -86,6 +98,7 @@ async fn main() {
           Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+          front_msg,
           close_splashscreen,
           greet,
           create_cluster,
@@ -96,6 +109,7 @@ async fn main() {
           launch_pkg_by_id,
           store::state::get,
           launch_app_by_id,
+          stop_pkg_by_id,
           kill])
         .menu(menu)
         .on_menu_event(|event| {

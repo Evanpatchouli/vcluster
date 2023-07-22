@@ -125,12 +125,17 @@ function Tab({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
     routeTo(`/cluster/${pkgs[idx].id}`, link);
   };
 
-  const handleLanuchClick = async (id: String) => {
-    Api.launch_pkg_by_id(id);
+  const handleLanuchClick = async () => {
+    Api.launch_pkg_by_id(pkgMenu.id);
     // const res = await Api.launch_pkg_by_id(id);
     // if (!res.ok) {
     //   msgms(res.msg, "error", 3000);
     // }
+    closePkgMenu();
+  }
+
+  const handlePkgStopClick = async () => {
+    Api.stop_pkg_by_id(pkgMenu.id);
     closePkgMenu();
   }
 
@@ -205,9 +210,9 @@ function Tab({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
         }}
       >
         <div className="pkg-menu">
-          <div onClick={()=>handleLanuchClick(pkgMenu.id)}><FormattedMessage id="Launch"/></div>
+          <div onClick={handleLanuchClick}><FormattedMessage id="Launch"/></div>
           <div><FormattedMessage id="Relaunch"/></div>
-          <div><FormattedMessage id="Stop"/></div>
+          <div onClick={handlePkgStopClick}><FormattedMessage id="Stop"/></div>
           <div><FormattedMessage id="Edit"/></div>
           <div><FormattedMessage id="Export"/></div>
           <div onClick={delPkg}><FormattedMessage id="Delete"/></div>
