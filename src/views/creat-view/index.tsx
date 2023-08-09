@@ -4,7 +4,7 @@ import React, { Fragment } from "react";
 import { Delete } from "@icon-park/react";
 import { PkgConfig, ServiceConfig } from "../../model/VCluster";
 import { createCluster } from "../../api";
-import { msg2s } from "../../util/util";
+import { msg3s } from "../../util/util";
 import { PkgValidor } from "./valid";
 
 function CreatView() {
@@ -137,14 +137,14 @@ function CreatView() {
         if (!valid_result.success){
           const firsetError: VCluster.ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
           console.error(firsetError.message);
-          return msg2s(intl.formatMessage({
+          return msg3s(intl.formatMessage({
             id: firsetError.message,
           }), "warning");
         }
         const res = await createCluster(form);
         console.log(res);
         if (res.ok) {
-          msg2s(intl.formatMessage({
+          msg3s(intl.formatMessage({
             id: "create successfully",
           }), "success");
         }

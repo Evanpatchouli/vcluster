@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from "react-intl";
 import './style.css'
-import { msg2s } from "../../util/util";
+import { msg3s } from "../../util/util";
 import { UserForm, UserValidator } from './valid';
 
 export default ()=> {
@@ -23,7 +23,7 @@ export default ()=> {
         if (!valid_result.success){
           const firsetError: VCluster.ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
           console.error(firsetError.message);
-          return msg2s(intl.formatMessage({
+          return msg3s(intl.formatMessage({
             id: firsetError.message,
           }), "warning");
         }

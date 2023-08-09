@@ -103,6 +103,7 @@ function Tab({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
         setOpen(-1);
         setSelectedIndex(-1);
       }
+      routeTo("overview", link);
     }
     closePkgMenu();
   }

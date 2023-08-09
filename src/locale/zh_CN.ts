@@ -59,7 +59,8 @@ const zh_CN = {
   "start path cannot be empty": "启动路径不能为空",
   "start script cannot be empty": "启动脚本不能为空",
   "username cannot be empty": "用户名不能为空",
-  "password cannot be empty": "密码不能为空"
+  "password cannot be empty": "密码不能为空",
+  "Edit Config": "配置信息"
 }
 export {
   zh_CN

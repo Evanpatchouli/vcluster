@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
 import { FormattedMessage } from "react-intl";
 import './style.css';
@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { connect } from "react-redux";
 import { COLOR_MAP, SPOT_STATE, SpotData } from "./model";
+import { Edit } from "@icon-park/react";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, Button } from "@mui/material";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -16,6 +18,16 @@ function ClusterView({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
   const params = useParams<{id:string}>();
   console.log(params) // {id: "2",name:"zora"}
   const {id} = params;
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     chartRef.current?.focus();
@@ -104,7 +116,46 @@ function ClusterView({ pkgs }:{pkgs:VCluster.PkgConfig[]}) {
   return (
     <div className="cluster-view">
       <h2 className="title">{pkgs.find(pkg=>pkg.id==id)?.name}</h2>
+      <div className="line" id="config"
+      onClick={handleClickOpen}><div className="text">
+        <FormattedMessage id="Edit Config"/>
+      </div><Edit/></div>
       <div className="chart" ref={chartRef}></div>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Configuration</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To subscribe to this website, please enter your email address here. We
+            will send updates occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="cluster name"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="desc"
+            label="description"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>
+            <FormattedMessage id="cancel"/>
+          </Button>
+          <Button onClick={handleClose}>
+            <FormattedMessage id="submit"/>
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

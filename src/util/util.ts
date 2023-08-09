@@ -17,10 +17,10 @@ export const msg = (content: string, severity:AlertColor)=>{
  * @param content message content
  * @returns 
  */
-export const msg2s = (content: string, severity:AlertColor)=>{
+export const msg3s = (content: string, severity:AlertColor)=>{
   let counter = setTimeout(()=>{
     useAppDispatch(closeMsg());
-  }, 2000);
+  }, 3000);
   useAppDispatch(showMsg({
     content, severity, counter
   }));
@@ -65,23 +65,23 @@ export const routeTo = (path: string, link: NavigateFunction) => {
 //     // console.log(`line? ${line=="\r"}`);
 //     if(line!='\r') { 
 //       console.log(`command stdout: "${line}"`);
-//       msg2s(line, "success");
+//       msg3s(line, "success");
 //     }
 //   });
 //   command.on("error", err => {
 //     console.error(err);
-//     // msg2s(err, "error");
+//     // msg3s(err, "error");
 //   });
 //   command.stderr.on('data', line => {
 //     console.log(`command stderr: "${line}"`);
-//     // msg2s(line, "error");
+//     // msg3s(line, "error");
 //   })
-//   const child = await command.spawn().catch(e => msg2s(e, "error"));
+//   const child = await command.spawn().catch(e => msg3s(e, "error"));
 //   if (child){
 //     console.log('pid:', child.pid);
 //   }
 // }
 
 export default {
-  msg, msg2s, msgms, routeTo
+  msg, msg3s, msgms, routeTo
 }

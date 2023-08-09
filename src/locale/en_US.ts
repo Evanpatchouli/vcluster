@@ -60,6 +60,7 @@ const en_US = {
   "start script cannot be empty": "start script cannot be empty",
   "username cannot be empty": "username cannot be empty",
   "password cannot be empty": "password cannot be empty",
+  "Edit Config": "Edit Config"
 }
 export {
   en_US

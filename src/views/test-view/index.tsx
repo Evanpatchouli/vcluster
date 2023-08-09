@@ -1,6 +1,6 @@
 import { Button, InputBase, InputLabel } from "@mui/material";
 import "./style.css"
-import { msg2s, routeTo } from "../../util/util";
+import { msg3s, routeTo } from "../../util/util";
 import React from "react";
 
 import { Command, Child } from '@tauri-apps/api/shell';
@@ -32,12 +32,12 @@ export default function Test() {
         <Button className="btn"
         onClick={async()=>{
           await store.set("some-key", "5");
-          msg2s("initialize successfully!", "success");
+          msg3s("initialize successfully!", "success");
         }}>初始Store</Button>
         <Button className="btn"
           onClick={async()=>{
           const res = await store.get("some-key");
-          msg2s(`somke-key: ${JSON.stringify(res)}`, "info");
+          msg3s(`somke-key: ${JSON.stringify(res)}`, "info");
         }}>获取Store</Button>
         <InputBase placeholder="some-key value..." className="input" onChange={(e)=>{
           setSomeKey(e.target.value)
@@ -45,7 +45,7 @@ export default function Test() {
         <Button className="btn"
           onClick={async()=>{
           await store.set("some-key", someKey);
-          msg2s("update some-key successfully!", "success");
+          msg3s("update some-key successfully!", "success");
         }}>更新Store</Button>
       </div>
       <div className="line">
