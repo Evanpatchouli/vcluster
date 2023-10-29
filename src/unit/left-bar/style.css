@@ -25,7 +25,7 @@
 }
 
 #drawer-opened {
-  min-width: 200px;
+  width: 240px;
   visibility: visible;
   /* width: -moz-fit-content;
   width: fit-content; */
@@ -41,7 +41,7 @@
 
 #drawer-opened, #drawer-closed {
   background: rgb(24, 24, 24);
-  transition: width , size, resize, min-width 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out;
   display: flex;
   justify-content: flex-start;
 
