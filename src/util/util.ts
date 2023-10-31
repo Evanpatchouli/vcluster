@@ -5,56 +5,99 @@ import { useNavigate } from "react-router";
 import { NavigateFunction } from "react-router-dom";
 import { AlertColor } from "@mui/material";
 import { Command } from "@tauri-apps/api/shell";
+import toast from "react-hot-toast";
 
-export const msg = (content: string, severity:AlertColor)=>{
-  useAppDispatch(showMsg({
-    content, severity, counter:null
-  }));
-}
+const AlertMap = {
+  success: {
+    color: "#4caf50",
+    icon: "✅",
+  },
+  info: {
+    color: "#2196f3",
+    icon: "ℹ️",
+  },
+  warning: {
+    color: "#ff9800",
+    icon: "⚠️",
+  },
+  error: {
+    color: "#f44336",
+    icon: "❌",
+  },
+};
 
 /**
  * message will disappear after 2 seconds
  * @param content message content
- * @returns 
+ * @returns
  */
-export const msg3s = (content: string, severity:AlertColor)=>{
-  let counter = setTimeout(()=>{
-    useAppDispatch(closeMsg());
-  }, 3000);
-  useAppDispatch(showMsg({
-    content, severity, counter
-  }));
-}
+export const msg = (content: string, severity: AlertColor) => {
+  // useAppDispatch(showMsg({
+  //   content, severity, counter:null
+  // }));
+  toast(content, {
+    duration: 2000,
+    icon: AlertMap[severity]?.icon,
+    iconTheme: {
+      primary: "white",
+      secondary: AlertMap[severity]?.color,
+    },
+  });
+};
+
+/**
+ * message will disappear after 3 seconds
+ * @param content message content
+ * @returns
+ */
+export const msg3s = (content: string, severity: AlertColor) => {
+  toast(content, {
+    duration: 3000,
+    icon: AlertMap[severity]?.icon,
+    iconTheme: {
+      primary: "white",
+      secondary: AlertMap[severity]?.color,
+    },
+  });
+  // let counter = setTimeout(() => {
+  //   useAppDispatch(closeMsg());
+  // }, 3000);
+  // useAppDispatch(
+  //   showMsg({
+  //     content,
+  //     severity,
+  //     counter,
+  //   })
+  // );
+};
 
 /**
  * msec should be milliseconds and should be a number >= 0
  * @param content message content
  * @param msec milliseconds timeout
- * @returns 
+ * @returns
  */
-export const msgms = (content: string, severity:AlertColor, msec?: number)=>{
+export const msgms = (content: string, severity: AlertColor, msec?: number) => {
   if (msec && msec < 0) {
     return console.warn("timout cannot be negative");
   }
-  let counter: NodeJS.Timeout|null = null;
-  if(msec) {
-    counter = setTimeout(()=>{
-      useAppDispatch(closeMsg());
-    }, msec)
-  }
-  useAppDispatch(showMsg({
-    content, severity, counter
-  }));
-
-}
+  toast(content, {
+    duration: msec || 2000,
+    icon: AlertMap[severity]?.icon,
+    iconTheme: {
+      primary: "white",
+      secondary: AlertMap[severity]?.color,
+    },
+  });
+};
 
 /**
  * change route to given route path
  * @param path route path
  */
 export const routeTo = (path: string, link: NavigateFunction) => {
-  link(path, {replace: true});
-}
+  link(path, { replace: true });
+};
 
 // export const cmdonce = (context: string)=> {
 //   let command = new Command("cmd",["/c",context]);
@@ -63,7 +106,7 @@ export const routeTo = (path: string, link: NavigateFunction) => {
 //   });
 //   command.stdout.on('data', line => {
 //     // console.log(`line? ${line=="\r"}`);
-//     if(line!='\r') { 
+//     if(line!='\r') {
 //       console.log(`command stdout: "${line}"`);
 //       msg3s(line, "success");
 //     }
@@ -83,5 +126,8 @@ export const routeTo = (path: string, link: NavigateFunction) => {
 // }
 
 export default {
-  msg, msg3s, msgms, routeTo
-}
+  msg,
+  msg3s,
+  msgms,
+  routeTo,
+};

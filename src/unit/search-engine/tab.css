@@ -1,0 +1,33 @@
+.search-engine-tab {
+  .search-engine-tab__input {
+    margin-top: 0.75rem;
+    border-radius: 3px;
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  padding-left: 0.25rem;
+
+  #\:r9\: {
+    background-color: black !important;
+  }
+
+  .search-engine-tab__result-list {
+    padding-left: 1rem;
+    margin-block: 0.5rem;
+
+    overflow-y: scroll;
+    flex: 1;
+
+    .btn-cleanup-one {
+      color: #181818;
+
+      transition: all 0.1s ease;
+
+      &:hover {
+        color: #888888;
+      }
+    }
+  }
+}

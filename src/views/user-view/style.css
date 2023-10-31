@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
 
   .line {
     padding: 4px 0 16px 0;
@@ -18,28 +19,26 @@
   .h1 {
     margin: 0;
   }
-  
+
   .form {
     width: 240px;
     border: 2px solid white;
     padding: 12px 12px 16px 12px;
-   
+
     border-radius: 5px;
   }
-  
+
   .input {
     width: 100%;
   }
-  
+
   .label {
     padding-right: 1rem;
   }
-  
+
   .button {
     width: 100%;
   }
-
-
 }
 
 .go-create {

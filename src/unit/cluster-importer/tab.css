@@ -1,0 +1,26 @@
+.cluster-importer-tab {
+  display: flexbox;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cluster-importer-tab__import {
+  width: 100%;
+  text-transform: none;
+}
+
+.cluster-importer-tab__info {
+  flex: 1;
+  text-wrap: wrap;
+  box-sizing: border-box;
+  padding: 0 1rem;
+
+  > .gap {
+    margin-right: 0.5rem;
+  }
+}
+
+.cluster-importer-tab__info__text {
+  color: rgb(63, 122, 102);
+  font-size: 14px;
+}

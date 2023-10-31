@@ -17,15 +17,15 @@
 }
 
 #drawer-closed {
-  width: 0px !important;
-  min-width: 0;
-  > *, * {
+  width: 0px;
+  > *,
+  * {
     visibility: hidden;
   }
 }
 
 #drawer-opened {
-  min-width: 200px;
+  width: 300px;
   visibility: visible;
   /* width: -moz-fit-content;
   width: fit-content; */
@@ -34,14 +34,16 @@
   * make drawer items do not have line feed
   */
   > * {
-    white-space:nowrap;
+    white-space: nowrap;
     overflow: hidden;
   }
 }
 
-#drawer-opened, #drawer-closed {
+#drawer-opened,
+#drawer-closed {
   background: rgb(24, 24, 24);
-  transition: width , size, resize, min-width 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out, size 0.3s ease-in-out,
+    resize 0.3s ease-in-out, min-width 0.3s ease-in-out;
   display: flex;
   justify-content: flex-start;
 
@@ -61,7 +63,7 @@
       height: 24px;
 
       &:first-child {
-        white-space:nowrap;
+        white-space: nowrap;
         overflow: hidden;
       }
     }
@@ -93,9 +95,8 @@
     padding-left: 3rem;
     color: #ffffffc1;
   }
-  resize:horizontal;
+  resize: horizontal;
   overflow-y: scroll;
-
 }
 
 .column-container {
@@ -135,11 +136,10 @@
   #top {
     margin-top: 0px;
     overflow: hidden;
-    
+
     > * {
       padding-top: 12px;
       padding-bottom: 12px;
-
     }
 
     .tab-selected {
@@ -149,7 +149,6 @@
   }
 
   #foot {
-
     > * {
       padding-bottom: 12px;
       padding-top: 12px;
@@ -160,8 +159,6 @@
     }
   }
 }
-
-
 
 #workstation {
   width: 100%;
@@ -197,5 +194,3 @@
     cursor: pointer;
   }
 }
-
-

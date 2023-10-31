@@ -7,7 +7,7 @@ const zh_CN = {
   "create-cluster": "创建新集群",
   "search": "搜索",
   "Terminal": "终端命令行",
-  "Test-playground": "测试演练场",
+  "theme-palette": "主题调色板",
   "database-tool": "数据库工具",
   "import-cluster": "导入集群",
   "export-cluster": "导出集群",
@@ -29,6 +29,7 @@ const zh_CN = {
   "create a cluster": "新建一个集群",
   "import": "导入",
   "import a cluster": "导入一个集群",
+  "Import a cluster": "导入一个集群",
   "create by template": "通过模板新建",
   "create a template": "新建一个模板",
   "Ctrl+Alt+N": "创建一个新的应用集群",
@@ -60,7 +61,8 @@ const zh_CN = {
   "start script cannot be empty": "启动脚本不能为空",
   "username cannot be empty": "用户名不能为空",
   "password cannot be empty": "密码不能为空",
-  "Edit Config": "配置信息"
+  "Edit Config": "配置信息",
+  "keywords": "关键词"
 }
 export {
   zh_CN

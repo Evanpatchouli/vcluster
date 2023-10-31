@@ -17,43 +17,42 @@ const keyMap = {
   SWITCH_LANG_CN: ["ctrl+l+c"],
   SWITCH_LANG_EN: ["ctrl+l+e"],
   GO_TEST: ["ctrl+d+t"],
-  OPEN_TERMINAL: ["ctrl+alt+t"]
+  OPEN_TERMINAL: ["ctrl+alt+t"],
 };
 
 function App() {
   const link = useNavigate();
 
   const keyHandler = {
-    GO_TEST: ()=> {
+    GO_TEST: () => {
       console.log("hot-key");
       routeTo("/test", link);
     },
-    CREATE_CLUSTER: ()=> {
+    CREATE_CLUSTER: () => {
       routeTo("/create", link);
     },
-    GET_HELP: ()=> {
+    GET_HELP: () => {
       console.log("hot-key");
       routeTo("/", link);
     },
-    SWITCH_LANG_CN: ()=> {
+    SWITCH_LANG_CN: () => {
       useAppDispatch(setLang("cn"));
     },
-    SWITCH_LANG_EN: ()=> {
+    SWITCH_LANG_EN: () => {
       useAppDispatch(setLang("en"));
     },
-    OPEN_TERMINAL: ()=> {
+    OPEN_TERMINAL: () => {
       console.log("open terminal");
       routeTo("/shell", link);
-    }
-  }
-
+    },
+  };
 
   const [greetMsg, setGreetMsg] = useState("");
   const [pkg, setPkg] = useState("");
   const [port, setPort] = useState(0);
   const [msg, setMsg] = useState({
     state: false,
-    content: ''
+    content: "",
   });
 
   async function greet() {
@@ -66,7 +65,7 @@ function App() {
     if (port === 0) {
       setMsg({
         state: true,
-        content: 'Please input a valid port number!'
+        content: "Please input a valid port number!",
       });
       return;
     }
@@ -75,10 +74,10 @@ function App() {
 
   return (
     <HotKeys keyMap={keyMap} handlers={keyHandler}>
-    <div className="container">
-      <LeftBar></LeftBar>
-      <FootBar></FootBar>
-    </div>
+      <div className="container">
+        <LeftBar></LeftBar>
+        <FootBar></FootBar>
+      </div>
     </HotKeys>
   );
 }

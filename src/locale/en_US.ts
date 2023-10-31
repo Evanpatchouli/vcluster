@@ -7,7 +7,7 @@ const en_US = {
   "create-cluster": "Create a cluster",
   "search": "Search",
   "Terminal": "Terminal",
-  "Test-playground": "Test-playground",
+  "theme-palette": "Theme Palette",
   "database-tool": "Database Tool",
   "import-cluster": "Import Cluster",
   "export-cluster": "Export Cluster",
@@ -29,6 +29,7 @@ const en_US = {
   "create a cluster": "create a cluster",
   "import": "import",
   "import a cluster": "import a cluster",
+  "Import a cluster": "Import a cluster",
   "create by template": "create by template",
   "create a template": "create a template",
   "Ctrl+Alt+N": "create a new apps-cluster",
@@ -60,7 +61,8 @@ const en_US = {
   "start script cannot be empty": "start script cannot be empty",
   "username cannot be empty": "username cannot be empty",
   "password cannot be empty": "password cannot be empty",
-  "Edit Config": "Edit Config"
+  "Edit Config": "Edit Config",
+  "keywords": "keywords"
 }
 export {
   en_US

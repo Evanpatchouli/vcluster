@@ -1,0 +1,7 @@
+.theme-palette-tab {
+  padding-left: 1rem;
+
+  > p {
+    color: gray;
+  }
+}

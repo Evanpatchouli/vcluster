@@ -1,0 +1,17 @@
+.theme-view {
+  display: flex;
+  padding-top: 4rem;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  color: #fff !important;
+}
+
+.theme-form__footer {
+  margin-top: 12px;
+  text-align: right;
+
+  > button {
+    margin-inline: 4px;
+  }
+}
