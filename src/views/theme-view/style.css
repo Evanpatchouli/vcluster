@@ -1,10 +1,35 @@
 .theme-view {
   display: flex;
-  padding-top: 4rem;
-  justify-content: flex-start;
-  align-items: center;
   flex-direction: column;
-  color: #fff !important;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 4rem;
+
+  color: var(--color-view__text);
+
+  & input {
+    color: var(--color-view__text);
+  }
+
+  .textField {
+    color: var(--color-view__text);
+
+    & label {
+      color: var(--theme-view-unfocus_or_unselected_color);
+
+      &.Mui-focused {
+        color: var(--color-element-active_or_focus-highlight);
+      }
+    }
+  }
+
+  .MuiRadio-root {
+    color: var(--theme-view-unfocus_or_unselected_color);
+
+    &.Mui-checked {
+      color: var(--color-element-active_or_focus-highlight);
+    }
+  }
 }
 
 .theme-form__footer {

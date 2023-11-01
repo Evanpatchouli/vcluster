@@ -1,0 +1,174 @@
+/* * {
+  border: 1px solid black;
+} */
+
+.layout {
+  display: flex;
+  width: 100%;
+  padding: 0;
+  background-color: var(--bg-view-container);
+}
+
+#drawer-opened::-webkit-scrollbar,
+#drawer-closed::-webkit-scrollbar {
+  width: 5px;
+}
+
+#drawer-opened::-webkit-resizer,
+#drawer-closed::-webkit-resizer {
+  background-color: var(--bg-color-leftbar);
+}
+
+#drawer-closed {
+  width: 0px;
+  > *,
+  * {
+    visibility: hidden;
+  }
+}
+
+#drawer-opened {
+  width: 300px;
+  visibility: visible;
+  /* width: -moz-fit-content;
+  width: fit-content; */
+
+  /**
+  * make drawer items do not have line feed
+  */
+  > * {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+#drawer-opened,
+#drawer-closed {
+  display: flex;
+  justify-content: flex-start;
+  overflow-y: scroll;
+
+  color: var(--color-content-leftbar);
+  background: var(--bg-color-leftbar);
+  transition: width 0.3s ease-in-out, size 0.3s ease-in-out, resize 0.3s ease-in-out, min-width 0.3s ease-in-out;
+  resize: horizontal;
+
+  #tab-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid rgb(255, 255, 255); */
+    height: 50px !important;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    border-bottom: 1px solid var(--border-color-layout-element);
+
+    > * {
+      height: 24px;
+
+      &:first-child {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+
+    > .text:hover {
+      cursor: pointer;
+    }
+
+    .btn {
+      display: flex;
+      padding: 4px 4px 1px 4px;
+      border-radius: 5px;
+      &:hover {
+        background-color: var(--color-textButtn-hover);
+        cursor: pointer;
+      }
+      > * {
+        align-items: center;
+      }
+    }
+  }
+
+  .cluster {
+    font-weight: bold;
+    scale: 1.1;
+  }
+
+  .apps {
+    padding-left: 3rem;
+    color: var(--color-content-base);
+  }
+}
+
+.tab-column-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 60px;
+  /**
+  * 30px is foot-bar height, 2px is the sum of top-bottom border width of tab-column-container
+  */
+  height: calc(100vh - 30px - 2px);
+  background: var(--bg-color-leftbar-tab-column);
+  border: 1px solid var(--border-color-layout-element);
+  border-left: none;
+}
+
+.view-container {
+  margin: 0;
+}
+
+#left-bar {
+  > div {
+    width: 60px;
+
+    > * {
+      display: block !important;
+      color: #949494;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &:active {
+        color: #fff;
+      }
+    }
+  }
+
+  #top {
+    margin-top: 0px;
+    overflow: hidden;
+
+    > * {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    .tab-selected {
+      color: #fff;
+      border-left: 3px solid var(--border-color-tab-current, rgb(128, 128, 255));
+    }
+  }
+
+  #foot {
+    > * {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+  }
+}
+
+#workstation {
+  width: 100%;
+  height: calc(100vh - 30px);
+  overflow-y: scroll;
+  color: var(--color-view__text);
+  background-color: var(--bg-view-container);
+  scroll-behavior: smooth;
+  > * {
+    height: 100% !important;
+  }
+}

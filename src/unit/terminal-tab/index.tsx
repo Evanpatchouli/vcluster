@@ -9,7 +9,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import "./style.css";
 import React from "react";
 import { tauri } from "@tauri-apps/api";
-import { Tooltip } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 
 function Tab() {
   const intl = useIntl();
@@ -49,10 +49,29 @@ function Tab() {
             })}
             placement="top-end"
           >
-            <div className="line">
-              <div>{cmd.usage}</div>
-              <Help size={20}></Help>
-            </div>
+            <Button
+              className="line"
+              variant="text"
+              style={{
+                width: "100%",
+                display: "block",
+                textTransform: "none",
+                fontSize: 14,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  color: "var(--color-content-leftbar)",
+                }}
+              >
+                <span>{cmd.usage}</span>
+                <Help size={14}></Help>
+              </div>
+            </Button>
           </Tooltip>
         </>
       ))}

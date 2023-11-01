@@ -1,6 +1,4 @@
-
 .terminal-tab {
-
   .line {
     /* transition: all 10.5s ease; */
     padding-top: 1rem;
@@ -13,16 +11,15 @@
       padding-right: 1rem;
     }
 
-
     &:hover {
+      background-color: var(--color-textButtn-hover);
       cursor: pointer;
-      transition: background-color 0.3S ease;
-      background-color: rgb(40, 35, 35);
+      transition: background-color 0.3s ease;
     }
 
     &:active {
-      transition: background-color 0.1S ease-out;
-      background-color: rgb(70, 70, 70);
+      /* background-color: rgb(70, 70, 70); */
+      transition: background-color 0.1s ease-out;
     }
   }
 }

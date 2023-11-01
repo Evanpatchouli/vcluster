@@ -2,7 +2,7 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
-import LeftBar from "./unit/left-bar";
+import Layout from "./unit/layout";
 import FootBar from "./unit/foot-bar";
 
 import { HotKeys } from "react-hotkeys";
@@ -75,7 +75,7 @@ function App() {
   return (
     <HotKeys keyMap={keyMap} handlers={keyHandler}>
       <div className="container">
-        <LeftBar></LeftBar>
+        <Layout></Layout>
         <FootBar></FootBar>
       </div>
     </HotKeys>

@@ -1,0 +1,34 @@
+:root {
+  --global-text-color: #0f0f0f;
+
+  --color-view__text: #ebebeb;
+  --color-view__element: var(--global-text-color);
+  --bg-color-view__element: #ffffff;
+  --bg-color-view__element-active: #e8e8e8;
+  --color-element-active_or_focus-highlight: dodgerblue;
+  /* --color-view__element-hover: #313131; */
+  --color-content-base: #888888;
+  --color-content-leftbar: var(--color-content-base);
+  --bg-color-leftbar: rgb(24, 24, 24);
+  --bg-color-footer: rgb(27, 27, 27);
+  --bg-color-leftbar-tab-column: rgb(27, 27, 27);
+  --bg-view-container: rgb(34, 34, 34);
+  --border-color-layout-element: rgb(40, 40, 40);
+  --bg-color-usefule-emement-hover: #313131;
+  --bg-color-usefule-emement-hover-lighter: #4a4a4a;
+  --color-textButtn-hover: var(--bg-color-usefule-emement-hover);
+  --bg-color-scrollbar-thumb: var(--bg-color-usefule-emement-hover);
+  --bg-color-scrollbar-thumb-hover: #888888;
+  --border-color-tab-current: rgb(128, 128, 255);
+
+  --element-boxshadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  --color-element-inactive_or_unfocus: #888888;
+  --theme-view-unfocus_or_unselected_color: var(
+    --color-element-inactive_or_unfocus
+  );
+
+  --bg-color-appmenu-item: rgb(32, 32, 32);
+  
+  --bg-color-shell: black;
+  --bg-color-shell-caret: white;
+}

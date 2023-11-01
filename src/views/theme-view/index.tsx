@@ -111,7 +111,10 @@ export default function Test() {
             width: "100%",
           }}
         >
-          <InputLabel required style={{ paddingRight: "1rem", color: "#fff" }}>
+          <InputLabel
+            required
+            style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
+          >
             Theme:
           </InputLabel>
           <RadioGroup row name="theme" defaultValue={"System"}>
@@ -127,31 +130,32 @@ export default function Test() {
           </RadioGroup>
         </div>
         <div>
-          <InputLabel style={{ paddingRight: "1rem", color: "#fff" }}>
+          <InputLabel style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}>
             Customize themes details:
           </InputLabel>
           <TextField
+            className="textField"
             autoFocus
             margin="dense"
-            id="desc"
+            id="Primary-Button-Color"
             label="Primary Button Color"
             type="text"
             fullWidth
             variant="standard"
           />
           <TextField
-            autoFocus
+            className="textField"
             margin="dense"
-            id="desc"
+            id="Danger-Button-Color"
             label="Danger Button Color"
             type="text"
             fullWidth
             variant="standard"
           />
           <TextField
-            autoFocus
+            className="textField"
             margin="dense"
-            id="desc"
+            id="Warn-Button-Color"
             label="Warn Button Color"
             type="text"
             fullWidth
@@ -159,30 +163,20 @@ export default function Test() {
           />
 
           <TextField
-            autoFocus
+            className="textField"
             margin="dense"
-            id="desc"
-            label="Content text color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-
-          <TextField
-            autoFocus
-            margin="dense"
-            id="desc"
-            label="Content text color"
+            id="Content-text-color"
+            label="Content-text-color"
             type="text"
             fullWidth
             variant="standard"
           />
         </div>
         <div className="theme-form__footer">
-          <button className="primary-button" type="button">
+          <button type="button" tabIndex={-1}>
             Load Default
           </button>
-          <button className="primary-button" type="submit">
+          <button type="submit" tabIndex={-1}>
             Save
           </button>
         </div>

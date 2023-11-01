@@ -1,5 +1,6 @@
 import { CloseOne, Login as Import } from "@icon-park/react";
 import { FormattedMessage, useIntl } from "react-intl";
+import Hightlighter from "react-highlight-words";
 import "./tab.css";
 import {
   Button,
@@ -173,7 +174,9 @@ function Tab() {
         }}
         InputLabelProps={{
           style: {
-            color: inputFocused ? "dodgerblue" : "gray",
+            color: inputFocused
+              ? "var(--color-element-active_or_focus-highlight)"
+              : "var(--color-element-inactive_or_unfocus)",
           },
         }}
         onKeyDown={(e) => {
@@ -191,6 +194,7 @@ function Tab() {
         {filterResult.map((item) => (
           <ListItem
             key={item.id}
+            className="search-engine-tab__result-list-item"
             secondaryAction={
               <Tooltip
                 title={intl.formatMessage({
@@ -214,7 +218,11 @@ function Tab() {
             }
             disablePadding
           >
-            {item.content}
+            <Hightlighter
+              highlightClassName="searched-highlight"
+              searchWords={[keywords]}
+              textToHighlight={item.content}
+            />
           </ListItem>
         ))}
       </List>
