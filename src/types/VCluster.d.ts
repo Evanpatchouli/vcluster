@@ -17,7 +17,7 @@ declare namespace VCluster {
     log?: string;
 
     buildfromApp(app: ServiceConfig): ServiceConfig;
-  
+
     static newfromApp(app: ServiceConfig): ServiceConfig;
   }
   class PkgConfig {
@@ -27,29 +27,30 @@ declare namespace VCluster {
     apps: ServiceConfig[] = [];
 
     buildfromPkg(pkg: PkgConfig): PkgConfig;
-  
+
     static newfromPkg(pkg: PkgConfig): PkgConfig;
   }
 
   type Resp<T> = {
     ok: boolean;
     code: number;
-    type: number|null;
+    type: number | null;
     msg: string;
-    data: T|null;
-  }
+    data: T | null;
+  };
 
-  type PkgMenu = { 
+  type PkgMenu = {
     idx: number;
     id: String;
     show: boolean;
     anchor: {
       top: number;
       left: number;
-    }
-  }
+    };
+    delModal: boolean;
+  };
 
-  type AppMenu = { 
+  type AppMenu = {
     idx: number;
     cluster_id: String;
     id: String;
@@ -57,16 +58,21 @@ declare namespace VCluster {
     anchor: {
       top: number;
       left: number;
-    }
-  }
-  
-  type ZodErrorMessage = {
-    code: string
-    minimum: number,
-    type: string,
-    inclusive: boolean,
-    message: string,
-    path: string[]
-  }
-}
+    };
+  };
 
+  type ZodErrorMessage = {
+    code: string;
+    minimum: number;
+    type: string;
+    inclusive: boolean;
+    message: string;
+    path: string[];
+  };
+
+  type ClusterManagerDelModalMeta = {
+    confirmLoading: boolean;
+    type: "cluster" | "app";
+    name?: string;
+  };
+}

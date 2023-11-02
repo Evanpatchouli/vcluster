@@ -2,6 +2,9 @@ vcluster.db
 vcluster.db-shm
 vcluster.db-wal
 
+src-tauri\vcluster.db-shm
+src-tauri\vcluster.db-wal
+
 # Logs
 logs
 *.log

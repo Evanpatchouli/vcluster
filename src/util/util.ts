@@ -99,31 +99,19 @@ export const routeTo = (path: string, link: NavigateFunction) => {
   link(path, { replace: true });
 };
 
-// export const cmdonce = (context: string)=> {
-//   let command = new Command("cmd",["/c",context]);
-//   command.on('close', data => {
-//     console.log(`command finished with code ${data.code} and signal ${data.signal}`)
-//   });
-//   command.stdout.on('data', line => {
-//     // console.log(`line? ${line=="\r"}`);
-//     if(line!='\r') {
-//       console.log(`command stdout: "${line}"`);
-//       msg3s(line, "success");
-//     }
-//   });
-//   command.on("error", err => {
-//     console.error(err);
-//     // msg3s(err, "error");
-//   });
-//   command.stderr.on('data', line => {
-//     console.log(`command stderr: "${line}"`);
-//     // msg3s(line, "error");
-//   })
-//   const child = await command.spawn().catch(e => msg3s(e, "error"));
-//   if (child){
-//     console.log('pid:', child.pid);
-//   }
-// }
+/**
+ * Fake sleeping...
+ * @param time
+ * @param result
+ * @returns
+ */
+export function sleep<T>(time: number, result?: T) {
+  return new Promise<T | undefined>(function (resolve) {
+    setTimeout(() => {
+      resolve(result);
+    }, time);
+  });
+}
 
 export default {
   msg,
