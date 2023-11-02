@@ -45,7 +45,7 @@
   & .MuiListItemButton-root.subapp-item {
     &:hover,
     &:focus {
-      background-color: var(--bg-color-usefule-emement-hover);
+      background-color: var(--bg-color-usefule-element-hover);
     }
   }
 }
@@ -67,7 +67,7 @@
 
     &:hover {
       color: #ffffff;
-      background-color: var(--bg-color-usefule-emement-hover);
+      background-color: var(--bg-color-usefule-element-hover);
       cursor: pointer;
     }
   }

@@ -6,7 +6,7 @@
   display: flex;
   width: 100%;
   padding: 0;
-  background-color: var(--bg-view-container);
+  background-color: var(--bg-color-view-container);
 }
 
 #drawer-opened::-webkit-scrollbar,
@@ -166,7 +166,7 @@
   height: calc(100vh - 30px);
   overflow-y: scroll;
   color: var(--color-view__text);
-  background-color: var(--bg-view-container);
+  background-color: var(--bg-color-view-container);
   scroll-behavior: smooth;
   > * {
     height: 100% !important;

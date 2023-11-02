@@ -1,8 +1,8 @@
 :root {
-  --global-text-color: #0f0f0f;
+  --global-text-color: #ebebeb;
 
   --color-view__text: #ebebeb;
-  --color-view__element: var(--global-text-color);
+  --color-view__element: #0f0f0f;
   --bg-color-view__element: #ffffff;
   --bg-color-view__element-active: #e8e8e8;
   --color-element-active_or_focus-highlight: dodgerblue;
@@ -12,12 +12,12 @@
   --bg-color-leftbar: rgb(24, 24, 24);
   --bg-color-footer: rgb(27, 27, 27);
   --bg-color-leftbar-tab-column: rgb(27, 27, 27);
-  --bg-view-container: rgb(34, 34, 34);
+  --bg-color-view-container: rgb(34, 34, 34);
   --border-color-layout-element: rgb(40, 40, 40);
-  --bg-color-usefule-emement-hover: #313131;
-  --bg-color-usefule-emement-hover-lighter: #4a4a4a;
-  --color-textButtn-hover: var(--bg-color-usefule-emement-hover);
-  --bg-color-scrollbar-thumb: var(--bg-color-usefule-emement-hover);
+  --bg-color-usefule-element-hover: #313131;
+  --bg-color-usefule-element-hover-lighter: #4a4a4a;
+  --color-textButtn-hover: var(--bg-color-usefule-element-hover);
+  --bg-color-scrollbar-thumb: var(--bg-color-usefule-element-hover);
   --bg-color-scrollbar-thumb-hover: #888888;
   --border-color-tab-current: rgb(128, 128, 255);
 

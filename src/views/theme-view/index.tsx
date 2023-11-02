@@ -21,12 +21,15 @@ import { invoke } from "@tauri-apps/api";
 
 import Axios from "axios";
 import { Moon, Platte, Sun, System } from "@icon-park/react";
+import { useAppDispatch } from "../../store/hook";
+import { setTheme } from "../../store/theme/theme.reducer";
 
 listen("back-msg", (event) => {
   console.log(event.payload);
 });
 
 export default function Test() {
+  const dispatch = useAppDispatch;
   const link = useNavigate();
   const store = new Store(".settings.dat");
   const themes = [
@@ -36,7 +39,7 @@ export default function Test() {
           <span className="mgr-8">System</span> <System />
         </div>
       ),
-      value: "System",
+      value: "system",
     },
     {
       label: (
@@ -44,7 +47,7 @@ export default function Test() {
           <span className="mgr-8">Dark</span> <Moon />
         </div>
       ),
-      value: "Dark",
+      value: "dark",
     },
     {
       label: (
@@ -52,7 +55,7 @@ export default function Test() {
           <span className="mgr-8">Light</span> <Sun />
         </div>
       ),
-      value: "Light",
+      value: "light",
     },
   ];
 
@@ -117,7 +120,14 @@ export default function Test() {
           >
             Theme:
           </InputLabel>
-          <RadioGroup row name="theme" defaultValue={"System"}>
+          <RadioGroup
+            row
+            name="theme"
+            defaultValue={"System"}
+            onChange={(e) => {
+              dispatch(setTheme(e.target.value as "system" | "dark" | "light"));
+            }}
+          >
             {themes.map((theme) => (
               <>
                 <FormControlLabel
@@ -130,7 +140,9 @@ export default function Test() {
           </RadioGroup>
         </div>
         <div>
-          <InputLabel style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}>
+          <InputLabel
+            style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
+          >
             Customize themes details:
           </InputLabel>
           <TextField
