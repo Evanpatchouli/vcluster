@@ -27,7 +27,7 @@
   > * {
     margin-top: 1rem;
     margin-left: 4rem;
-    transition: all 0.3s ease-out;
+    transition: all 0.1s ease-out;
 
     > * {
       padding-right: 1rem;

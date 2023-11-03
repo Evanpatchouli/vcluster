@@ -9,6 +9,7 @@
 
   & input {
     color: var(--color-view__text);
+    text-indent: 1rem;
   }
 
   .textField {
@@ -16,9 +17,12 @@
 
     & label {
       color: var(--theme-view-unfocus_or_unselected_color);
+      text-indent: 1rem;
+      transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 
       &.Mui-focused {
         color: var(--color-element-active_or_focus-highlight);
+        text-indent: 0rem;
       }
     }
   }
@@ -30,6 +34,12 @@
       color: var(--color-element-active_or_focus-highlight);
     }
   }
+
+  .MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl {
+    &::before {
+      border-bottom: none;
+    }
+  }
 }
 
 .theme-form__footer {
@@ -38,5 +48,56 @@
 
   > button {
     margin-inline: 4px;
+  }
+}
+
+.theme-form {
+  width: 60%;
+
+  @media screen and (max-width: 940px) {
+    width: calc(940px * 0.42);
+  }
+}
+
+.theme-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.theme-custom-form-open {
+  opacity: 1;
+  animation: theme-custom-form-open-animation 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes theme-custom-form-open-animation {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+}
+
+.theme-custom-form-close {
+  opacity: 0;
+  animation: theme-custom-form-close-animation 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes theme-custom-form-close-animation {
+  0% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
   }
 }

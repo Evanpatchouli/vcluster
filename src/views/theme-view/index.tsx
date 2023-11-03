@@ -1,15 +1,7 @@
-import {
-  Button,
-  FormControlLabel,
-  InputBase,
-  InputLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
+import { Button, FormControlLabel, InputBase, InputLabel, Radio, RadioGroup, Switch, TextField } from "@mui/material";
 import "./style.css";
 import { msg, msg3s, routeTo } from "../../util/util";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import { Command, Child } from "@tauri-apps/api/shell";
 import { Store } from "tauri-plugin-store-api";
@@ -21,7 +13,7 @@ import { invoke } from "@tauri-apps/api";
 
 import Axios from "axios";
 import { Moon, Platte, Sun, System } from "@icon-park/react";
-import { useAppDispatch } from "../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { setTheme } from "../../store/theme/theme.reducer";
 
 listen("back-msg", (event) => {
@@ -30,6 +22,8 @@ listen("back-msg", (event) => {
 
 export default function Test() {
   const dispatch = useAppDispatch;
+  const themeStore = useAppSelector((state) => state.themeReducer);
+
   const link = useNavigate();
   const store = new Store(".settings.dat");
   const themes = [
@@ -59,6 +53,7 @@ export default function Test() {
     },
   ];
 
+  const [customize, setCustomize] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const formSchema = {
     theme: {
@@ -102,7 +97,7 @@ export default function Test() {
           e.preventDefault();
           onSubmit(e);
         }}
-        style={{ width: "60%" }}
+        className="theme-form"
       >
         <div
           className="row"
@@ -114,78 +109,78 @@ export default function Test() {
             width: "100%",
           }}
         >
-          <InputLabel
-            required
-            style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
-          >
-            Theme:
-          </InputLabel>
+          <div className="theme-label">
+            <InputLabel required style={{ paddingRight: "0.5rem", color: "red" }} />
+            <InputLabel style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}>Theme :</InputLabel>
+          </div>
           <RadioGroup
             row
             name="theme"
-            defaultValue={"System"}
+            defaultValue={themeStore.theme}
             onChange={(e) => {
               dispatch(setTheme(e.target.value as "system" | "dark" | "light"));
             }}
           >
             {themes.map((theme) => (
               <>
-                <FormControlLabel
-                  label={theme.label}
-                  value={theme.value}
-                  control={<Radio />}
-                />
+                <FormControlLabel label={theme.label} value={theme.value} control={<Radio />} />
               </>
             ))}
           </RadioGroup>
         </div>
         <div>
-          <InputLabel
-            style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
-          >
-            Customize themes details:
+          <InputLabel style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}>
+            Customize themes details
+            <Switch
+              value={customize}
+              onChange={(e) => {
+                setCustomize(e.target.checked);
+              }}
+            />
           </InputLabel>
-          <TextField
-            className="textField"
-            autoFocus
-            margin="dense"
-            id="Primary-Button-Color"
-            label="Primary Button Color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            className="textField"
-            margin="dense"
-            id="Danger-Button-Color"
-            label="Danger Button Color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            className="textField"
-            margin="dense"
-            id="Warn-Button-Color"
-            label="Warn Button Color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
+          <div className={`theme-custom-form-${customize ? "open" : "close"}`}>
+            <TextField
+              className="textField"
+              autoFocus
+              margin="dense"
+              id="Primary-Button-Color"
+              label="Primary Button Color"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              className="textField"
+              margin="dense"
+              id="Danger-Button-Color"
+              label="Danger Button Color"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              className="textField"
+              margin="dense"
+              id="Warn-Button-Color"
+              label="Warn Button Color"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
 
-          <TextField
-            className="textField"
-            margin="dense"
-            id="Content-text-color"
-            label="Content-text-color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
+            <TextField
+              className="textField"
+              margin="dense"
+              id="Content-text-color"
+              label="Content-text-color"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+          </div>
         </div>
         <div className="theme-form__footer">
-          <button type="button" tabIndex={-1}>
+          <button type="button" tabIndex={-1} onClick={() => {}}>
             Load Default
           </button>
           <button type="submit" tabIndex={-1}>

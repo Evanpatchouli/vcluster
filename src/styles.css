@@ -7,7 +7,7 @@
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   line-height: 24px;
 
-  transition: all 0.03s ease-in-out;
+  transition: all 0.1s ease-in-out;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,7 +18,7 @@
 }
 
 * {
-  transition: all 0.03s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 *::selection {
@@ -108,7 +108,7 @@ button {
   border: 1px solid transparent;
   border-radius: 8px;
   box-shadow: var(--element-boxshadow);
-  transition: all 0.2s;
+  transition: all 0.1s;
 }
 
 button {
@@ -116,11 +116,11 @@ button {
 }
 
 button:hover {
-  border-color: var( --color-element-active_or_focus-highlight);
+  border-color: var(--color-element-active_or_focus-highlight);
 }
 button:active {
   background-color: var(--bg-color-view__element-active);
-  border-color: var( --color-element-active_or_focus-highlight);
+  border-color: var(--color-element-active_or_focus-highlight);
 }
 
 input,
@@ -158,4 +158,3 @@ button {
     background-color: #0f0f0f69;
   }
 } */
-
