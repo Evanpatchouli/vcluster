@@ -4,7 +4,7 @@ import { THEME_ACTIONS_TYPES } from "./theme.actions";
 export const counterSlice = createSlice({
   name: "theme",
   initialState: {
-    theme: "dark",
+    theme: "dark" as "dark" | "light" | "system",
     vars: {
       globalTextColor: {
         cssVar: "--global-text-color",
@@ -204,14 +204,14 @@ export const counterSlice = createSlice({
         default:
           break;
       }
-      return state;
+      return _state;
     },
     customize: (
       state,
       action: PayloadAction<
         {
           key: keyof typeof state.vars | (string & {});
-          value: string;
+          value: string | undefined | null;
         }[]
       >
     ) => {
@@ -236,5 +236,6 @@ export const counterSlice = createSlice({
 
 // 为每个 case reducer 函数生成 Action creators
 export const { setTheme } = counterSlice.actions;
+export const { customize } = counterSlice.actions;
 
 export default counterSlice.reducer;

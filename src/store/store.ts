@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, createSelector } from "@reduxjs/toolkit";
 import _langReducer from "./lang/lang.reducer";
 import _msgReducer from "./msg/msg.reducer";
 import _clustersReducer from "./clusters/clusters.reducer";

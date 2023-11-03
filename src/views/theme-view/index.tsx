@@ -5,11 +5,12 @@ import {
   InputLabel,
   Radio,
   RadioGroup,
+  Switch,
   TextField,
 } from "@mui/material";
 import "./style.css";
 import { msg, msg3s, routeTo } from "../../util/util";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import { Command, Child } from "@tauri-apps/api/shell";
 import { Store } from "tauri-plugin-store-api";
@@ -21,8 +22,12 @@ import { invoke } from "@tauri-apps/api";
 
 import Axios from "axios";
 import { Moon, Platte, Sun, System } from "@icon-park/react";
-import { useAppDispatch } from "../../store/hook";
-import { setTheme } from "../../store/theme/theme.reducer";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import {
+  setTheme,
+  customize as setThemeVars,
+} from "../../store/theme/theme.reducer";
+import { ThemeVarLabel, themeVarsLocked } from "./constant";
 
 listen("back-msg", (event) => {
   console.log(event.payload);
@@ -30,6 +35,8 @@ listen("back-msg", (event) => {
 
 export default function Test() {
   const dispatch = useAppDispatch;
+  const themeStore = useAppSelector((state) => state.themeReducer);
+
   const link = useNavigate();
   const store = new Store(".settings.dat");
   const themes = [
@@ -59,6 +66,7 @@ export default function Test() {
     },
   ];
 
+  const [customize, setCustomize] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const formSchema = {
     theme: {
@@ -102,7 +110,7 @@ export default function Test() {
           e.preventDefault();
           onSubmit(e);
         }}
-        style={{ width: "60%" }}
+        className="theme-form"
       >
         <div
           className="row"
@@ -114,16 +122,21 @@ export default function Test() {
             width: "100%",
           }}
         >
-          <InputLabel
-            required
-            style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
-          >
-            Theme:
-          </InputLabel>
+          <div className="theme-label">
+            <InputLabel
+              required
+              style={{ paddingRight: "0.5rem", color: "red" }}
+            />
+            <InputLabel
+              style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
+            >
+              Theme :
+            </InputLabel>
+          </div>
           <RadioGroup
             row
             name="theme"
-            defaultValue={"System"}
+            defaultValue={themeStore.theme}
             onChange={(e) => {
               dispatch(setTheme(e.target.value as "system" | "dark" | "light"));
             }}
@@ -143,49 +156,58 @@ export default function Test() {
           <InputLabel
             style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
           >
-            Customize themes details:
+            Customize themes details
+            <Switch
+              value={customize}
+              onChange={(e) => {
+                setCustomize(e.target.checked);
+              }}
+            />
           </InputLabel>
-          <TextField
-            className="textField"
-            autoFocus
-            margin="dense"
-            id="Primary-Button-Color"
-            label="Primary Button Color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            className="textField"
-            margin="dense"
-            id="Danger-Button-Color"
-            label="Danger Button Color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            className="textField"
-            margin="dense"
-            id="Warn-Button-Color"
-            label="Warn Button Color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-
-          <TextField
-            className="textField"
-            margin="dense"
-            id="Content-text-color"
-            label="Content-text-color"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
+          <div className={`theme-custom-form-${customize ? "open" : "close"}`}>
+            {Object.entries(themeStore.vars).map(([key, $var], idx) => {
+              return (
+                <TextField
+                  className="textField"
+                  autoFocus={idx === 0}
+                  margin="dense"
+                  disabled={themeVarsLocked.includes(key)}
+                  id={`theme-var__${key}`}
+                  label={ThemeVarLabel`${key} changeable? ${themeVarsLocked.includes(
+                    key
+                  )}.`}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={
+                    $var.custom ??
+                    $var[themeStore.theme as keyof typeof $var] ??
+                    $var.dark
+                  }
+                />
+              );
+            })}
+          </div>
         </div>
         <div className="theme-form__footer">
-          <button type="button" tabIndex={-1}>
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => {
+              dispatch(
+                setThemeVars(
+                  Object.entries(themeStore.vars).map(([key, $var]) => {
+                    return {
+                      key: key,
+                      value:
+                        $var[themeStore.theme as keyof typeof $var] ??
+                        $var.dark,
+                    };
+                  })
+                )
+              );
+            }}
+          >
             Load Default
           </button>
           <button type="submit" tabIndex={-1}>

@@ -35,7 +35,7 @@ function Tab() {
     {
       usage: "vcluster help",
       desc: intl.formatMessage({
-        id: "show the help info",
+        id: "show the help information",
       }),
     },
   ];
