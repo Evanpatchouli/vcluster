@@ -4,6 +4,12 @@
   align-items: center;
   justify-content: flex-start;
   padding-top: 4rem;
+  padding-bottom: 2rem;
+
+  height: 100vh;
+  box-sizing: border-box;
+
+  overflow-y: scroll;
 
   color: var(--color-view__text);
 
@@ -68,7 +74,8 @@
 
 .theme-custom-form-open {
   opacity: 1;
-  animation: theme-custom-form-open-animation 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  animation: theme-custom-form-open-animation 0.2s
+    cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 @keyframes theme-custom-form-open-animation {
@@ -86,18 +93,16 @@
 
 .theme-custom-form-close {
   opacity: 0;
-  animation: theme-custom-form-close-animation 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.2s cubic-bezier(0.47, 0, 0.745, 0.715);
+  animation: theme-custom-form-close-animation 0.2s
+    cubic-bezier(0.47, 0, 0.745, 0.715) forwards;
 }
 
 @keyframes theme-custom-form-close-animation {
   0% {
-    transform: scaleY(1);
-    transform-origin: top;
-    opacity: 1;
+    display: run-in;
   }
   100% {
-    transform: scaleY(0);
-    transform-origin: top;
-    opacity: 0;
+    display: none;
   }
 }

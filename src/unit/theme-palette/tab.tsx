@@ -4,13 +4,18 @@ import {
   ListAdd,
   PageTemplate,
 } from "@icon-park/react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import "./tab.css";
 
 function Tab() {
+  const intl = useIntl();
   return (
     <div className="theme-palette-tab">
-      <p>Unsupported feature.</p>
+      <p className="theme-info">
+        {intl.formatMessage({
+          id: "THEME_INFO",
+        })}
+      </p>
     </div>
   );
 }

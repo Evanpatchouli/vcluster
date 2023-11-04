@@ -2,50 +2,132 @@ import { Popover } from "@mui/material";
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import "./style.css";
-import { useAppSelector, useAppDispatch } from '../../store/hook';
-import {setLang} from "../../store/lang/lang.reducer";
+import { useAppSelector, useAppDispatch } from "../../store/hook";
+import { setLang } from "../../store/lang/lang.reducer";
 import store from "../../store/store";
+import { setTheme } from "../../store/theme/theme.reducer";
+
+type PopoverType = "lang" | "theme" | (string & {});
 
 class SetBox extends React.Component {
-
-  constructor(props:{}) {
+  constructor(props: {}) {
     super(props);
   }
 
   state: {
-    langbox: boolean,
-    langAnchor: Element|null
+    popover: boolean;
+    langAnchor: Element | null;
+    popoverType: PopoverType;
   } = {
-    langbox: false,
-    langAnchor: null
+    popover: false,
+    langAnchor: null,
+    popoverType: "lang",
+  };
+
+  setPopover(bool: boolean) {
+    this.setState({
+      popover: bool,
+    });
   }
 
-  setLangbox(bool: boolean) {
+  setLangAnchor(elem: Element | null) {
     this.setState({
-      langbox: bool
-    })
+      langAnchor: elem,
+    });
   }
 
-  setLangAnchor(elem: Element|null) {
+  setPopoverType(type: PopoverType) {
     this.setState({
-      langAnchor: elem
-    })
+      popoverType: type,
+    });
   }
 
   render(): React.ReactNode {
     const handleLangboxClick = (event: React.MouseEvent) => {
       this.setLangAnchor(event.currentTarget);
-      this.setLangbox(true)
+      this.setPopoverType("lang");
+      this.setPopover(true);
     };
     const handleLangboxClose = () => {
-      this.setLangbox(false)
-    }
+      this.setPopover(false);
+    };
+    const handleThemeClick = (event: React.MouseEvent) => {
+      this.setLangAnchor(event.currentTarget);
+      this.setPopoverType("theme");
+      this.setPopover(true);
+    };
+    const popoverContent = () => {
+      switch (this.state.popoverType) {
+        case "lang":
+          return (
+            <>
+              <div
+                onClick={() => {
+                  useAppDispatch(setLang("cn"));
+                  handleLangboxClose();
+                }}
+              >
+                简体中文
+              </div>
+              <div
+                onClick={() => {
+                  useAppDispatch(setLang("en"));
+                  handleLangboxClose();
+                }}
+              >
+                en_US
+              </div>
+            </>
+          );
+        case "theme": {
+          return (
+            <>
+              <div
+                onClick={() => {
+                  useAppDispatch(setTheme("system"));
+                  handleLangboxClose();
+                }}
+              >
+                <FormattedMessage id="system" />
+              </div>
+              <div
+                onClick={() => {
+                  useAppDispatch(setTheme("dark"));
+                  handleLangboxClose();
+                }}
+              >
+                <FormattedMessage id="dark" />
+              </div>
+              <div
+                onClick={() => {
+                  useAppDispatch(setTheme("light"));
+                  handleLangboxClose();
+                }}
+              >
+                <FormattedMessage id="light" />
+              </div>
+            </>
+          );
+        }
+        default:
+          return "";
+      }
+    };
+    // const theme = useAppSelector(state => state.themeReducer.theme);
     return (
       <div>
         <div className="setbox">
           <div className="setbox-item" onClick={handleLangboxClick}>
             <FormattedMessage id="language"></FormattedMessage>
-            <span style={{paddingLeft: '0.5rem'}}>({store.getState().langReducer.lang})</span>
+            <span style={{ paddingLeft: "0.5rem" }}>
+              ({store.getState().langReducer.lang})
+            </span>
+          </div>
+          <div className="row" onClick={handleThemeClick}>
+            <FormattedMessage id="theme"></FormattedMessage>
+            <span style={{ paddingLeft: "0.5rem" }}>
+              (<FormattedMessage id={store.getState().themeReducer.theme} />)
+            </span>
           </div>
           <div>
             <FormattedMessage id="setting"></FormattedMessage>
@@ -55,7 +137,7 @@ class SetBox extends React.Component {
           </div>
         </div>
         <Popover
-          open={this.state.langbox}
+          open={this.state.popover}
           onClose={handleLangboxClose}
           anchorEl={this.state.langAnchor}
           anchorOrigin={{
@@ -67,24 +149,7 @@ class SetBox extends React.Component {
             horizontal: "left",
           }}
         >
-          <div className="lang-list">
-            <div
-              onClick={() => {
-                useAppDispatch(setLang("cn"));
-                handleLangboxClose();
-              }}
-            >
-              简体中文
-            </div>
-            <div
-              onClick={() => {
-                useAppDispatch(setLang("en"));
-                handleLangboxClose();
-              }}
-            >
-              en_US
-            </div>
-          </div>
+          <div className="setting-popover-list">{popoverContent()}</div>
         </Popover>
       </div>
     );

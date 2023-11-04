@@ -162,11 +162,12 @@
 
 #workstation {
   width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
   > * {
     height: 100% !important;
   }
   background-color: #232323ec;
-  color: #ebebeb;
 
   overflow-y: scroll;
   scroll-behavior: smooth;

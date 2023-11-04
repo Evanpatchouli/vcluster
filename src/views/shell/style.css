@@ -7,13 +7,18 @@
 } */
 
 .react-terminal-wrapper {
-  height: 100%;
+  height: fit-content;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .shell {
+  height: fit-content !important;
   & .react-terminal,
   .react-terminal-wrapper {
     background-color: var(--bg-color-shell) !important;
+
+    font-size: 14px;
 
     & span.cursor {
       background-color: var(--bg-color-shell-caret) !important;

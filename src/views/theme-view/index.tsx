@@ -1,4 +1,13 @@
-import { Button, FormControlLabel, InputBase, InputLabel, Radio, RadioGroup, Switch, TextField } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  InputBase,
+  InputLabel,
+  Radio,
+  RadioGroup,
+  Switch,
+  TextField,
+} from "@mui/material";
 import "./style.css";
 import { msg, msg3s, routeTo } from "../../util/util";
 import React, { useRef, useState } from "react";
@@ -14,7 +23,11 @@ import { invoke } from "@tauri-apps/api";
 import Axios from "axios";
 import { Moon, Platte, Sun, System } from "@icon-park/react";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { setTheme } from "../../store/theme/theme.reducer";
+import {
+  setTheme,
+  customize as setThemeVars,
+} from "../../store/theme/theme.reducer";
+import { ThemeVarLabel, themeVarsLocked } from "./constant";
 
 listen("back-msg", (event) => {
   console.log(event.payload);
@@ -110,8 +123,15 @@ export default function Test() {
           }}
         >
           <div className="theme-label">
-            <InputLabel required style={{ paddingRight: "0.5rem", color: "red" }} />
-            <InputLabel style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}>Theme :</InputLabel>
+            <InputLabel
+              required
+              style={{ paddingRight: "0.5rem", color: "red" }}
+            />
+            <InputLabel
+              style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
+            >
+              Theme :
+            </InputLabel>
           </div>
           <RadioGroup
             row
@@ -129,7 +149,9 @@ export default function Test() {
           </RadioGroup>
         </div>
         <div>
-          <InputLabel style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}>
+          <InputLabel
+            style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
+          >
             Customize themes details
             <Switch
               value={customize}
@@ -139,48 +161,49 @@ export default function Test() {
             />
           </InputLabel>
           <div className={`theme-custom-form-${customize ? "open" : "close"}`}>
-            <TextField
-              className="textField"
-              autoFocus
-              margin="dense"
-              id="Primary-Button-Color"
-              label="Primary Button Color"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              className="textField"
-              margin="dense"
-              id="Danger-Button-Color"
-              label="Danger Button Color"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              className="textField"
-              margin="dense"
-              id="Warn-Button-Color"
-              label="Warn Button Color"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-
-            <TextField
-              className="textField"
-              margin="dense"
-              id="Content-text-color"
-              label="Content-text-color"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
+            {Object.entries(themeStore.vars).map(([key, $var], idx) => {
+              return (
+                <TextField
+                  className="textField"
+                  autoFocus={idx === 0}
+                  margin="dense"
+                  disabled={themeVarsLocked.includes(key)}
+                  id={`theme-var__${key}`}
+                  label={ThemeVarLabel`${key} changeable? ${themeVarsLocked.includes(
+                    key
+                  )}.`}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={
+                    $var.custom ??
+                    $var[themeStore.theme as keyof typeof $var] ??
+                    $var.dark
+                  }
+                />
+              );
+            })}
           </div>
         </div>
         <div className="theme-form__footer">
-          <button type="button" tabIndex={-1} onClick={() => {}}>
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => {
+              dispatch(
+                setThemeVars(
+                  Object.entries(themeStore.vars).map(([key, $var]) => {
+                    return {
+                      key: key,
+                      value:
+                        $var[themeStore.theme as keyof typeof $var] ??
+                        $var.dark,
+                    };
+                  })
+                )
+              );
+            }}
+          >
             Load Default
           </button>
           <button type="submit" tabIndex={-1}>

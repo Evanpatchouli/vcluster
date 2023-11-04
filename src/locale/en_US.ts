@@ -62,7 +62,18 @@ const en_US = {
   "username cannot be empty": "username cannot be empty",
   "password cannot be empty": "password cannot be empty",
   "Edit Config": "Edit Config",
-  "keywords": "keywords"
+  "keywords": "keywords",
+  "theme": "theme",
+  "dark": "dark",
+  "light": "light",
+  "system": "system",
+  "Unsupported feature.": "Unsupported feature.",
+  "Import a cluster from a Json file or a Url of Json file.": "Import a cluster from a Json file or a Url of Json file.",
+  "clean up the terminal": "clean up the terminal",
+  "reset the vcluster": "reset the vcluster",
+  "show the current directory": "show the current directory",
+  "show the help information": "show the help information",
+  "THEME_INFO": "Theme has three modes: dark, light and system(unsupported, now is same as dark mode). Besides, you can customize most of the colors variables of system. Open the customization, and you can customize them then, please make sure what you input is valid.",
 }
 export {
   en_US

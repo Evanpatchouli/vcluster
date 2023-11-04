@@ -62,7 +62,18 @@ const zh_CN = {
   "username cannot be empty": "用户名不能为空",
   "password cannot be empty": "密码不能为空",
   "Edit Config": "配置信息",
-  "keywords": "关键词"
+  "keywords": "关键词",
+  "theme": "主题",
+  "dark": "暗黑",
+  "light": "白浅",
+  "system": "系统",
+  "Unsupported feature.": "尚未支持的特性.",
+  "Import a cluster from a Json file or a Url of Json file.": "从 Json 文件或 Json 文件的 Url 导入一个集群.",
+  "clean up the terminal": "清空终端",
+  "reset the vcluster": "重置vcluster",
+  "show the current directory": "显示当前文件夹",
+  "show the help information": "显示帮助信息",
+  "THEME_INFO": "主题有三种模式：暗黑，白浅和跟随系统（尚未实现，当前与暗黑相同）。此外，你还可以自定义绝大部分的系统颜色变量，开启自定义模式，即可进行自定义，请确保你输入的值合法。"
 }
 export {
   zh_CN
