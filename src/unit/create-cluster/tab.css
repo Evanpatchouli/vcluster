@@ -21,12 +21,16 @@
   }
 
   > button {
-    color: var(--color-content-leftbar);
     font-size: 14px;
     text-align: left;
     text-transform: none;
     border: none;
     outline: none;
     box-shadow: none;
+  }
+
+  .create-cluster-tab-item__icon,
+  .create-cluster-tab-item__text {
+    color: var(--color-content-leftbar);
   }
 }

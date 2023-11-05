@@ -1,7 +1,7 @@
 .search-engine-tab {
   .search-engine-tab__input {
     margin-top: 0.75rem;
-    border-radius: 3px;
+    border-radius: 6px;
   }
 
   display: flex;
@@ -10,7 +10,7 @@
   padding-left: 0.25rem;
 
   #\:r9\: {
-    background-color: rgb(41, 41, 41) !important;
+    background-color: var(--color-element__inactive-or-unfocus) !important;
   }
 
   .search-engine-tab__result-list {
@@ -21,7 +21,7 @@
     margin-block: 0.5rem;
 
     .btn-cleanup-one {
-      color: var(--bg-color-usefule-element-hover-lighter);
+      color: var(--color-textButtn-hover);
       box-shadow: none;
       transition: all 0.1s ease;
 
@@ -32,7 +32,7 @@
 
     & .search-engine-tab__result-list-item {
       &:hover {
-        background-color: var(--bg-color-usefule-element-hover);
+        background-color: var(--bg-color-interactive-element-hover-lighter);
       }
     }
   }

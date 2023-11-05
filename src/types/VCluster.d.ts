@@ -75,4 +75,8 @@ declare namespace VCluster {
     type: "cluster" | "app";
     name?: string;
   };
+
+  type Hint<T = any> = T | (string & {});
+
+  type Promisify<T = any> = { [key: keyof T]: Promise<T> };
 }

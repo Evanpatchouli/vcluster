@@ -1,5 +1,8 @@
 const zh_CN = {
   "language": "语言",
+  "en": "en",
+  "cn": "中",
+  "Version": "版本",
   "setting": "详细设置",
   "checkUpdate": "检查更新",
   "title" : "欢迎使用微服务助手!",
@@ -67,6 +70,10 @@ const zh_CN = {
   "dark": "暗黑",
   "light": "白浅",
   "system": "系统",
+  "Theme": "主题",
+  "Dark": "暗黑",
+  "Light": "白浅",
+  "System": "系统",
   "Unsupported feature.": "尚未支持的特性.",
   "Import a cluster from a Json file or a Url of Json file.": "从 Json 文件或 Json 文件的 Url 导入一个集群.",
   "clean up the terminal": "清空终端",
@@ -78,6 +85,17 @@ const zh_CN = {
   "URL": "网址",
   "type": "类型",
   "select type": "选择类型",
+  "$go-create": "没有账号？立即创建！",
+  "username...": "用户名...",
+  "password...": "密码...",
+  "$login-title": "登录到微簇",
+  "login": "登录",
+  "Login success": "登录成功",
+  "Customize themes details": "自定义主题细节",
+  "$themeViewTitle": "配置应用主题",
+  "Load Default": "采用默认",
+  "Save": "保存",
+  "Apply": "应用",
 }
 export {
   zh_CN

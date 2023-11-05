@@ -57,6 +57,7 @@ function Tab() {
                 display: "block",
                 textTransform: "none",
                 fontSize: 14,
+                boxShadow: "none",
               }}
             >
               <div

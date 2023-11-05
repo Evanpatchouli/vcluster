@@ -12,6 +12,8 @@
     flex-direction: column;
     /* border: 1px white solid; */
     min-width: 400px;
+    padding-bottom: 20px;
+    height: fit-content;
   }
 
   .plain-row {
@@ -20,7 +22,7 @@
     justify-content: space-between;
     flex-direction: row;
 
-    > *:nth-child(n+2) {
+    > *:nth-child(n + 2) {
       margin-left: 6px;
     }
   }
@@ -31,7 +33,7 @@
     /* border: 1px white solid;   */
     justify-content: space-between;
     flex-direction: row;
-    
+
     /* > * {
       margin-right: 12px;
     } */
@@ -50,7 +52,7 @@
       background: none;
     }
     padding-bottom: 0px;
-  }  
+  }
 
   *::selection {
     background: rgb(166, 166, 166);
@@ -64,7 +66,6 @@
   .subpp-port {
     width: 100px;
   }
-  
 }
 
 /** hidden input number counter*/

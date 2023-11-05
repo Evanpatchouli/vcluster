@@ -13,7 +13,6 @@ import { msg, msg3s, routeTo } from "../../util/util";
 import React, { useRef, useState } from "react";
 
 import { Command, Child } from "@tauri-apps/api/shell";
-import { Store } from "tauri-plugin-store-api";
 import { useNavigate } from "react-router-dom";
 import Api from "../../api";
 
@@ -28,40 +27,46 @@ import {
   customize as setThemeVars,
 } from "../../store/theme/theme.reducer";
 import { ThemeVarLabel, themeVarsLocked } from "./constant";
+import { useIntl } from "react-intl";
+import TauriProxy from "../../store/tauri/proxy";
 
 listen("back-msg", (event) => {
   console.log(event.payload);
 });
 
-export default function Test() {
+function ThemeLabel(props: { text: string; icon: React.ReactNode }) {
+  const intl = useIntl();
+  return (
+    <div className="row col-center">
+      <span className="mgr-8">
+        {intl.formatMessage({
+          id: props.text,
+        })}
+      </span>
+      {props.icon}
+    </div>
+  );
+}
+
+export default function ThemeView() {
+  const tauriStore = new TauriProxy();
+  const intl = useIntl();
   const dispatch = useAppDispatch;
   const themeStore = useAppSelector((state) => state.themeReducer);
 
   const link = useNavigate();
-  const store = new Store(".settings.dat");
+
   const themes = [
     {
-      label: (
-        <div className="row col-center">
-          <span className="mgr-8">System</span> <System />
-        </div>
-      ),
+      label: <ThemeLabel text="System" icon={<System />} />,
       value: "system",
     },
     {
-      label: (
-        <div className="row col-center">
-          <span className="mgr-8">Dark</span> <Moon />
-        </div>
-      ),
+      label: <ThemeLabel text="Dark" icon={<Moon />} />,
       value: "dark",
     },
     {
-      label: (
-        <div className="row col-center">
-          <span className="mgr-8">Light</span> <Sun />
-        </div>
-      ),
+      label: <ThemeLabel text="Light" icon={<Sun />} />,
       value: "light",
     },
   ];
@@ -102,7 +107,14 @@ export default function Test() {
   return (
     <div className="theme-view">
       <h1>
-        <Platte /> Configure Application Themes
+        <Platte
+          onClick={() => {
+            tauriStore.values().then((values) => {
+              console.log(values);
+            });
+          }}
+        />{" "}
+        {intl.formatMessage({ id: "$themeViewTitle" })}
       </h1>
       <form
         ref={formRef}
@@ -130,20 +142,27 @@ export default function Test() {
             <InputLabel
               style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
             >
-              Theme :
+              {intl.formatMessage({ id: "Theme" })} :
             </InputLabel>
           </div>
           <RadioGroup
             row
             name="theme"
-            defaultValue={themeStore.theme}
-            onChange={(e) => {
+            value={themeStore.theme}
+            onChange={async (e) => {
               dispatch(setTheme(e.target.value as "system" | "dark" | "light"));
+              tauriStore.theme = e.target.value as "system" | "dark" | "light";
+              await tauriStore.save();
+              console.debug(await tauriStore.values());
             }}
           >
             {themes.map((theme) => (
               <>
-                <FormControlLabel label={theme.label} value={theme.value} control={<Radio />} />
+                <FormControlLabel
+                  label={theme.label}
+                  value={theme.value}
+                  control={<Radio />}
+                />
               </>
             ))}
           </RadioGroup>
@@ -152,7 +171,9 @@ export default function Test() {
           <InputLabel
             style={{ paddingRight: "1rem", color: "var(--color-view__text)" }}
           >
-            Customize themes details
+            {intl.formatMessage({
+              id: "Customize themes details",
+            })}
             <Switch
               value={customize}
               onChange={(e) => {
@@ -204,10 +225,18 @@ export default function Test() {
               );
             }}
           >
-            Load Default
+            {intl.formatMessage({
+              id: "Load Default",
+            })}
           </button>
           <button type="submit" tabIndex={-1}>
-            Save
+            {customize
+              ? intl.formatMessage({
+                  id: "Save",
+                })
+              : intl.formatMessage({
+                  id: "Apply",
+                })}
           </button>
         </div>
       </form>

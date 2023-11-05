@@ -27,13 +27,13 @@ export const counterSlice = createSlice({
       viewElementBackgroundColor: {
         cssVar: "--bg-color-view__element",
         dark: "#ffffff",
-        light: "#ebebeb",
+        light: "#f3f3f3",
         custom: null,
       },
       viewElementActiveBackgroundColor: {
         cssVar: "--bg-color-view__element-active",
         dark: "#e8e8e8",
-        light: "#cdcdcd",
+        light: "#ebebeb",
         custom: null,
       },
       elementActiveOrFocusColor: {
@@ -58,7 +58,7 @@ export const counterSlice = createSlice({
       leftBarBackgroundColor: {
         cssVar: "--bg-color-leftbar",
         dark: "rgb(24, 24, 24)",
-        light: "rgb(235, 235, 235)",
+        light: "rgb(245, 245, 245)",
         custom: null,
       },
       leftBarTabColumnBackgroundColor: {
@@ -76,7 +76,7 @@ export const counterSlice = createSlice({
       viewContainerBackgroundColor: {
         cssVar: "--bg-color-view-container",
         dark: "rgb(34, 34, 34)",
-        light: "rgb(240, 240, 240)",
+        light: "rgb(250, 250, 250)",
         custom: null,
       },
       layoutElementBorderColor: {
@@ -86,21 +86,21 @@ export const counterSlice = createSlice({
         custom: null,
       },
       interactiveElementHoverBackgroundColor: {
-        cssVar: "--bg-color-interactive-element",
+        cssVar: "--bg-color-interactive-element-hover",
         dark: "#313131",
-        light: "#313131",
+        light: "#7a7a7a",
         custom: null,
       },
       interactiveElementHoverBackgroundColorLighter: {
-        cssVar: "--bg-color-interactive-element",
+        cssVar: "--bg-color-interactive-element-hover-lighter",
         dark: "#4a4a4a",
-        light: "#4a4a4a",
+        light: "#bbbbbb",
         custom: null,
       },
       textButtonHoverColor: {
         cssVar: "--color-textButtn-hover",
-        dark: "var(--bg-color-usefule-element-hover)",
-        light: "var(--bg-color-usefule-element-hover)",
+        dark: "#313131",
+        light: "#e5e5e5",
         custom: null,
       },
       scrollBarThumbBackgroundColor: {
@@ -160,40 +160,49 @@ export const counterSlice = createSlice({
   reducers: {
     setTheme: (state, action: PayloadAction<"dark" | "system" | "light">) => {
       const { type, payload } = action;
+      if (state.theme === payload) {
+        return state;
+      }
       let _state = {
         ...state,
         theme: payload,
       };
       switch (payload) {
         case "dark":
-          Object.keys(state.vars).forEach((key: keyof typeof state.vars | (string & {})) => {
-            document.documentElement.style.setProperty(
-              // @ts-ignore
-              _state.vars[key].cssVar,
-              // @ts-ignore
-              _state.vars[key].dark
-            );
-          });
+          Object.keys(state.vars).forEach(
+            (key: keyof typeof state.vars | (string & {})) => {
+              document.documentElement.style.setProperty(
+                // @ts-ignore
+                _state.vars[key].cssVar,
+                // @ts-ignore
+                _state.vars[key].dark
+              );
+            }
+          );
           break;
         case "light":
-          Object.keys(state.vars).forEach((key: keyof typeof state.vars | (string & {})) => {
-            document.documentElement.style.setProperty(
-              // @ts-ignore
-              _state.vars[key].cssVar,
-              // @ts-ignore
-              _state.vars[key].light
-            );
-          });
+          Object.keys(state.vars).forEach(
+            (key: keyof typeof state.vars | (string & {})) => {
+              document.documentElement.style.setProperty(
+                // @ts-ignore
+                _state.vars[key].cssVar,
+                // @ts-ignore
+                _state.vars[key].light
+              );
+            }
+          );
           break;
         case "system":
-          Object.keys(state.vars).forEach((key: keyof typeof state.vars | (string & {})) => {
-            document.documentElement.style.setProperty(
-              // @ts-ignore
-              _state.vars[key].cssVar,
-              // @ts-ignore
-              _state.vars[key].custom
-            );
-          });
+          Object.keys(state.vars).forEach(
+            (key: keyof typeof state.vars | (string & {})) => {
+              document.documentElement.style.setProperty(
+                // @ts-ignore
+                _state.vars[key].cssVar,
+                // @ts-ignore
+                _state.vars[key].custom
+              );
+            }
+          );
           break;
         default:
           break;
@@ -211,16 +220,18 @@ export const counterSlice = createSlice({
     ) => {
       const { type, payload } = action;
       let _state = { ...state };
-      Object.keys(payload).forEach((key: keyof typeof _state.vars | (string & {})) => {
-        // @ts-ignore
-        _state.vars[payload[key].key].custom = payload[key].value;
-        document.documentElement.style.setProperty(
+      Object.keys(payload).forEach(
+        (key: keyof typeof _state.vars | (string & {})) => {
           // @ts-ignore
-          _state.vars[key].cssVar,
-          // @ts-ignore
-          _state.vars[key].custom
-        );
-      });
+          _state.vars[payload[key].key].custom = payload[key].value;
+          document.documentElement.style.setProperty(
+            // @ts-ignore
+            _state.vars[key].cssVar,
+            // @ts-ignore
+            _state.vars[key].custom
+          );
+        }
+      );
       return _state;
     },
   },

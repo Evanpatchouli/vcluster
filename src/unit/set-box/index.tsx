@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from "../../store/hook";
 import { setLang } from "../../store/lang/lang.reducer";
 import store from "../../store/store";
 import { setTheme } from "../../store/theme/theme.reducer";
+import TauriProxy from "../../store/tauri/proxy";
 
 type PopoverType = "lang" | "theme" | (string & {});
 
@@ -43,6 +44,7 @@ class SetBox extends React.Component {
   }
 
   render(): React.ReactNode {
+    const tauriStore = new TauriProxy();
     const handleLangboxClick = (event: React.MouseEvent) => {
       this.setLangAnchor(event.currentTarget);
       this.setPopoverType("lang");
@@ -64,6 +66,8 @@ class SetBox extends React.Component {
               <div
                 onClick={() => {
                   useAppDispatch(setLang("cn"));
+                  tauriStore.lang = "cn";
+                  tauriStore.save();
                   handleLangboxClose();
                 }}
               >
@@ -72,6 +76,8 @@ class SetBox extends React.Component {
               <div
                 onClick={() => {
                   useAppDispatch(setLang("en"));
+                  tauriStore.lang = "en";
+                  tauriStore.save();
                   handleLangboxClose();
                 }}
               >
@@ -86,6 +92,8 @@ class SetBox extends React.Component {
                 onClick={() => {
                   useAppDispatch(setTheme("system"));
                   handleLangboxClose();
+                  tauriStore.theme = "system";
+                  tauriStore.save();
                 }}
               >
                 <FormattedMessage id="system" />
@@ -94,6 +102,8 @@ class SetBox extends React.Component {
                 onClick={() => {
                   useAppDispatch(setTheme("dark"));
                   handleLangboxClose();
+                  tauriStore.theme = "dark";
+                  tauriStore.save();
                 }}
               >
                 <FormattedMessage id="dark" />
@@ -102,6 +112,8 @@ class SetBox extends React.Component {
                 onClick={() => {
                   useAppDispatch(setTheme("light"));
                   handleLangboxClose();
+                  tauriStore.theme = "light";
+                  tauriStore.save();
                 }}
               >
                 <FormattedMessage id="light" />
@@ -120,7 +132,7 @@ class SetBox extends React.Component {
           <div className="setbox-item" onClick={handleLangboxClick}>
             <FormattedMessage id="language"></FormattedMessage>
             <span style={{ paddingLeft: "0.5rem" }}>
-              ({store.getState().langReducer.lang})
+              ({store.getState().langReducer.lang === "en" ? "en" : "中"})
             </span>
           </div>
           <div className="row" onClick={handleThemeClick}>

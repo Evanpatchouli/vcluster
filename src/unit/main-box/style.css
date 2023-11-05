@@ -12,9 +12,10 @@
   color: rgb(91, 91, 91);
 
   /* *:nth-child(n+2) */
-  > *:nth-child(n) {
+  .hotkey-item {
+    transition: all 0.1s ease-out !important;
     &:hover {
-      color: white !important;
+      color: var(--color-view__text) !important;
       cursor: pointer;
     }
   }
@@ -24,7 +25,7 @@
     font-size: 2rem;
   }
 
-  > * {
+  .hotkey-list > .hotkey-item {
     margin-top: 1rem;
     margin-left: 4rem;
     transition: all 0.1s ease-out;
@@ -33,6 +34,7 @@
       padding-right: 1rem;
     }
   }
+
   > *:first-child {
     margin-top: 3rem;
   }
@@ -41,7 +43,7 @@
     &:hover {
       > *:nth-child(3) {
         > *:nth-child(odd) {
-          background-color: #5e5e5e;
+          background-color: var(--bg-color-interactive-element-hover-lighter);
         }
       }
     }
@@ -52,7 +54,7 @@
 
       > *:nth-child(odd) {
         padding: 3px 6px 3px 6px;
-        background-color: #313131;
+        background-color: var(--color-textButtn-hover);
         border-radius: 3px;
       }
     }
