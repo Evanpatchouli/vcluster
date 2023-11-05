@@ -166,40 +166,34 @@ export const counterSlice = createSlice({
       };
       switch (payload) {
         case "dark":
-          Object.keys(state.vars).forEach(
-            (key: keyof typeof state.vars | (string & {})) => {
-              document.documentElement.style.setProperty(
-                // @ts-ignore
-                _state.vars[key].cssVar,
-                // @ts-ignore
-                _state.vars[key].dark
-              );
-            }
-          );
+          Object.keys(state.vars).forEach((key: keyof typeof state.vars | (string & {})) => {
+            document.documentElement.style.setProperty(
+              // @ts-ignore
+              _state.vars[key].cssVar,
+              // @ts-ignore
+              _state.vars[key].dark
+            );
+          });
           break;
         case "light":
-          Object.keys(state.vars).forEach(
-            (key: keyof typeof state.vars | (string & {})) => {
-              document.documentElement.style.setProperty(
-                // @ts-ignore
-                _state.vars[key].cssVar,
-                // @ts-ignore
-                _state.vars[key].light
-              );
-            }
-          );
+          Object.keys(state.vars).forEach((key: keyof typeof state.vars | (string & {})) => {
+            document.documentElement.style.setProperty(
+              // @ts-ignore
+              _state.vars[key].cssVar,
+              // @ts-ignore
+              _state.vars[key].light
+            );
+          });
           break;
         case "system":
-          Object.keys(state.vars).forEach(
-            (key: keyof typeof state.vars | (string & {})) => {
-              document.documentElement.style.setProperty(
-                // @ts-ignore
-                _state.vars[key].cssVar,
-                // @ts-ignore
-                _state.vars[key].custom
-              );
-            }
-          );
+          Object.keys(state.vars).forEach((key: keyof typeof state.vars | (string & {})) => {
+            document.documentElement.style.setProperty(
+              // @ts-ignore
+              _state.vars[key].cssVar,
+              // @ts-ignore
+              _state.vars[key].custom
+            );
+          });
           break;
         default:
           break;
@@ -217,18 +211,16 @@ export const counterSlice = createSlice({
     ) => {
       const { type, payload } = action;
       let _state = { ...state };
-      Object.keys(payload).forEach(
-        (key: keyof typeof _state.vars | (string & {})) => {
+      Object.keys(payload).forEach((key: keyof typeof _state.vars | (string & {})) => {
+        // @ts-ignore
+        _state.vars[payload[key].key].custom = payload[key].value;
+        document.documentElement.style.setProperty(
           // @ts-ignore
-          _state.vars[payload[key].key].custom = payload[key].value;
-          document.documentElement.style.setProperty(
-            // @ts-ignore
-            _state.vars[key].cssVar,
-            // @ts-ignore
-            _state.vars[key].custom
-          );
-        }
-      );
+          _state.vars[key].cssVar,
+          // @ts-ignore
+          _state.vars[key].custom
+        );
+      });
       return _state;
     },
   },

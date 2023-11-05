@@ -143,11 +143,7 @@ export default function Test() {
           >
             {themes.map((theme) => (
               <>
-                <FormControlLabel
-                  label={theme.label}
-                  value={theme.value}
-                  control={<Radio />}
-                />
+                <FormControlLabel label={theme.label} value={theme.value} control={<Radio />} />
               </>
             ))}
           </RadioGroup>

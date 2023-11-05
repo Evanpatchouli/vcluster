@@ -74,6 +74,10 @@ const en_US = {
   "show the current directory": "show the current directory",
   "show the help information": "show the help information",
   "THEME_INFO": "Theme has three modes: dark, light and system(unsupported, now is same as dark mode). Besides, you can customize most of the colors variables of system. Open the customization, and you can customize them then, please make sure what you input is valid.",
+  "FILE": "FILE",
+  "URL": "URL",
+  "type": "type",
+  "select type": "select type",
 }
 export {
   en_US
