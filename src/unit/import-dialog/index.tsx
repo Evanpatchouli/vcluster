@@ -80,7 +80,7 @@ export default function Importer(props: ImporterProps) {
         <span className="importer-dialog-header-desc">{curTab ? "do importing" : "select type"}</span>
       </DialogTitle>
       <DialogContent>
-        <Tabs
+        {/* <Tabs
           className="import-dialog__tabs"
           onChange={handleTabChange}
           textColor="secondary"
@@ -102,7 +102,7 @@ export default function Importer(props: ImporterProps) {
             })}
             {...a11yProps(1)}
           />
-        </Tabs>
+        </Tabs> */}
         <PanelBox>
           <TabPanel value={curTab} index={0}>
             <ButtonGroup className="importer__button-group">
