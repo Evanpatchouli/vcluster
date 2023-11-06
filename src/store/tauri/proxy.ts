@@ -1,7 +1,7 @@
 import tauriStore from "./store";
 import { TautiStoreState } from "./type";
 
-export default class TautiStore {
+export default class TautiStoreProxy {
   private _store = tauriStore;
 
   saveOnChange = false;

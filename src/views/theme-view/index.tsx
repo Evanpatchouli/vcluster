@@ -1,7 +1,5 @@
 import {
-  Button,
   FormControlLabel,
-  InputBase,
   InputLabel,
   Radio,
   RadioGroup,
@@ -9,17 +7,11 @@ import {
   TextField,
 } from "@mui/material";
 import "./style.css";
-import { msg, msg3s, routeTo } from "../../util/util";
+import { msg } from "../../util/util";
 import React, { useRef, useState } from "react";
-
-import { Command, Child } from "@tauri-apps/api/shell";
 import { useNavigate } from "react-router-dom";
-import Api from "../../api";
 
 import { emit, listen } from "@tauri-apps/api/event";
-import { invoke } from "@tauri-apps/api";
-
-import Axios from "axios";
 import { Moon, Platte, Sun, System } from "@icon-park/react";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import {
@@ -28,7 +20,6 @@ import {
 } from "../../store/theme/theme.reducer";
 import { ThemeVarLabel, themeVarsLocked } from "./constant";
 import { useIntl } from "react-intl";
-import TauriProxy from "../../store/tauri/proxy";
 
 listen("back-msg", (event) => {
   console.log(event.payload);
@@ -49,7 +40,6 @@ function ThemeLabel(props: { text: string; icon: React.ReactNode }) {
 }
 
 export default function ThemeView() {
-  const tauriStore = new TauriProxy();
   const intl = useIntl();
   const dispatch = useAppDispatch;
   const themeStore = useAppSelector((state) => state.themeReducer);
@@ -109,7 +99,7 @@ export default function ThemeView() {
       <h1>
         <Platte
           onClick={() => {
-            tauriStore.values().then((values) => {
+            TauriStore.values().then((values) => {
               console.log(values);
             });
           }}
@@ -151,19 +141,18 @@ export default function ThemeView() {
             value={themeStore.theme}
             onChange={async (e) => {
               dispatch(setTheme(e.target.value as "system" | "dark" | "light"));
-              tauriStore.theme = e.target.value as "system" | "dark" | "light";
-              await tauriStore.save();
-              console.debug(await tauriStore.values());
+              TauriStore.theme = e.target.value as "system" | "dark" | "light";
+              await TauriStore.save();
+              console.debug(await TauriStore.values());
             }}
           >
-            {themes.map((theme) => (
-              <>
-                <FormControlLabel
-                  label={theme.label}
-                  value={theme.value}
-                  control={<Radio />}
-                />
-              </>
+            {themes.map((theme, idx) => (
+              <FormControlLabel
+                key={`theme-${idx}`}
+                label={theme.label}
+                value={theme.value}
+                control={<Radio />}
+              />
             ))}
           </RadioGroup>
         </div>
@@ -190,6 +179,7 @@ export default function ThemeView() {
                   margin="dense"
                   disabled={themeVarsLocked.includes(key)}
                   id={`theme-var__${key}`}
+                  key={`theme-var__${key}`}
                   label={ThemeVarLabel`${key} changeable? ${themeVarsLocked.includes(
                     key
                   )}.`}

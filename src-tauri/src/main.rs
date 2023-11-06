@@ -8,7 +8,7 @@ mod interface;
 mod cmd;
 use cmd::{launch_pkg,launch_pkg_by_id,kill,create_cluster,
   getall_cluster,del_cluster_by_pk,del_app_by_pk,launch_app_by_id,
-  stop_pkg_by_id};
+  stop_pkg_by_id,sql};
 
 mod store;
 
@@ -110,7 +110,9 @@ async fn main() {
           store::state::get,
           launch_app_by_id,
           stop_pkg_by_id,
-          kill])
+          sql,
+          kill
+          ])
         .menu(menu)
         .on_menu_event(|event| {
             match event.menu_item_id() {

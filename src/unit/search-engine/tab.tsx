@@ -10,7 +10,9 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import { useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
+import Api from "../../api";
+import { Sql } from "../../util/util";
 
 function Tab() {
   const intl = useIntl();
@@ -35,6 +37,8 @@ function Tab() {
         return [...state, action.payload];
       case "remove":
         return state.filter((item) => item !== action.payload);
+      case "override":
+        return [...(action.payload ?? [])];
       default:
         return state;
     }
@@ -42,116 +46,21 @@ function Tab() {
 
   const [keywords, setKeywords] = useState("");
 
-  const [result, dispatchResult] = useReducer(resultReducer, [
-    {
-      id: 1,
-      content: "relative item 1",
-    },
-    {
-      id: 2,
-      content: "relative item 2",
-    },
-    {
-      id: 3,
-      content: "relative item 3",
-    },
-    {
-      id: 4,
-      content: "relative item 4",
-    },
-    {
-      id: 5,
-      content: "relative item 5",
-    },
-    {
-      id: 6,
-      content: "relative item 6",
-    },
-    {
-      id: 7,
-      content: "relative item 7",
-    },
-    {
-      id: 8,
-      content: "relative item 8",
-    },
-    {
-      id: 9,
-      content: "relative item 9",
-    },
-    {
-      id: 10,
-      content: "relative item 10",
-    },
-    {
-      id: 11,
-      content: "relative item 11",
-    },
-    {
-      id: 12,
-      content: "relative item 12",
-    },
-    {
-      id: 13,
-      content: "relative item 13",
-    },
-    {
-      id: 14,
-      content: "relative item 14",
-    },
-    {
-      id: 15,
-      content: "relative item 15",
-    },
-    {
-      id: 16,
-      content: "relative item 16",
-    },
-    {
-      id: 17,
-      content: "relative item 17",
-    },
-    {
-      id: 18,
-      content: "relative item 18",
-    },
-    {
-      id: 19,
-      content: "relative item 19",
-    },
-    {
-      id: 20,
-      content: "relative item 20",
-    },
-    {
-      id: 21,
-      content: "relative item 21",
-    },
-    {
-      id: 22,
-      content: "relative item 22",
-    },
-    {
-      id: 23,
-      content: "relative item 23",
-    },
-    {
-      id: 24,
-      content: "relative item 24",
-    },
-    {
-      id: 25,
-      content: "relative item 25",
-    },
-    {
-      id: 26,
-      content: "relative item 26",
-    },
-    {
-      id: 27,
-      content: "relative item 27",
-    },
-  ]);
+  const [result, dispatchResult] = useReducer(resultReducer, []);
+
+  useEffect(() => {
+    Api.sql<VCluster.Cluster[]>(Sql.SEL_CLUSTER_LIKE(keywords ?? "")).then(
+      ({ data }) => {
+        dispatchResult({
+          type: "override",
+          payload: (data ?? []).map((item) => ({
+            id: item.id,
+            content: JSON.stringify(item),
+          })),
+        });
+      }
+    );
+  }, [keywords]);
 
   const filterResult = result.filter((item) =>
     item.content.toLowerCase().includes(keywords.toLowerCase())

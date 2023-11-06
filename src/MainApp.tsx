@@ -8,22 +8,32 @@ import { connect } from "react-redux";
 import { Snackbar, Alert, AlertColor } from "@mui/material";
 import MsgState from "./store/msg/msg.state";
 import { closeMsg } from "./store/msg/msg.reducer";
+import { useEffect } from "react";
+import { setTheme } from "./store/theme/theme.reducer";
 
 function mapStateToProps(state: RootState) {
   const { langReducer, msgReducer } = state;
-  return { lang: langReducer.lang, messages: langReducer.messages, msg: msgReducer };
+  return {
+    lang: langReducer.lang,
+    messages: langReducer.messages,
+    msg: msgReducer,
+  };
 }
 
 function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
-
   const handleContextMenu = (event: MouseEvent) => {
     event.preventDefault();
-  }
-  document.addEventListener('contextmenu', handleContextMenu);
-
-  const niubi = "error";
+  };
+  document.addEventListener("contextmenu", handleContextMenu);
 
   useAppDispatch(setLang(props.lang));
+
+  useEffect(() => {
+    TauriStore?.values().then((v) => {
+      useAppDispatch(setTheme(v?.theme ?? "dark"));
+    });
+  }, []);
+
   return (
     <IntlProvider
       messages={props.messages}
@@ -32,13 +42,20 @@ function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
     >
       <HashRouter>
         <App />
-        <Snackbar anchorOrigin={{vertical:'top',horizontal:'center'}} open={props.msg.state}>
-          <Alert severity={props.msg.severity}
-          onClose={() => {
-            console.log("close msg");
-            useAppDispatch(closeMsg());
-            console.log(props.msg)
-          }}>{props.msg.content}</Alert>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={props.msg.state}
+        >
+          <Alert
+            severity={props.msg.severity}
+            onClose={() => {
+              console.log("close msg");
+              useAppDispatch(closeMsg());
+              console.log(props.msg);
+            }}
+          >
+            {props.msg.content}
+          </Alert>
         </Snackbar>
       </HashRouter>
     </IntlProvider>

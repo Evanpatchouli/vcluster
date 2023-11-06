@@ -113,9 +113,17 @@ export function sleep<T>(time: number, result?: T) {
   });
 }
 
+export const Sql = {
+  /** `SELECT * FROM cluster` */
+  SEL_CLUSTER_ALL: () => "SELECT * FROM cluster",
+  SEL_CLUSTER_LIKE: (keyword: string) =>
+    `SELECT * FROM cluster WHERE name LIKE '%${keyword}%' OR desc LIKE '%${keyword}%' OR file LIKE '%${keyword}%'`,
+};
+
 export default {
   msg,
   msg3s,
   msgms,
   routeTo,
+  Sql,
 };
