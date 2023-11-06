@@ -19,9 +19,11 @@
 
     > * {
       color: var(--color-content-base);
+      fill: var(--color-content-base);
       &:hover {
         cursor: pointer;
         color: #fff;
+        fill: #fff;
       }
     }
   }
@@ -30,12 +32,12 @@
     margin-left: 24px;
     overflow: hidden;
     font-size: 14px;
-    
+
     > * {
       margin-right: 12px;
 
       &:hover {
-        cursor:auto;
+        cursor: auto;
         color: var(--color-content-base);
       }
     }

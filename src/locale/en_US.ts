@@ -1,5 +1,8 @@
 const en_US = {
   "language": "language",
+  "en": "en",
+  "cn": "cn",
+  "Version": "Version",
   "setting": "setting",
   "checkUpdate": "check update",
   "title" : "Welcome to VCluster applet!",
@@ -67,6 +70,10 @@ const en_US = {
   "dark": "dark",
   "light": "light",
   "system": "system",
+  "Theme": "Theme",
+  "Dark": "Dark",
+  "Light": "Light",
+  "System": "System",
   "Unsupported feature.": "Unsupported feature.",
   "Import a cluster from a Json file or a Url of Json file.": "Import a cluster from a Json file or a Url of Json file.",
   "clean up the terminal": "clean up the terminal",
@@ -78,6 +85,17 @@ const en_US = {
   "URL": "URL",
   "type": "type",
   "select type": "select type",
+  "$go-create": "No account? Create now!",
+  "username...": "username...",
+  "password...": "password...",
+  "$login-title": "Sign in to VCluster",
+  "login": "login",
+  "Login success": "Login success",
+  "Customize themes details": "Customize themes details",
+  "$themeViewTitle": "Configure Application Themes",
+  "Load Default": "Load Default",
+  "Save": "Save",
+  "Apply": "Apply",
 }
 export {
   en_US
