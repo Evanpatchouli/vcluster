@@ -52,8 +52,11 @@ export default class TautiStoreProxy {
     // @ts-ignore
     return this._store.get("updatedAt");
   }
+  /**
+   * @param value `{number}`
+   */
   // @ts-ignore
-  set updatedAt(value: number): Promise<void> {
+  set updatedAt(value: any): Promise<void> {
     // @ts-ignore
     this._store.set("updatedAt", new Date(value).toLocaleString());
   }
@@ -62,8 +65,11 @@ export default class TautiStoreProxy {
     // @ts-ignore
     return this._store.get("theme");
   }
+  /**
+   * @param value `"system" | "dark" | "light"`
+   */
   // @ts-ignore
-  set theme(value: "system" | "dark" | "light"): Promise<void> {
+  set theme(value: any): Promise<void> {
     this.updatedAt = Date.now();
     // @ts-ignore
     this._store.set("theme", value);
@@ -73,9 +79,11 @@ export default class TautiStoreProxy {
     // @ts-ignore
     return this._store.get("lang");
   }
-
+  /**
+   * @param value `"en" | "cn"`
+   */
   // @ts-ignore
-  set lang(value: "en" | "cn"): Promise<void> {
+  set lang(value: any): Promise<void> {
     this.updatedAt = Date.now();
     // @ts-ignore
     this._store.set("lang", value);
@@ -85,9 +93,11 @@ export default class TautiStoreProxy {
     // @ts-ignore
     return this._store.get("permission");
   }
-
+  /**
+   * @param value `TautiStoreState["permission"]`
+   */
   // @ts-ignore
-  set permission(value: TautiStoreState["permission"]): Promise<void> {
+  set permission(value: any): Promise<void> {
     this.updatedAt = Date.now();
     // @ts-ignore
     this._store.set("permission", value);

@@ -2,14 +2,14 @@ import TautiStoreProxy from "./proxy";
 
 declare global {
   interface Window {
-    TauriStore: TautiStoreProxy;
+    TauriStore: VCluster.TauriStoreProxy;
   }
 }
 
 const __tauriStoreProxy = new TautiStoreProxy();
 
 declare global {
-  const TauriStore: TautiStoreProxy;
+  const TauriStore: VCluster.TauriStoreProxy;
 }
 
 window.TauriStore = __tauriStoreProxy;

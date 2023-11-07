@@ -86,4 +86,27 @@ declare namespace VCluster {
     desc: "" | (string & {});
     file: string | null;
   };
+
+  interface TauriStoreProxy {
+    saveOnChange: boolean;
+    save(): Promise<void>;
+    values(): Promise<TautiStoreState>;
+    set(
+      key: VCluster.Hint<keyof TautiStoreState>,
+      value: TautiStoreState[keyof TautiStoreState]
+    ): Promise<void>;
+    get(
+      key: VCluster.Hint<keyof TautiStoreState>
+    ): Promise<TautiStoreState[keyof TautiStoreState]>;
+    del(key: VCluster.Hint<keyof TautiStoreState>): Promise<void>;
+    clear(): Promise<void>;
+    get updatedAt(): Promise<string>;
+    set updatedAt(value: number): Promise<void>;
+    get theme(): Promise<"system" | "dark" | "light">;
+    set theme(value: "system" | "dark" | "light"): Promise<void>;
+    get lang(): Promise<"en" | "cn">;
+    set lang(value: "en" | "cn"): Promise<void>;
+    get permission(): Promise<VCluster.Hint<VCluster.Permission>[]>;
+    set permission(value: VCluster.Hint<VCluster.Permission>[]): Promise<void>;
+  }
 }
