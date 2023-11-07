@@ -50,7 +50,8 @@
 
   color: var(--color-content-leftbar);
   background: var(--bg-color-leftbar);
-  transition: width 0.3s ease-in-out, size 0.3s ease-in-out, resize 0.3s ease-in-out, min-width 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out, size 0.3s ease-in-out,
+    resize 0.3s ease-in-out, min-width 0.3s ease-in-out;
   resize: horizontal;
 
   #tab-title {
@@ -116,10 +117,6 @@
   border-left: none;
 }
 
-.view-container {
-  margin: 0;
-}
-
 #left-bar {
   > div {
     width: 60px;
@@ -159,6 +156,10 @@
       padding-bottom: 12px;
     }
   }
+}
+
+.view-container {
+  margin: 0;
 }
 
 #workstation {
