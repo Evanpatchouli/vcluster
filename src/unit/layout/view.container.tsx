@@ -4,11 +4,14 @@ import MainBox from "../main-box";
 import ThemeBox from "../../views/theme-view";
 import Shell from "../../views/shell";
 import userView from "../../views/user-view";
+import CreateView from "../../views/creat-view";
+import ClusterView from "../../views/cluster-view";
+import OverView from "../../views/cluster-overview-view";
 
 // const MainBox = React.lazy(() => import("../main-box"));
-const OverView = React.lazy(() => import("../../views/cluster-overview-view"));
-const ClusterView = React.lazy(() => import("../../views/cluster-view"));
-const CreateView = React.lazy(() => import("../../views/creat-view"));
+// const OverView = React.lazy(() => import("../../views/cluster-overview-view"));
+// const ClusterView = React.lazy(() => import("../../views/cluster-view"));
+// const CreateView = React.lazy(() => import("../../views/creat-view"));
 // const userView = React.lazy(() => import("../../views/user-view"));
 // const Shell = React.lazy(() => import("../../views/shell"));
 // const ThemeBox = React.lazy(() => import("../../views/theme-view"));
