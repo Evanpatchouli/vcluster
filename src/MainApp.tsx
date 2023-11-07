@@ -32,6 +32,7 @@ function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
   useEffect(() => {
     TauriStore?.values().then((v) => {
       useAppDispatch(setTheme(v?.theme ?? "dark"));
+      useAppDispatch(setLang(v?.lang ?? "en"));
       useAppDispatch(
         setPermission(v?.permission ?? ["read", "write", "execute"])
       );
