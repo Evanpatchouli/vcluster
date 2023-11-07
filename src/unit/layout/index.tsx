@@ -14,11 +14,7 @@ import {
 } from "@icon-park/react";
 import { FormattedMessage } from "react-intl";
 import Popover from "@mui/material/Popover";
-import MainBox from "../main-box";
 import { Route, useNavigate, Routes } from "react-router-dom";
-import ThemeBox from "../../views/theme-view";
-import ClusterOverView from "../../views/cluster-overview-view";
-import CreateView from "../../views/creat-view";
 import SetBox from "../set-box";
 import ClusterManagerTab from "../cluster-manager/tab";
 import CreateClusterTab from "../create-cluster/tab";
@@ -27,9 +23,14 @@ import DatabaseToolTab from "../database-tool/tab";
 import ClusterImporterTab from "../cluster-importer/tab";
 import TerminalTab from "../terminal-tab";
 import ThemePaletteTab from "../theme-palette/tab";
-import Shell from "../../views/shell";
-import ClusterView from "../../views/cluster-view";
-import userView from "../../views/user-view";
+
+const MainBox = React.lazy(() => import("../main-box"));
+const ThemeBox = React.lazy(() => import("../../views/theme-view"));
+const OverView = React.lazy(() => import("../../views/cluster-overview-view"));
+const ClusterView = React.lazy(() => import("../../views/cluster-view"));
+const CreateView = React.lazy(() => import("../../views/creat-view"));
+const userView = React.lazy(() => import("../../views/user-view"));
+const Shell = React.lazy(() => import("../../views/shell"));
 
 function LeftBar() {
   const link = useNavigate();
@@ -199,7 +200,7 @@ function LeftBar() {
           <Route path="/" Component={MainBox} />
           <Route path="/help" Component={MainBox} />
           <Route path="/test" Component={ThemeBox} />
-          <Route path="/overview" Component={ClusterOverView} />
+          <Route path="/overview" Component={OverView} />
           <Route path="/cluster/:id" Component={ClusterView} />
           <Route path="/create" Component={CreateView} />
           <Route path="/shell" Component={Shell} />
