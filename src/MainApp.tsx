@@ -10,6 +10,7 @@ import MsgState from "./store/msg/msg.state";
 import { closeMsg } from "./store/msg/msg.reducer";
 import { useEffect } from "react";
 import { setTheme } from "./store/theme/theme.reducer";
+import { setPermission } from "./store/permission/permission.reducer";
 
 function mapStateToProps(state: RootState) {
   const { langReducer, msgReducer } = state;
@@ -31,6 +32,9 @@ function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
   useEffect(() => {
     TauriStore?.values().then((v) => {
       useAppDispatch(setTheme(v?.theme ?? "dark"));
+      useAppDispatch(
+        setPermission(v?.permission ?? ["read", "write", "execute"])
+      );
     });
   }, []);
 

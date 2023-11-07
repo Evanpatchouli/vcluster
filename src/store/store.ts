@@ -3,6 +3,7 @@ import _langReducer from "./lang/lang.reducer";
 import _msgReducer from "./msg/msg.reducer";
 import _clustersReducer from "./clusters/clusters.reducer";
 import _themeReducer from "./theme/theme.reducer";
+import _permissionReducer from "./permission/permission.reducer";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     msgReducer: _msgReducer,
     clustersReducer: _clustersReducer,
     themeReducer: _themeReducer,
+    permissionReducer: _permissionReducer,
   },
 });
 
@@ -22,5 +24,6 @@ export const langReducer = _langReducer;
 export const msgReducer = _msgReducer;
 export const clustersReducer = _clustersReducer;
 export const themeReducer = _themeReducer;
+export const permissionReducer = _permissionReducer;
 
 export default store;

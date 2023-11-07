@@ -6,9 +6,9 @@ export const themeVarsLocked = [
 export const ThemeVarLabel = (
   strings: TemplateStringsArray,
   name: string,
-  editable: boolean
+  locked: boolean
 ) => {
-  if (editable) {
+  if (!locked) {
     return name;
   } else {
     return `${name} unChangeable`;

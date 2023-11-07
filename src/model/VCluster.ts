@@ -48,7 +48,7 @@ export class PkgConfig {
     this.id = pkg.id;
     this.name = pkg.name;
     this.desc = pkg.desc;
-    this.apps = JSON.parse(JSON.stringify(pkg.apps));
+    this.apps = JSONX.reparse(pkg.apps);
     return this;
   }
 
@@ -57,7 +57,7 @@ export class PkgConfig {
     p.id = pkg.id;
     p.name = pkg.name;
     p.desc = pkg.desc;
-    p.apps = JSON.parse(JSON.stringify(pkg.apps));
+    p.apps = JSONX.reparse(pkg.apps);
     return p;
   }
 }

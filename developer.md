@@ -38,3 +38,23 @@ store is updated. You can treat it as a databased store, and you need to keep re
 with the tauri-store.
 
 More details can be found in `/src/store/tauri`.
+
+### permissions
+
+I make a global permission validator function named `hasPermi(p1, p2?)`, which receives two parameters: `permissionList` and `provider`. The first parameter is the permissions can be accessed, and the second parameter is the origin of the permissions owned by the user (If not given, it will be readonly as `['read']`), the provider should be the state stored in Redux.
+
+The return of `hasPermi` is a object with a property called `of(p1, options?)`:  
+The first parameter is the things to retuened when access allowed. The second parameter is config of default returned
+and the returned when access denied.
+
+```tsx
+hasPermi(["write", permiStore]).of(
+  <>
+    <Input />
+  </>,
+  {
+    default: "-",
+    reject: "401 not authorized",
+  }
+);
+```

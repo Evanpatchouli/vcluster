@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControlLabel,
   InputLabel,
   Radio,
@@ -39,7 +40,7 @@ function ThemeLabel(props: { text: string; icon: React.ReactNode }) {
   );
 }
 
-export default function ThemeView() {
+function ThemeViewRender() {
   const intl = useIntl();
   const dispatch = useAppDispatch;
   const themeStore = useAppSelector((state) => state.themeReducer);
@@ -232,4 +233,9 @@ export default function ThemeView() {
       </form>
     </div>
   );
+}
+
+export default function ThemeView() {
+  const permissionStore = useAppSelector((state) => state.permissionReducer);
+  return hasPermi(["read"], permissionStore).of(<ThemeViewRender />);
 }

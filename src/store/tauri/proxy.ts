@@ -80,4 +80,16 @@ export default class TautiStoreProxy {
     // @ts-ignore
     this._store.set("lang", value);
   }
+
+  get permission(): Promise<TautiStoreState["permission"]> {
+    // @ts-ignore
+    return this._store.get("permission");
+  }
+
+  // @ts-ignore
+  set permission(value: TautiStoreState["permission"]): Promise<void> {
+    this.updatedAt = Date.now();
+    // @ts-ignore
+    this._store.set("permission", value);
+  }
 }

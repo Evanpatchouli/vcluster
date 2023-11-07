@@ -10,6 +10,8 @@ import MainApp from "./MainApp";
 import { Toaster } from "react-hot-toast";
 
 import "./store/tauri/global";
+import "./permission/global";
+import "./util/global";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
