@@ -5,3 +5,6 @@
 - [ ] support kill by request api
 - [ ] support launch by request api
 - [ ] support cluster config template
+- [ ] make tab-drawer flexible
+- [ ] support add a subapp to a cluster
+- [ ] support listen state of cluster and its apps

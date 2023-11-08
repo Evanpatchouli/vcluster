@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { SpotData, SPOT_STATE, COLOR_MAP } from "./model";
 import { useNavigate } from "react-router-dom";
-import { routeTo } from "../../util/util";
+import { msg, routeTo, sleep } from "../../util/util";
+import { EChartsType } from "echarts";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -14,10 +15,65 @@ function mapStateToProps(state: RootState) {
 }
 
 function ClusterOverviewView({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
-  const chartRef = useRef<HTMLDivElement>(null);
   const link = useNavigate();
 
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstanceRef = useRef<EChartsType | null>(null);
+
   const [spots, setSpots] = useState<SpotData[]>([]);
+
+  function pushSpot() {
+    let spot = new SpotData({
+      id: Math.random() * 1000 * Date.now().valueOf() + "",
+      name: spots.length.toString(),
+      desc: "",
+      apps: [],
+      buildfromPkg: null as any,
+    });
+    spot.SymbolSize(50).Draggable(true).State(SPOT_STATE.SLEEP);
+    setSpots([...spots, spot]);
+  }
+
+  const option = {
+    series: [
+      {
+        roam: true,
+        data: spots,
+        edges: spots.map((item, idx) => {
+          return {
+            source: idx,
+            target: idx === spots.length - 1 ? 0 : idx + 1,
+          };
+        }),
+        type: "graph",
+        layout: "force",
+        animation: false,
+        legendHoverLink: true,
+        symbol: "circle",
+        symbolSize: 40,
+        itemStyle: {
+          color: function (
+            params: echarts.DefaultLabelFormatterCallbackParams
+          ) {
+            let data: SpotData = params.data as unknown as SpotData;
+            return COLOR_MAP[data.state];
+          },
+        },
+        circular: {
+          rotateLabel: true, //旋转标签
+        },
+        force: {
+          // initLayout: "circular",
+          gravity: 0.1,
+          repulsion: 400,
+          edgeLength: 100,
+        },
+        label: {
+          show: true,
+        },
+      },
+    ],
+  };
 
   const pkgsSpotized =
     pkgs.map((pkg, idx) => {
@@ -32,6 +88,28 @@ function ClusterOverviewView({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     }) ?? [];
 
   useEffect(() => {
+    if (!chartInstanceRef.current) {
+      chartRef.current?.focus();
+      let chartInstance = echarts.init(
+        chartRef.current as unknown as HTMLElement
+      );
+      chartInstance.on("click", function (params) {
+        if (params.componentType === "series") {
+          if (params.seriesType === "graph") {
+            if (params.dataType === "node") {
+              const data: SpotData = params.data as SpotData;
+              routeTo(`/cluster/${data.id}`, link);
+            }
+          }
+        }
+      });
+
+      chartInstance.setOption(option);
+      chartInstanceRef.current = chartInstance;
+    }
+  }, []);
+
+  useEffect(() => {
     const _spots = pkgsSpotized.map((item) => {
       const after: SpotData = {
         ...item,
@@ -43,103 +121,21 @@ function ClusterOverviewView({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
       return after;
     });
     setSpots(_spots);
-    // setTimeout(() => {
-    //   // @ts-ignore
-    //   setSpots((prev) => [
-    //     ...prev,
-    //     {
-    //       id: prev.length + 1 + "",
-    //       name: prev.length + 1 + "",
-    //       State: SPOT_STATE.SLEEP,
-    //     },
-    //   ]);
-    // }, 2000);
-  }, [pkgsSpotized]);
+  }, [pkgs]);
 
   useEffect(() => {
     chartRef.current?.focus();
-    let chartInstance = echarts.init(chartRef.current as unknown as HTMLElement);
-    chartInstance.on("click", function (params) {
-      if (params.componentType === "series") {
-        if (params.seriesType === "graph") {
-          if (params.dataType === "node") {
-            const data: SpotData = params.data as SpotData;
-            routeTo(`/cluster/${data.id}`, link);
-          }
-        }
-      }
-    });
-
-    const data = spots;
-    const edges: { source: number; target: number }[] = [];
-    let option = {
-      series: [
-        {
-          roam: true,
-          data: data,
-          edges: edges,
-          type: "graph",
-          layout: "force",
-          animation: false,
-          legendHoverLink: true,
-          symbol: "circle",
-          symbolSize: 40,
-          itemStyle: {
-            color: function (params: echarts.DefaultLabelFormatterCallbackParams) {
-              let data: SpotData = params.data as unknown as SpotData;
-              return COLOR_MAP[data.state as string];
-            },
-          },
-          circular: {
-            rotateLabel: true, //旋转标签
-          },
-          force: {
-            // initLayout: 'circular',
-            gravity: 0.1,
-            repulsion: 400,
-            edgeLength: 5,
-          },
-          label: {
-            show: true,
-          },
-        },
-      ],
-    };
-    // let timer = setInterval(function () {
-    //   if (data.length > 1) {
-    //     clearTimeout(timer);
-    //     return;
-    //   }
-    //   data.push({
-    //     id: data.length + "",
-    //     name: data.length + "",
-    //   });
-    //   var source = Math.round((data.length - 1) * Math.random());
-    //   var target = Math.round((data.length - 1) * Math.random());
-    //   if (source !== target) {
-    //     edges.push({
-    //       source: source,
-    //       target: target,
-    //     });
-    //   }
-    //   chartInstance.setOption({
-    //     series: [
-    //       {
-    //         roam: true,
-    //         data: data,
-    //         edges: edges,
-    //       },
-    //     ],
-    //   });
-    // console.log('nodes: ' + data.length);
-    // console.log('links: ' + data.length);
-    // }, 1000);
-    chartInstance.setOption(option);
-  }, [spots]);
+    chartInstanceRef.current?.setOption(option);
+  }, [option]);
 
   return (
     <div className="cluster-overview-view" style={{ textAlign: "center" }}>
-      <h2 className="title">
+      <h2
+        className="title"
+        onClick={() => {
+          pushSpot();
+        }}
+      >
         <FormattedMessage id="All of the clusters overview" />
       </h2>
       <div className="chart" ref={chartRef}></div>
