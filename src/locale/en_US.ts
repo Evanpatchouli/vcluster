@@ -5,7 +5,7 @@ const en_US = {
   "Version": "Version",
   "setting": "setting",
   "checkUpdate": "check update",
-  "title" : "Welcome to VCluster applet!",
+  "title" : "Welcome to VCluster !",
   "cluster-manager" : "Cluster Manager",
   "create-cluster": "Create a cluster",
   "search": "Search",

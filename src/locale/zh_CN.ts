@@ -5,7 +5,7 @@ const zh_CN = {
   "Version": "版本",
   "setting": "详细设置",
   "checkUpdate": "检查更新",
-  "title" : "欢迎使用微服务助手!",
+  "title" : "欢迎使用微蔟 !",
   "cluster-manager" : "集群管理器",
   "create-cluster": "创建新集群",
   "search": "搜索",
