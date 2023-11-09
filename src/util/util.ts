@@ -6,6 +6,7 @@ import { NavigateFunction } from "react-router-dom";
 import { AlertColor } from "@mui/material";
 import { Command } from "@tauri-apps/api/shell";
 import toast from "react-hot-toast";
+import { useReducer } from "react";
 
 const AlertMap = {
   success: {
@@ -126,4 +127,21 @@ export default {
   msgms,
   routeTo,
   Sql,
+};
+
+/** `Dont't abuse it!` : a hook to force rerender right now. */
+export const useForceUpdate = () => {
+  const [state, _forceUpdate] = useReducer((state: number, action: { type: VCluster.Hint<"plus"> }) => {
+    switch (action.type) {
+      case "plus":
+        return state + 1;
+      default:
+        return state;
+    }
+  }, 0);
+  const forceUpdate = () => {
+    _forceUpdate({ type: "plus" });
+  };
+  forceUpdate.count = state;
+  return forceUpdate;
 };

@@ -8,13 +8,24 @@ declare namespace VCluster {
     desc: string;
     /** which net-port will this app use*/
     port?: number;
+
     start: {
       /** the directory where to execute the script*/
       path: string;
       /** executable command or script path, shouldn't `with > file`*/
       script: string;
     };
+    useScript?: boolean;
+
     log?: string;
+    useLog?: boolean;
+
+    api?: {
+      live?: string;
+      start?: string;
+      stop?: string;
+    };
+    useApi?: boolean;
 
     buildfromApp(app: ServiceConfig): ServiceConfig;
 
@@ -91,13 +102,8 @@ declare namespace VCluster {
     saveOnChange: boolean;
     save(): Promise<void>;
     values(): Promise<TautiStoreState>;
-    set(
-      key: VCluster.Hint<keyof TautiStoreState>,
-      value: TautiStoreState[keyof TautiStoreState]
-    ): Promise<void>;
-    get(
-      key: VCluster.Hint<keyof TautiStoreState>
-    ): Promise<TautiStoreState[keyof TautiStoreState]>;
+    set(key: VCluster.Hint<keyof TautiStoreState>, value: TautiStoreState[keyof TautiStoreState]): Promise<void>;
+    get(key: VCluster.Hint<keyof TautiStoreState>): Promise<TautiStoreState[keyof TautiStoreState]>;
     del(key: VCluster.Hint<keyof TautiStoreState>): Promise<void>;
     clear(): Promise<void>;
     get updatedAt(): Promise<string>;

@@ -4,15 +4,20 @@ import React, { Fragment } from "react";
 import { Delete, Spanner } from "@icon-park/react";
 import { PkgConfig, ServiceConfig } from "../../model/VCluster";
 import { createCluster } from "../../api";
-import { msg3s } from "../../util/util";
+import { msg3s, useForceUpdate } from "../../util/util";
 import { PkgValidor } from "./valid";
+import { InputLabel, Switch } from "@mui/material";
+import Label from "../../unit/Label";
 
 function CreatView() {
   const intl = useIntl();
-  const [apps, setApps] = React.useState<VCluster.ServiceConfig[]>([
-    new ServiceConfig(),
-  ]);
-  const [appDoms, setAppDoms] = React.useState(getAppDoms);
+  const forceUpdate = useForceUpdate();
+  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([new ServiceConfig()]);
+  const setApps: typeof _setApps = (state) => {
+    _setApps(state);
+    forceUpdate();
+  };
+  const [, setAppDoms] = React.useState(getAppDoms);
   const [pkg, setPkg] = React.useState<VCluster.PkgConfig>(new PkgConfig());
   const getForm = () => {
     let form = pkg;
@@ -71,6 +76,19 @@ function CreatView() {
           ></textarea>
         </div>
         <div className="row">
+          <Label required text="Start app by script : ">
+            <Switch
+              value={app.useScript}
+              onChange={(e) => {
+                console.debug(app);
+                app.useScript = e.target.checked;
+                apps[idx] = app;
+                setApps(apps);
+              }}
+            />
+          </Label>
+        </div>
+        <div className="row">
           <input
             className="path"
             title="current-dir"
@@ -99,6 +117,19 @@ function CreatView() {
           ></input>
         </div>
         <div className="row">
+          <Label required text="Log outputs : ">
+            <Switch
+              value={app.useLog}
+              onChange={(e) => {
+                console.debug(app);
+                app.useLog = e.target.checked;
+                apps[idx] = app;
+                setApps(apps);
+              }}
+            />
+          </Label>
+        </div>
+        <div className="row">
           <input
             className="path"
             title="start-script"
@@ -112,6 +143,69 @@ function CreatView() {
             })}
           ></input>
         </div>
+        <div className="row">
+          <Label required text="Use apis : ">
+            <Switch
+              value={app.useApi}
+              onChange={(e) => {
+                console.debug(`app::${idx}.useApi=${app.useApi} => ${e.target.checked}`);
+                app.useApi = e.target.checked;
+                apps[idx] = app;
+                setApps(apps);
+              }}
+            />
+          </Label>
+        </div>
+        {app.useApi && (
+          <>
+            <div className="row">
+              <input
+                className="api-live"
+                title="api of live"
+                onChange={(e) => {
+                  app.api = app.api ?? {};
+                  app.api.live = e.target.value;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
+                placeholder={intl.formatMessage({
+                  id: "request api for checking live...",
+                })}
+              />
+            </div>
+            <div className="row">
+              <input
+                className="api-start"
+                title="api of start"
+                onChange={(e) => {
+                  app.api = app.api ?? {};
+                  app.api.start = e.target.value;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
+                placeholder={intl.formatMessage({
+                  id: "request api for checking start...",
+                })}
+              />
+            </div>
+            <div className="row">
+              <input
+                className="api-stop"
+                title="api of stop"
+                onChange={(e) => {
+                  app.api = app.api ?? {};
+                  app.api.stop = e.target.value;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
+                placeholder={intl.formatMessage({
+                  id: "request api for checking stop...",
+                })}
+              />
+            </div>
+          </>
+        )}
+        <div className="row" id="sub-app-bottom" />
       </Fragment>
     ));
   }
@@ -142,9 +236,7 @@ function CreatView() {
           console.log(form);
           const valid_result = PkgValidor.safeParse(form);
           if (!valid_result.success) {
-            const firsetError: VCluster.ZodErrorMessage = JSON.parse(
-              valid_result.error.message
-            )[0];
+            const firsetError: VCluster.ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
             console.error(firsetError.message);
             return msg3s(
               intl.formatMessage({
@@ -182,7 +274,7 @@ function CreatView() {
             })}
           ></input>
         </div>
-        <div className="row">
+        <div className="row" id="cluster-bottom">
           <textarea
             className="desc"
             title="cluster-desc"
@@ -199,9 +291,7 @@ function CreatView() {
         {getAppDoms()}
         <div className="row">
           <div className="plain-row">
-            <button type="submit">
-              {intl.formatMessage({ id: "submit" })}
-            </button>
+            <button type="submit">{intl.formatMessage({ id: "submit" })}</button>
             <button
               type="reset"
               onClick={() => {
@@ -210,9 +300,7 @@ function CreatView() {
             >
               {intl.formatMessage({ id: "reset" })}
             </button>
-            <button type="button">
-              {intl.formatMessage({ id: "save as template" })}
-            </button>
+            <button type="button">{intl.formatMessage({ id: "save as template" })}</button>
           </div>
           <button type="button" onClick={addSubApp}>
             {intl.formatMessage({ id: "Add sub-app" })}

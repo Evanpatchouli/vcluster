@@ -5,22 +5,22 @@
 
   .form {
     display: flex;
-    align-items: left;
-    padding-top: 24px;
     /**下面这个删了表单就会贴顶*/
     /* justify-content: center; */
     flex-direction: column;
+    align-items: left;
     /* border: 1px white solid; */
     min-width: 400px;
-    padding-bottom: 20px;
     height: fit-content;
+    padding-top: 24px;
+    padding-bottom: 20px;
   }
 
   .plain-row {
     display: flex;
+    flex-direction: row;
     /* border: 1px white solid;   */
     justify-content: space-between;
-    flex-direction: row;
 
     > *:nth-child(n + 2) {
       margin-left: 6px;
@@ -28,22 +28,33 @@
   }
 
   .row {
-    margin: 0px 0px 10px 0px;
     display: flex;
+    flex-direction: row;
     /* border: 1px white solid;   */
     justify-content: space-between;
-    flex-direction: row;
+    margin: 0px 0px 10px 0px;
 
     /* > * {
       margin-right: 12px;
     } */
   }
 
-  .row#sub-app-top {
-    margin-top: 8px;
+  .row#cluster-bottom {
+    margin-bottom: 16px;
   }
 
-  .path {
+  .row#sub-app-top {
+    margin-top: 0px;
+  }
+
+  .row#sub-app-bottom {
+    margin-bottom: 8px;
+  }
+
+  .path,
+  .api-live,
+  .api-start,
+  .api-stop {
     width: 100%;
   }
 
