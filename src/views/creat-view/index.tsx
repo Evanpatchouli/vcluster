@@ -4,15 +4,23 @@ import React, { Fragment } from "react";
 import { Delete, Spanner } from "@icon-park/react";
 import { PkgConfig, ServiceConfig } from "../../model/VCluster";
 import { createCluster } from "../../api";
-import { msg3s, useForceUpdate } from "../../util/util";
-import { PkgValidor } from "./valid";
+import {
+  convertZodErrorToMessageList,
+  msg,
+  msg3s,
+  useForceUpdate,
+  useSafe,
+} from "../../util/util";
+import { AppsValidor, PkgValidor } from "./valid";
 import { InputLabel, Switch } from "@mui/material";
 import Label from "../../unit/Label";
 
 function CreatView() {
   const intl = useIntl();
   const forceUpdate = useForceUpdate();
-  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([new ServiceConfig()]);
+  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([
+    new ServiceConfig(),
+  ]);
   const setApps: typeof _setApps = (state) => {
     _setApps(state);
     forceUpdate();
@@ -31,7 +39,7 @@ function CreatView() {
         <div className="row" id="sub-app-top">
           <div className="plain-row">
             <input
-              title="subapp-name"
+              title="name of the app"
               onChange={(e) => {
                 app.name = e.target.value;
                 apps[idx] = app;
@@ -44,7 +52,7 @@ function CreatView() {
             <input
               className="subpp-port"
               type="number"
-              title="subapp-port"
+              title="port of this app"
               onChange={(e) => {
                 app.port = Number(e.target.value);
                 apps[idx] = app;
@@ -64,7 +72,7 @@ function CreatView() {
         <div className="row">
           <textarea
             className="desc"
-            title="subapp-desc"
+            title="description of this subapp"
             onChange={(e) => {
               app.desc = e.target.value;
               apps[idx] = app;
@@ -76,9 +84,9 @@ function CreatView() {
           ></textarea>
         </div>
         <div className="row">
-          <Label required text="Start app by script : ">
+          <Label required={app.useScript} text="Start app by script : ">
             <Switch
-              value={app.useScript}
+              checked={app.useScript}
               onChange={(e) => {
                 console.debug(app);
                 app.useScript = e.target.checked;
@@ -88,38 +96,46 @@ function CreatView() {
             />
           </Label>
         </div>
+        {app.useScript && (
+          <>
+            <div className="row">
+              <input
+                className="path"
+                title={intl.formatMessage({
+                  id: "current-dir where to execute script...",
+                })}
+                onChange={(e) => {
+                  app.start.path = e.target.value;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
+                placeholder={intl.formatMessage({
+                  id: "current-dir where to execute script...",
+                })}
+              ></input>
+            </div>
+            <div className="row">
+              <input
+                className="path"
+                title={intl.formatMessage({
+                  id: "the commands or relative path of the script file to start app...",
+                })}
+                onChange={(e) => {
+                  app.start.script = e.target.value;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
+                placeholder={intl.formatMessage({
+                  id: "the commands or relative path of the script file to start app...",
+                })}
+              ></input>
+            </div>
+          </>
+        )}
         <div className="row">
-          <input
-            className="path"
-            title="current-dir"
-            onChange={(e) => {
-              app.start.path = e.target.value;
-              apps[idx] = app;
-              setApps(apps);
-            }}
-            placeholder={intl.formatMessage({
-              id: "current-dir where to execute script...",
-            })}
-          ></input>
-        </div>
-        <div className="row">
-          <input
-            className="path"
-            title="start-script"
-            onChange={(e) => {
-              app.start.script = e.target.value;
-              apps[idx] = app;
-              setApps(apps);
-            }}
-            placeholder={intl.formatMessage({
-              id: "the commands or relative path of the script file to start app...",
-            })}
-          ></input>
-        </div>
-        <div className="row">
-          <Label required text="Log outputs : ">
+          <Label required={app.useLog} text="Log outputs : ">
             <Switch
-              value={app.useLog}
+              checked={app.useLog}
               onChange={(e) => {
                 console.debug(app);
                 app.useLog = e.target.checked;
@@ -129,26 +145,30 @@ function CreatView() {
             />
           </Label>
         </div>
-        <div className="row">
-          <input
-            className="path"
-            title="start-script"
-            onChange={(e) => {
-              app.log = e.target.value;
-              apps[idx] = app;
-              setApps(apps);
-            }}
-            placeholder={intl.formatMessage({
-              id: "sub-app log file relative path, default is current-dir/log.txt",
-            })}
-          ></input>
-        </div>
-        <div className="row">
-          <Label required text="Use apis : ">
-            <Switch
-              value={app.useApi}
+        {app.useLog && (
+          <div className="row">
+            <input
+              className="path"
+              title="log file path of console outputs"
               onChange={(e) => {
-                console.debug(`app::${idx}.useApi=${app.useApi} => ${e.target.checked}`);
+                app.log = e.target.value;
+                apps[idx] = app;
+                setApps(apps);
+              }}
+              placeholder={intl.formatMessage({
+                id: "sub-app log file relative path, default is current-dir/log.txt",
+              })}
+            ></input>
+          </div>
+        )}
+        <div className="row">
+          <Label required={app.useApi} text="Use apis : ">
+            <Switch
+              checked={app.useApi}
+              onChange={(e) => {
+                console.debug(
+                  `app::${idx}.useApi=${app.useApi} => ${e.target.checked}`
+                );
                 app.useApi = e.target.checked;
                 apps[idx] = app;
                 setApps(apps);
@@ -161,7 +181,7 @@ function CreatView() {
             <div className="row">
               <input
                 className="api-live"
-                title="api of live"
+                title="api of checking is this app alive"
                 onChange={(e) => {
                   app.api = app.api ?? {};
                   app.api.live = e.target.value;
@@ -176,7 +196,7 @@ function CreatView() {
             <div className="row">
               <input
                 className="api-start"
-                title="api of start"
+                title="api of starting up this app"
                 onChange={(e) => {
                   app.api = app.api ?? {};
                   app.api.start = e.target.value;
@@ -191,7 +211,7 @@ function CreatView() {
             <div className="row">
               <input
                 className="api-stop"
-                title="api of stop"
+                title="api of stopping thi app"
                 onChange={(e) => {
                   app.api = app.api ?? {};
                   app.api.stop = e.target.value;
@@ -234,9 +254,11 @@ function CreatView() {
           e.preventDefault();
           const form = getForm();
           console.log(form);
-          const valid_result = PkgValidor.safeParse(form);
+          let valid_result = PkgValidor.safeParse(form);
           if (!valid_result.success) {
-            const firsetError: VCluster.ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
+            const firsetError: VCluster.ZodErrorMessage = JSON.parse(
+              valid_result.error.message
+            )[0];
             console.error(firsetError.message);
             return msg3s(
               intl.formatMessage({
@@ -245,16 +267,35 @@ function CreatView() {
               "warning"
             );
           }
-          const res = await createCluster(form);
-          console.log(res);
-          if (res.ok) {
-            msg3s(
-              intl.formatMessage({
-                id: "create successfully",
-              }),
-              "success"
-            );
-          }
+          const appsValidor = AppsValidor(form.apps);
+          useSafe<boolean>(() => {
+            appsValidor.forEach((validor, idx) => {
+              validor.parse(form.apps[idx]);
+            });
+          })
+            .catch((error: any) => {
+              const errMsgs = convertZodErrorToMessageList(error);
+              console.error(errMsgs);
+              msg(
+                intl.formatMessage({
+                  id: errMsgs[0] ?? "Unknown error",
+                }),
+                "warning"
+              );
+              return false;
+            })
+            .then?.(async () => {
+              const res = await createCluster(form);
+              console.log(res);
+              if (res.ok) {
+                msg(
+                  intl.formatMessage({
+                    id: "create successfully",
+                  }),
+                  "success"
+                );
+              }
+            });
         }}
       >
         <h1 className="htitle">
@@ -263,7 +304,7 @@ function CreatView() {
         </h1>
         <div className="row">
           <input
-            title="cluster-name"
+            title="name of the cluster"
             onChange={(e) => {
               let newpkg = pkg;
               newpkg.name = e.target.value;
@@ -277,7 +318,7 @@ function CreatView() {
         <div className="row" id="cluster-bottom">
           <textarea
             className="desc"
-            title="cluster-desc"
+            title="description of the cluster"
             onChange={(e) => {
               let newpkg = pkg;
               newpkg.desc = e.target.value;
@@ -291,7 +332,9 @@ function CreatView() {
         {getAppDoms()}
         <div className="row">
           <div className="plain-row">
-            <button type="submit">{intl.formatMessage({ id: "submit" })}</button>
+            <button type="submit">
+              {intl.formatMessage({ id: "submit" })}
+            </button>
             <button
               type="reset"
               onClick={() => {
@@ -300,7 +343,9 @@ function CreatView() {
             >
               {intl.formatMessage({ id: "reset" })}
             </button>
-            <button type="button">{intl.formatMessage({ id: "save as template" })}</button>
+            <button type="button">
+              {intl.formatMessage({ id: "save as template" })}
+            </button>
           </div>
           <button type="button" onClick={addSubApp}>
             {intl.formatMessage({ id: "Add sub-app" })}

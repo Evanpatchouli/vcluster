@@ -23,6 +23,7 @@ declare namespace VCluster {
     api?: {
       live?: string;
       start?: string;
+      restart?: string;
       stop?: string;
     };
     useApi?: boolean;
