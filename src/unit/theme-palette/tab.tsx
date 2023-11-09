@@ -13,7 +13,7 @@ function Tab() {
     <div className="theme-palette-tab">
       <p className="theme-info">
         {intl.formatMessage({
-          id: "THEME_INFO",
+          id: "$THEME_INFO",
         })}
       </p>
     </div>
