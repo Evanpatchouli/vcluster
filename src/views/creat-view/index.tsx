@@ -4,23 +4,15 @@ import React, { Fragment } from "react";
 import { Delete, Spanner } from "@icon-park/react";
 import { PkgConfig, ServiceConfig } from "../../model/VCluster";
 import { createCluster } from "../../api";
-import {
-  convertZodErrorToMessageList,
-  msg,
-  msg3s,
-  useForceUpdate,
-  useSafe,
-} from "../../util/util";
+import { convertZodErrorToMessageList, msg, msg3s, useForceUpdate, useSafe } from "../../util/util";
 import { AppsValidor, PkgValidor } from "./valid";
-import { InputLabel, Switch } from "@mui/material";
+import { Button, Switch } from "@mui/material";
 import Label from "../../unit/Label";
 
 function CreatView() {
   const intl = useIntl();
   const forceUpdate = useForceUpdate();
-  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([
-    new ServiceConfig(),
-  ]);
+  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([new ServiceConfig()]);
   const setApps: typeof _setApps = (state) => {
     _setApps(state);
     forceUpdate();
@@ -64,9 +56,9 @@ function CreatView() {
             ></input>
           </div>
           {idx === 0 ? null : (
-            <button title="delete" type="button" onClick={() => delSubApp(idx)}>
+            <Button className="md-button-cast" title="delete" type="button" onClick={() => delSubApp(idx)}>
               <Delete />
-            </button>
+            </Button>
           )}
         </div>
         <div className="row">
@@ -166,9 +158,7 @@ function CreatView() {
             <Switch
               checked={app.useApi}
               onChange={(e) => {
-                console.debug(
-                  `app::${idx}.useApi=${app.useApi} => ${e.target.checked}`
-                );
+                console.debug(`app::${idx}.useApi=${app.useApi} => ${e.target.checked}`);
                 app.useApi = e.target.checked;
                 apps[idx] = app;
                 setApps(apps);
@@ -189,7 +179,7 @@ function CreatView() {
                   setApps(apps);
                 }}
                 placeholder={intl.formatMessage({
-                  id: "request api for checking live...",
+                  id: "request api for checking alive...",
                 })}
               />
             </div>
@@ -204,7 +194,7 @@ function CreatView() {
                   setApps(apps);
                 }}
                 placeholder={intl.formatMessage({
-                  id: "request api for checking start...",
+                  id: "request api for starting...",
                 })}
               />
             </div>
@@ -219,7 +209,7 @@ function CreatView() {
                   setApps(apps);
                 }}
                 placeholder={intl.formatMessage({
-                  id: "request api for checking stop...",
+                  id: "request api for stopping...",
                 })}
               />
             </div>
@@ -330,20 +320,25 @@ function CreatView() {
         {getAppDoms()}
         <div className="row">
           <div className="plain-row">
-            <button type="submit">{intl.formatMessage({ id: "submit" })}</button>
-            <button
+            <Button type="submit" className="md-button-cast">
+              {intl.formatMessage({ id: "submit" })}
+            </Button>
+            <Button
+              className="md-button-cast"
               type="reset"
               onClick={() => {
                 setApps([new ServiceConfig()]);
               }}
             >
               {intl.formatMessage({ id: "reset" })}
-            </button>
-            <button type="button">{intl.formatMessage({ id: "save as template" })}</button>
+            </Button>
+            <Button type="button" className="md-button-cast">
+              {intl.formatMessage({ id: "save as template" })}
+            </Button>
           </div>
-          <button type="button" onClick={addSubApp}>
+          <Button className="md-button-cast" type="button" onClick={addSubApp}>
             {intl.formatMessage({ id: "Add sub-app" })}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
