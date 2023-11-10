@@ -7,6 +7,7 @@ import { AlertColor } from "@mui/material";
 import { Command } from "@tauri-apps/api/shell";
 import toast from "react-hot-toast";
 import { useReducer } from "react";
+import { z } from "zod";
 
 const AlertMap = {
   success: {
@@ -121,6 +122,19 @@ export const Sql = {
     `SELECT * FROM cluster WHERE name LIKE '%${keyword}%' OR desc LIKE '%${keyword}%' OR file LIKE '%${keyword}%'`,
 };
 
+export const convertZodErrorToMessageList = (error: Error) => {
+  const zodErrorString = error.message as string;
+  const zodError = JSON.parse(zodErrorString);
+  const messages: string[] = zodError.map(
+    (
+      err: z.ZodError & {
+        path?: string[];
+      }
+    ) => err.message
+  );
+  return messages;
+};
+
 export default {
   msg,
   msg3s,
@@ -131,17 +145,45 @@ export default {
 
 /** `Dont't abuse it!` : a hook to force rerender right now. */
 export const useForceUpdate = () => {
-  const [state, _forceUpdate] = useReducer((state: number, action: { type: VCluster.Hint<"plus"> }) => {
-    switch (action.type) {
-      case "plus":
-        return state + 1;
-      default:
-        return state;
-    }
-  }, 0);
+  const [state, _forceUpdate] = useReducer(
+    (state: number, action: { type: VCluster.Hint<"plus"> }) => {
+      switch (action.type) {
+        case "plus":
+          return state + 1;
+        default:
+          return state;
+      }
+    },
+    0
+  );
   const forceUpdate = () => {
     _forceUpdate({ type: "plus" });
   };
   forceUpdate.count = state;
   return forceUpdate;
+};
+
+interface Then {
+  (fn: Function): any;
+}
+
+export const useSafe = <R = any>(fn: Function) => {
+  const fn1 = () => {
+    fn();
+  };
+  fn1.catch = (
+    handler: (err: any) => R
+  ): (ReturnType<typeof handler> | string) & { then?: Then } => {
+    try {
+      fn();
+      return {
+        then: (fn2: Function) => {
+          return fn2();
+        },
+      } as any;
+    } catch (error: any) {
+      return handler(error) ?? (error.message as string);
+    }
+  };
+  return fn1;
 };

@@ -13,7 +13,23 @@ export class ServiceConfig  {
     /** executable command or script path, shouldn't `with > file`*/
     script: string;
   };
-  log?: string = "log.txt"
+  useScript?: boolean = true;
+
+  log?: string = "log.txt";
+  useLog?: boolean = true;
+
+  api?: {
+    live?: string;
+    start?: string;
+    restart?: string;
+    stop?: string;
+  } = {
+    live: '',
+    start: '',
+    restart: '',
+    stop: '',
+  };
+  useApi?: boolean = false;
 
   constructor() {
     this.start = {
