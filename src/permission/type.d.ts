@@ -1,3 +1,3 @@
 declare namespace VCluster {
-  type Permission = "read" | "write" | "execute";
+  type Permission = "read" | "write" | "execute" | "notify";
 }

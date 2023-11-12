@@ -28,7 +28,7 @@ export const del_app_by_pk = async (pk: String) => {
 };
 
 export const kill_port = async (port: number) => {
-  return await invoke("kill", { port });
+  return await invoke<VCluster.Resp<null>>("kill", { port });
 };
 
 export const stop_pkg_by_id = async (id: String) => {

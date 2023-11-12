@@ -1,4 +1,5 @@
-use std::fs;
+use std::{fs, process::Stdio};
+use std::io::Read;
 
 use crate::{model::{PkgConfig, resp::{Resp, Resp2,self}, ServiceConfig}, cmd::run_script, util::logger, interface::crud::Crud};
 
@@ -70,20 +71,27 @@ pub fn run_app<'a>(dir: &'a str, script: &'a str, outdir: Option<&'a str>, name:
       log_path = "log.txt";
     }
   }
-  println!("{}", format!("cmd /c start /b {} >> {}", script, log_path));
-  let proces = std::process::Command::new("cmd")
+  logger::info(&format!("{}$ cmd /c {} >> {}", dir, script, log_path));
+  let mut proces = std::process::Command::new("cmd")
   .current_dir(dir)
-  .args(&["/c", script, ">>", log_path])
-  // .args(&["/c", "start", "/b", script, ">>", log_path])
-  .output()
+  .args(&["/c", script])
+  // .stdout(Stdio::piped())
+  .spawn()
+  // .output()
   .expect(&format!("failed to execute {}", name.unwrap_or("script")));
 
-  logger::info(&format!("status: {}", proces.status));
-  logger::info(&format!("stdout: {}", String::from_utf8_lossy(&proces.stdout)));
-  let stderr: String = String::from_utf8_lossy(&proces.stderr).to_string();
-  if &stderr!="" {
-    logger::errorMsg(&format!("stderr: {}", &stderr));
-    return resp::fail2(stderr.clone(), -1);
+  let mut stderr_msg = String::new();
+
+  if let Some(ref mut stderr) = proces.stderr {
+    let mut error_output = String::new();
+    stderr.read_to_string(&mut error_output).expect("Failed to read stderr");
+    stderr_msg = error_output.clone();
+    logger::errorMsg(&format!("{}", error_output));
+  }
+
+  if &stderr_msg!="" {
+    logger::errorMsg(&format!("stderr: {}", &stderr_msg));
+    return resp::fail2(stderr_msg.clone(), -1);
   }
   return resp::ok2("success".to_owned(), 1);
   

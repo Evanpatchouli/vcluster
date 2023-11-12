@@ -67,11 +67,21 @@
 
 .row {
   display: flex;
+  flex-direction: row;
   /* justify-content: center; */
 }
 
 .row-center {
   justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
 }
 
 .col-center {
@@ -115,12 +125,25 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  border-color: var(--color-element-active_or_focus-highlight);
+button.MuiButton-root.md-button-cast {
+  color: var(--color-view__element);
+  font-weight: 500;
+  font-size: 1em;
+  font-family: inherit;
+  text-transform: none;
+  background-color: var(--bg-color-view__element);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: var(--element-boxshadow);
+  transition: all 0.1s;
 }
+
+/* button:hover {
+  border-color: var(--color-element-active_or_focus-highlight);
+} */
 button:active {
   background-color: var(--bg-color-view__element-active);
-  border-color: var(--color-element-active_or_focus-highlight);
+  /* border-color: var(--color-element-active_or_focus-highlight); */
 }
 
 input,

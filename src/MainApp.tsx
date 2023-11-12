@@ -11,6 +11,11 @@ import { closeMsg } from "./store/msg/msg.reducer";
 import { useEffect } from "react";
 import { setTheme } from "./store/theme/theme.reducer";
 import { setPermission } from "./store/permission/permission.reducer";
+import {
+  isPermissionGranted,
+  requestPermission,
+} from "@tauri-apps/api/notification";
+import { TautiStoreState } from "./store/tauri/type";
 
 function mapStateToProps(state: RootState) {
   const { langReducer, msgReducer } = state;
@@ -21,6 +26,35 @@ function mapStateToProps(state: RootState) {
   };
 }
 
+const initStore = () => {
+  TauriStore?.values().then(async (v: TautiStoreState) => {
+    useAppDispatch(setTheme(v?.theme ?? "dark"));
+    TauriStore.theme = v?.theme ?? "dark";
+
+    useAppDispatch(setLang(v?.lang ?? "en"));
+    TauriStore.lang = v?.lang ?? "en";
+
+    let permissionGranted = await isPermissionGranted();
+    if (!permissionGranted) {
+      const permission = await requestPermission();
+      permissionGranted = permission === "granted";
+    }
+    let permissions = v?.permission ?? ["read", "write", "execute"];
+    if (permissionGranted) {
+      permissions.push("notify");
+      permissions = Array.from(new Set(permissions));
+    } else {
+      permissions = permissions.filter((item) => item !== "notify");
+    }
+    useAppDispatch(setPermission(permissions));
+    TauriStore.permission = permissions;
+
+    TauriStore.settings = v?.settings ?? {
+      notification: true,
+    };
+  });
+};
+
 function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
   const handleContextMenu = (event: MouseEvent) => {
     event.preventDefault();
@@ -30,13 +64,7 @@ function MainApp(props: { lang: string; messages: {}; msg: MsgState }) {
   useAppDispatch(setLang(props.lang));
 
   useEffect(() => {
-    TauriStore?.values().then((v) => {
-      useAppDispatch(setTheme(v?.theme ?? "dark"));
-      useAppDispatch(setLang(v?.lang ?? "en"));
-      useAppDispatch(
-        setPermission(v?.permission ?? ["read", "write", "execute"])
-      );
-    });
+    initStore();
   }, []);
 
   return (
