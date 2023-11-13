@@ -67,11 +67,21 @@
 
 .row {
   display: flex;
+  flex-direction: row;
   /* justify-content: center; */
 }
 
 .row-center {
   justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
 }
 
 .col-center {

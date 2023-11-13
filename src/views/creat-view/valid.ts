@@ -13,16 +13,16 @@ export const PkgValidor = z.object({
         path: z.string().nullable(),
         script: z.string().nullable(),
       }).nullable(),
-      useScript: z.boolean(),
+      useScript: z.number(),
       api: z.object({
-        live: z.string().nullable(),
+        alive: z.string().nullable(),
         start: z.string().nullable(),
         restart: z.string().nullable(),
         stop: z.string().nullable(),
       }).nullable(),
-      useApi: z.boolean(),
+      useApi: z.number(),
       log: z.string().nullable(),
-      useLog: z.boolean(),
+      useLog: z.number(),
     })
   ),
 });
@@ -43,12 +43,12 @@ export const AppsValidor = (apps: VCluster.PkgConfig['apps']) => {
     }).nullable();
     const logValidor = app.useLog ? z.string().nonempty("log path cannot be empty") : z.string().nullable();
     const apiValidor = app.useApi? z.object({ 
-      live: z.string().nullable(),
+      alive: z.string().nullable(),
       start: z.string().nonempty("start api cannot be empty"),
       restart: z.string().nullable(),
       stop: z.string().nullable(),
     }) : z.object({
-      live: z.string().nullable(),
+      alive: z.string().nullable(),
       start: z.string().nullable(),
       restart: z.string().nullable(),
       stop: z.string().nullable(),
@@ -59,11 +59,11 @@ export const AppsValidor = (apps: VCluster.PkgConfig['apps']) => {
       port: z.number().int("port should be an integer").
         positive("port should be larger than zero"),
       start: startValidor,
-      useScript: z.boolean(),
+      useScript: z.number(),
       api: apiValidor,
-      useApi: z.boolean(),
+      useApi: z.number(),
       log: logValidor,
-      useLog: z.boolean(),
+      useLog: z.number(),
     });
     return appValidor;
   })

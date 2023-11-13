@@ -54,7 +54,8 @@
   .path,
   .api-live,
   .api-start,
-  .api-stop {
+  .api-stop,
+  .api-restart {
     width: 100%;
   }
 

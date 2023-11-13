@@ -3,4 +3,5 @@ export type TautiStoreState = {
   theme: "system" | "dark" | "light";
   lang: "en" | "cn";
   permission: VCluster.Hint<VCluster.Permission>[];
+  settings: VCluster.Settings;
 };

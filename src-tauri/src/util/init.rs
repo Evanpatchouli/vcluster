@@ -29,10 +29,17 @@ CREATE TABLE IF NOT EXISTS "subapp" (
   "cluster_id" text,
   "name" text,
   "desc" text,
-  "path" text,
   "port" integer,
+  "path" text,
   "start_script" text,
+  "use_script" integer,
   "log" text,
+  "use_log" integer,
+  "api_alive" text,
+  "api_start" text,
+  "api_stop" text,
+  "api_restart" text,
+  "use_api" integer,
   PRIMARY KEY ("id")
 );
 

@@ -102,4 +102,19 @@ export default class TautiStoreProxy {
     // @ts-ignore
     this._store.set("permission", value);
   }
+
+  get settings(): Promise<TautiStoreState["settings"]> {
+    // @ts-ignore
+    return this._store.get("settings");
+  }
+
+  /**
+   * @param value `TautiStoreState["settings"]`
+   */
+  // @ts-ignore
+  set settings(value: any): Promise<void> {
+    this.updatedAt = Date.now();
+    // @ts-ignore
+    this._store.set("settings", value);
+  }
 }

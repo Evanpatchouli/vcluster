@@ -15,18 +15,18 @@ declare namespace VCluster {
       /** executable command or script path, shouldn't `with > file`*/
       script: string;
     };
-    useScript?: boolean;
+    useScript?: number;
 
     log?: string;
-    useLog?: boolean;
+    useLog?: number;
 
     api?: {
-      live?: string;
+      alive?: string;
       start?: string;
       restart?: string;
       stop?: string;
     };
-    useApi?: boolean;
+    useApi?: number;
 
     buildfromApp(app: ServiceConfig): ServiceConfig;
 
@@ -115,5 +115,11 @@ declare namespace VCluster {
     set lang(value: "en" | "cn"): Promise<void>;
     get permission(): Promise<VCluster.Hint<VCluster.Permission>[]>;
     set permission(value: VCluster.Hint<VCluster.Permission>[]): Promise<void>;
+    get settings(): Promise<VCluster.Settings>;
+    set settings(value: VCluster.Settings): Promise<void>;
+  }
+
+  type Settings = {
+    notification: boolean;
   }
 }

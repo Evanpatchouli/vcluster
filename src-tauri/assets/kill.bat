@@ -9,7 +9,7 @@ for /f "tokens=2,5" %%b in ('netstat -ano ^| findstr ":%target%"') do (
     set find=%%b
     for /f "usebackq delims=: tokens=1,2" %%i in (`set find`) do (
         if %%j==%target% (
-            going to kill %target% process %%c
+            echo going to kill %target% process %%c
             taskkill /f /pid %%c
             echo %target% process %%c has been killed
         ) else (

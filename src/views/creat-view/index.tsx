@@ -1,21 +1,40 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import "./style.css";
-import React, { Fragment } from "react";
+import React, { Fragment, SetStateAction } from "react";
 import { Delete, Spanner } from "@icon-park/react";
 import { PkgConfig, ServiceConfig } from "../../model/VCluster";
 import { createCluster } from "../../api";
-import { convertZodErrorToMessageList, msg, msg3s, useForceUpdate, useSafe } from "../../util/util";
+import {
+  convertZodErrorToMessageList,
+  keysToSnakeCase,
+  msg,
+  msg3s,
+  useForceUpdate,
+  useSafe,
+} from "../../util/util";
 import { AppsValidor, PkgValidor } from "./valid";
 import { Button, Switch } from "@mui/material";
 import Label from "../../unit/Label";
 
+type AppSetter = SetStateAction<VCluster.ServiceConfig[]>;
+
 function CreatView() {
   const intl = useIntl();
   const forceUpdate = useForceUpdate();
-  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([new ServiceConfig()]);
-  const setApps: typeof _setApps = (state) => {
+  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([
+    new ServiceConfig(),
+  ]);
+  const setApps: (
+    state: typeof apps | AppSetter,
+    updateForce?: boolean
+  ) => void = (
+    state: typeof apps | AppSetter,
+    updateForce: boolean = false
+  ) => {
     _setApps(state);
-    forceUpdate();
+    if (updateForce) {
+      forceUpdate();
+    }
   };
   const [, setAppDoms] = React.useState(getAppDoms);
   const [pkg, setPkg] = React.useState<VCluster.PkgConfig>(new PkgConfig());
@@ -56,7 +75,12 @@ function CreatView() {
             ></input>
           </div>
           {idx === 0 ? null : (
-            <Button className="md-button-cast" title="delete" type="button" onClick={() => delSubApp(idx)}>
+            <Button
+              className="md-button-cast"
+              title="delete"
+              type="button"
+              onClick={() => delSubApp(idx)}
+            >
               <Delete />
             </Button>
           )}
@@ -76,19 +100,22 @@ function CreatView() {
           ></textarea>
         </div>
         <div className="row">
-          <Label required={app.useScript} text="Start app by script : ">
+          <Label
+            required={boolify(app.useScript)}
+            text="Start app by script : "
+          >
             <Switch
-              checked={app.useScript}
+              checked={boolify(app.useScript)}
               onChange={(e) => {
                 console.debug(app);
-                app.useScript = e.target.checked;
+                app.useScript = numberify(e.target.checked);
                 apps[idx] = app;
-                setApps(apps);
+                setApps(apps, true);
               }}
             />
           </Label>
         </div>
-        {app.useScript && (
+        {boolify(app.useScript) && (
           <>
             <div className="row">
               <input
@@ -125,19 +152,19 @@ function CreatView() {
           </>
         )}
         <div className="row">
-          <Label required={app.useLog} text="Log outputs : ">
+          <Label required={boolify(app.useLog)} text="Log outputs : ">
             <Switch
-              checked={app.useLog}
+              checked={boolify(app.useLog)}
               onChange={(e) => {
                 console.debug(app);
-                app.useLog = e.target.checked;
+                app.useLog = numberify(e.target.checked);
                 apps[idx] = app;
-                setApps(apps);
+                setApps(apps, true);
               }}
             />
           </Label>
         </div>
-        {app.useLog && (
+        {boolify(app.useLog) && (
           <div className="row">
             <input
               className="path"
@@ -154,19 +181,21 @@ function CreatView() {
           </div>
         )}
         <div className="row">
-          <Label required={app.useApi} text="Use apis : ">
+          <Label required={boolify(app.useApi)} text="Use apis : ">
             <Switch
-              checked={app.useApi}
+              checked={boolify(app.useApi)}
               onChange={(e) => {
-                console.debug(`app::${idx}.useApi=${app.useApi} => ${e.target.checked}`);
-                app.useApi = e.target.checked;
+                console.debug(
+                  `app::${idx}.useApi=${app.useApi} => ${e.target.checked}`
+                );
+                app.useApi = numberify(e.target.checked);
                 apps[idx] = app;
-                setApps(apps);
+                setApps(apps, true);
               }}
             />
           </Label>
         </div>
-        {app.useApi && (
+        {boolify(app.useApi) && (
           <>
             <div className="row">
               <input
@@ -174,7 +203,7 @@ function CreatView() {
                 title="api of checking is this app alive"
                 onChange={(e) => {
                   app.api = app.api ?? {};
-                  app.api.live = e.target.value;
+                  app.api.alive = e.target.value;
                   apps[idx] = app;
                   setApps(apps);
                 }}
@@ -210,6 +239,21 @@ function CreatView() {
                 }}
                 placeholder={intl.formatMessage({
                   id: "request api for stopping...",
+                })}
+              />
+            </div>
+            <div className="row">
+              <input
+                className="api-restart"
+                title="api of restarting up this app"
+                onChange={(e) => {
+                  app.api = app.api ?? {};
+                  app.api.restart = e.target.value;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
+                placeholder={intl.formatMessage({
+                  id: "request api for restarting...",
                 })}
               />
             </div>
@@ -273,7 +317,7 @@ function CreatView() {
               return false;
             })
             .then?.(async () => {
-              const res = await createCluster(form);
+              const res = await createCluster(keysToSnakeCase(form));
               console.log(res);
               if (res.ok) {
                 msg(

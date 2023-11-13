@@ -1,8 +1,24 @@
-import { HandleDown, HandleRight, Loading } from "@icon-park/react";
+import {
+  HandleDown,
+  HandleRight,
+  Loading,
+  More,
+  Minus as Less,
+  Edit,
+  Delete,
+  Stopwatch,
+  Close,
+  Forbid,
+  Api as ApiIcon,
+  Play as GoStart,
+  Pause,
+  PauseOne,
+  Refresh,
+  Round as Status,
+} from "@icon-park/react";
 import {
   Button,
   Card,
-  CardActions,
   CardContent,
   Collapse,
   List,
@@ -19,9 +35,24 @@ import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { RootState, clustersReducer } from "../../store/store";
 import { useAppDispatch } from "../../store/hook";
-import { setClusters, moveOne, moveOneApp } from "../../store/clusters/clusters.reducer";
-import { routeTo, msgms, msg, sleep } from "../../util/util";
+import {
+  setClusters,
+  moveOne,
+  moveOneApp,
+} from "../../store/clusters/clusters.reducer";
+import {
+  routeTo,
+  msgms,
+  msg,
+  useSafe,
+  upperCaseFirst,
+  useLoading,
+  useNotify,
+  useReactive,
+} from "../../util/util";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Emoji } from "../../util/constans";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -31,12 +62,33 @@ function mapStateToProps(state: RootState) {
 function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
   const link = useNavigate();
   const dispatch = useAppDispatch;
+  const notify = useNotify();
   useEffect(() => {
     Api.getall_cluster().then((result) => {
       // console.log(result);
       dispatch(setClusters(result.data as VCluster.PkgConfig[]));
     });
   }, []);
+
+  const {
+    values: loading,
+    plus: plusLoading,
+    minus: minusLoading,
+  } = useLoading(
+    {
+      alive: false,
+      kill: false,
+      stop: false,
+      stopApi: false,
+      relaunch: false,
+      relaunchApi: false,
+    },
+    "object"
+  );
+
+  const { 0: status, 1: setStatus } = useReactive({
+    app1: "offline" as "online" | "offline",
+  });
 
   const [pkgMenu, setPkgMenu] = useState<VCluster.PkgMenu>({
     show: false,
@@ -46,13 +98,16 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     delModal: false,
   });
 
-  const [delModalMeta, setDelModalMeta] = useState<VCluster.ClusterManagerDelModalMeta>({
-    confirmLoading: false,
-    type: "cluster",
-  });
+  const [delModalMeta, setDelModalMeta] =
+    useState<VCluster.ClusterManagerDelModalMeta>({
+      confirmLoading: false,
+      type: "cluster",
+    });
 
-  const delModalConfirmLoading = () => setDelModalMeta((pre) => ({ ...pre, confirmLoading: true }));
-  const delModalConfirmLoadingEnd = () => setDelModalMeta((pre) => ({ ...pre, confirmLoading: false }));
+  const delModalConfirmLoading = () =>
+    setDelModalMeta((pre) => ({ ...pre, confirmLoading: true }));
+  const delModalConfirmLoadingEnd = () =>
+    setDelModalMeta((pre) => ({ ...pre, confirmLoading: false }));
 
   const showPkgMenu = (e: React.MouseEvent, idx: number, id: String) => {
     setPkgMenu((pre) => {
@@ -86,7 +141,12 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     id: "",
   });
 
-  const showAppMenu = (e: React.MouseEvent, cluster_id: String, idx: number, id: String) => {
+  const showAppMenu = (
+    e: React.MouseEvent,
+    cluster_id: String,
+    idx: number,
+    id: String
+  ) => {
     setAppMenu((pre) => {
       return {
         show: true,
@@ -179,7 +239,9 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
       if (res.ok) {
         msg("Action success", "success");
         // moveOneApp
-        dispatch(moveOneApp({ cluster_idx: pkgMenu.idx, app_idx: appMenu.idx }));
+        dispatch(
+          moveOneApp({ cluster_idx: pkgMenu.idx, app_idx: appMenu.idx })
+        );
       } else {
         throw new Error(res.msg);
       }
@@ -221,21 +283,93 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     closePkgMenu();
   };
 
-  const handleAppLanuchClick = async () => {
+  async function launchApp() {
     const id = appMenu.id;
-    const res = Api.launch_app_by_id(id);
-    // console.log(res);
-    // if (!res.ok) {
-    //   return msgms(res.msg, "error", 3000);
-    // }
+    const res = await Api.launch_app_by_id(id);
+    console.debug("launch app res: ", res);
+    return res;
+  }
+
+  const handleAppLanuchClick = async () => {
+    const res = await launchApp();
+    if (!res.ok) {
+      notify("Launch action fails!");
+      return msgms("Launch action fails", "error", 2000);
+    } else {
+      notify(`Launch app (${getCurApp()?.name}) action done!`);
+      msgms("Launch action done", "success", 2000);
+    }
+    closeAppMenu();
+  };
+
+  function getCurApp() {
+    return pkgs.find((_pkg, idx) => idx == pkgMenu.idx)?.apps[appMenu.idx];
+  }
+
+  async function killApp() {
+    const port = getCurApp()?.port;
+    const id = appMenu.id;
+    return await Api.kill_port(port as number);
+  }
+
+  const handleAppKillClick = async () => {
+    plusLoading("kill");
+    const res = await killApp();
+    minusLoading("kill");
+    if (res.ok) {
+      msgms("Kill action done", "success", 2000);
+    } else {
+      msgms("Kill action fails", "error", 2000);
+    }
     closeAppMenu();
   };
 
   const handleAppStopClick = async () => {
-    const port = pkgs.find((_pkg, idx) => idx == pkgMenu.idx)?.apps[appMenu.idx].port;
+    const port = getCurApp()?.port;
     const id = appMenu.id;
-    const res = Api.kill_port(port as number);
+    const res = await Api.kill_port(port as number);
+    if (res.ok) {
+      msgms("Stop action done", "success", 2000);
+    } else {
+      msgms("Stop action fails", "error", 2000);
+    }
     closeAppMenu();
+  };
+
+  const handleAppRelaunchClick = async () => {
+    plusLoading("relaunch");
+    await killApp();
+    await launchApp();
+    minusLoading("relaunch");
+    msgms("Relaunch action done", "success", 2000);
+    closeAppMenu();
+  };
+
+  const [more, setMore] = useState(false);
+
+  const handleMoreClick = () => {
+    setMore((pre) => !pre);
+  };
+
+  const checkAppAlive = async () => {
+    const curApp = getCurApp();
+    const port = curApp?.port;
+    plusLoading("alive");
+    await useSafe(async () => {
+      await axios.request({
+        url: `http://localhost:${port}`,
+        method: "GET",
+        timeout: 2000,
+      });
+      msgms("App is alive", "success", 2000);
+      setStatus("app1", "online");
+    }).catch((e) => {
+      console.error(e);
+      const errmsg = upperCaseFirst(e.message || "Request fails");
+      msgms(errmsg, "error", 2000);
+      setStatus("app1", "offline");
+    });
+    minusLoading("alive");
   };
 
   return (
@@ -277,9 +411,19 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                       key={subidx}
                       sx={{ pl: 4 }}
                       className="subapp-item"
-                      onContextMenu={(e) => showAppMenu(e, pkg.id as String, idx, app.id as String)}
+                      onContextMenu={(e) =>
+                        showAppMenu(
+                          e,
+                          pkg.id as String,
+                          subidx,
+                          app.id as String
+                        )
+                      }
                     >
-                      <ListItemText style={{ paddingRight: "10rem" }} primary={app.name} />
+                      <ListItemText
+                        style={{ paddingRight: "10rem" }}
+                        primary={app.name}
+                      />
                     </ListItemButton>
                   );
                 })}
@@ -307,11 +451,19 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
           <div onClick={handleLanuchClick}>
             <FormattedMessage id="Launch" />
           </div>
+          <div onClick={handleLanuchClick}>
+            <span>
+              <FormattedMessage id="Launch" /> (api)
+            </span>
+          </div>
           <div>
             <FormattedMessage id="Relaunch" />
           </div>
           <div onClick={handlePkgStopClick}>
             <FormattedMessage id="Stop" />
+          </div>
+          <div onClick={handlePkgStopClick}>
+            <FormattedMessage id="Kill" />
           </div>
           <div>
             <FormattedMessage id="Edit" />
@@ -340,20 +492,124 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
         }}
       >
         <div className="app-menu">
-          <div onClick={handleAppLanuchClick}>
+          <div
+            onClick={handleAppLanuchClick}
+            className="row space-between col-center"
+          >
             <FormattedMessage id="Launch" />
+            <GoStart />
           </div>
-          <div>
+          <div
+            onClick={handleAppLanuchClick}
+            className="row space-between col-center"
+          >
+            <span>
+              <FormattedMessage id="Launch" /> (api)
+            </span>
+          </div>
+          <div
+            onClick={handleAppRelaunchClick}
+            className="row space-between col-center"
+          >
             <FormattedMessage id="Relaunch" />
+            <span className="context-menu-item-icons">
+              <Loading
+                className={loading.relaunchApi ? "loading-active" : "invisible"}
+              />
+              <Refresh />
+            </span>
           </div>
-          <div onClick={handleAppStopClick}>
-            <FormattedMessage id="Stop" />
+          <div className="row space-between col-center">
+            <span>
+              <FormattedMessage id="Relaunch" /> (api)
+            </span>
+            <span>
+              <Loading
+                className={loading.relaunchApi ? "loading-active" : "invisible"}
+              />
+            </span>
           </div>
-          <div>
+          <div
+            onClick={handleAppStopClick}
+            className="row space-between col-center"
+          >
+            <span>
+              <FormattedMessage id="Stop" /> (api)
+            </span>
+            <span>
+              <ApiIcon />
+            </span>
+          </div>
+          <div
+            onClick={handleAppKillClick}
+            className="row space-between col-center"
+          >
+            <span>
+              <FormattedMessage id="Kill" /> (port)
+            </span>
+            <span className="context-menu-item-icons">
+              <Loading
+                className={loading.kill ? "loading-active" : "invisible"}
+              />
+              <Close />
+            </span>
+          </div>
+          <div className="row space-between col-center">
             <FormattedMessage id="Edit" />
+            <Edit />
           </div>
-          <div onClick={delAppClick}>
+          <div onClick={delAppClick} className="row space-between col-center">
             <FormattedMessage id="Delete" />
+            <Delete />
+          </div>
+          {more && (
+            <>
+              <div
+                onClick={checkAppAlive}
+                className="row space-between col-center"
+              >
+                <span>
+                  <FormattedMessage id="Alive" /> (api)
+                </span>
+                <span className="context-menu-item-icons">
+                  {loading.alive ? (
+                    <Loading
+                      className={loading.alive ? "loading-active" : "invisible"}
+                    />
+                  ) : (
+                    <Status
+                      theme="two-tone"
+                      fill={[
+                        "#9b9b9b",
+                        status.app1 === "online" ? "#b8e986" : "red",
+                      ]}
+                    />
+                  )}
+                </span>
+              </div>
+              <div onClick={checkAppAlive}>
+                <span>
+                  <FormattedMessage id="Start" /> (api)
+                </span>
+              </div>
+              <div onClick={checkAppAlive}>
+                <span>
+                  <FormattedMessage id="Stop" /> (api)
+                </span>
+              </div>
+              <div onClick={checkAppAlive}>
+                <span>
+                  <FormattedMessage id="Restart" /> (api)
+                </span>
+              </div>
+            </>
+          )}
+          <div
+            onClick={handleMoreClick}
+            className="row space-between col-center"
+          >
+            <FormattedMessage id={more ? "Less" : "More"} />
+            {more ? <Less /> : <More />}
           </div>
         </div>
       </Popover>
@@ -362,7 +618,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
         <Card className="del-pkg-modal">
           <CardContent className="del-pkg-modal__content">
             <Typography gutterBottom variant="h5" component="div">
-              Uh oh!
+              {Emoji.Warning}Warning
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Do you confirm to delete this {delModalMeta.type}?
@@ -381,11 +637,17 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
               className="del-pkg-modal__actions__button"
               size="small"
               variant="contained"
+              color="warning"
               onClick={delModalConfirmClick}
               disabled={delModalMeta.confirmLoading}
             >
               <div className="line">
-                {delModalMeta.confirmLoading && <Loading className="loading-active" style={{ marginRight: "0.5em" }} />}
+                {delModalMeta.confirmLoading && (
+                  <Loading
+                    className="loading-active"
+                    style={{ marginRight: "0.5em" }}
+                  />
+                )}
                 <span>Confirm</span>
               </div>
             </Button>

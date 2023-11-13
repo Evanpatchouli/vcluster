@@ -3,6 +3,7 @@ use crate::{model::{resp::{Resp, self}, PkgConfig, ServiceConfig}, interface::cr
 #[allow(dead_code,unused_variables)]
 #[tauri::command]
 pub async fn create_cluster(pkg: Option<PkgConfig>) -> Resp<'static, ()>{
+  // dbg!(pkg.clone());
   match pkg {
     Some(mut pkg) => {
       match pkg.apps.clone() {
