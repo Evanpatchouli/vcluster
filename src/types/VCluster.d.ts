@@ -34,6 +34,7 @@ declare namespace VCluster {
   }
   class PkgConfig {
     id?: string;
+    cluster_id?: string;
     name: string = "";
     desc: string = "";
     apps: ServiceConfig[] = [];
@@ -53,7 +54,7 @@ declare namespace VCluster {
 
   type PkgMenu = {
     idx: number;
-    id: String;
+    id: string;
     show: boolean;
     anchor: {
       top: number;
@@ -64,8 +65,8 @@ declare namespace VCluster {
 
   type AppMenu = {
     idx: number;
-    cluster_id: String;
-    id: String;
+    cluster_id: string;
+    id: string;
     show: boolean;
     anchor: {
       top: number;

@@ -14,7 +14,10 @@ mod cluster;
 pub use cluster::create_cluster;
 pub use cluster::getall_cluster;
 pub use cluster::del_cluster_by_pk;
-pub use cluster::del_app_by_pk;
+
+mod app;
+pub use app::create_app;
+pub use app::del_app_by_pk;
 
 mod __sql;
 pub use __sql::sql;

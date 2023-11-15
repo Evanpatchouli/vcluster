@@ -27,6 +27,10 @@ export const del_app_by_pk = async (pk: String) => {
   return await invoke<VCluster.Resp<null>>("del_app_by_pk", { pk });
 };
 
+export const create_app = async (app: VCluster.ServiceConfig) => {
+  return await invoke<VCluster.Resp<null>>("create_app", { app });
+};
+
 export const kill_port = async (port: number) => {
   return await invoke<VCluster.Resp<null>>("kill", { port });
 };
@@ -62,6 +66,7 @@ const Api = {
   kill_port,
   sql,
   MyState,
+  create_app
 };
 
 export default Api;
