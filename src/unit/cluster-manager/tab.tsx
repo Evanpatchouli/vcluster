@@ -53,6 +53,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Emoji } from "../../util/constans";
+import AppCreator from "./app.creator";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -109,7 +110,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
   const delModalConfirmLoadingEnd = () =>
     setDelModalMeta((pre) => ({ ...pre, confirmLoading: false }));
 
-  const showPkgMenu = (e: React.MouseEvent, idx: number, id: String) => {
+  const showPkgMenu = (e: React.MouseEvent, idx: number, id: string) => {
     setPkgMenu((pre) => {
       return {
         show: true,
@@ -143,9 +144,9 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
 
   const showAppMenu = (
     e: React.MouseEvent,
-    cluster_id: String,
+    cluster_id: string,
     idx: number,
-    id: String
+    id: string
   ) => {
     setAppMenu((pre) => {
       return {
@@ -283,6 +284,11 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     closePkgMenu();
   };
 
+  const handleAppAddClick = () => {
+    setAppCreator("open", true);
+    closePkgMenu();
+  };
+
   async function launchApp() {
     const id = appMenu.id;
     const res = await Api.launch_app_by_id(id);
@@ -372,6 +378,10 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     minusLoading("alive");
   };
 
+  const [appCreator, setAppCreator] = useReactive({
+    open: false,
+  });
+
   return (
     <div className="cluster-manager-tab">
       {pkgs.length == 0 ? (
@@ -384,7 +394,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
           <List key={idx} className="app-list">
             <ListItemButton
               onClick={() => handleClusterClick(idx)}
-              onContextMenu={(e) => showPkgMenu(e, idx, pkg.id as String)}
+              onContextMenu={(e) => showPkgMenu(e, idx, pkg.id as string)}
               selected={selectedIndex === idx}
             >
               <ListItemText
@@ -414,9 +424,9 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                       onContextMenu={(e) =>
                         showAppMenu(
                           e,
-                          pkg.id as String,
+                          pkg.id as string,
                           subidx,
-                          app.id as String
+                          app.id as string
                         )
                       }
                     >
@@ -467,6 +477,9 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
           </div>
           <div>
             <FormattedMessage id="Edit" />
+          </div>
+          <div onClick={handleAppAddClick}>
+            <FormattedMessage id="Add an app" />
           </div>
           <div>
             <FormattedMessage id="Export" />
@@ -654,6 +667,15 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
           </div>
         </Card>
       </Modal>
+      <AppCreator
+        open={appCreator.open}
+        setOpen={(v: boolean) => {
+          setAppCreator("open", v);
+        }}
+        initialData={{
+          cluster_id: pkgMenu.id,
+        }}
+      />
     </div>
   );
 }

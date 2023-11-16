@@ -1,4 +1,4 @@
-use crate::{model::{resp::{Resp, self}, PkgConfig, ServiceConfig}, interface::crud::Crud};
+use crate::{model::{resp::{Resp, self}, PkgConfig}, interface::crud::Crud};
 
 #[allow(dead_code,unused_variables)]
 #[tauri::command]
@@ -33,11 +33,4 @@ pub async fn getall_cluster() -> Resp<'static, Option<Vec<PkgConfig>>>{
 pub async fn del_cluster_by_pk(pk: String) -> Resp<'static, ()>{
   PkgConfig::del_by_pk(&pk).await;
   return resp::ok("delete a pkg success", 1);
-}
-
-#[allow(dead_code,unused_variables)]
-#[tauri::command]
-pub async fn del_app_by_pk(pk: String) -> Resp<'static, ()>{
-  ServiceConfig::del_by_pk(&pk).await;
-  return resp::ok("delete a app success", 1);
 }

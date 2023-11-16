@@ -8,7 +8,7 @@ mod interface;
 mod cmd;
 use cmd::{launch_pkg,launch_pkg_by_id,kill,create_cluster,
   getall_cluster,del_cluster_by_pk,del_app_by_pk,launch_app_by_id,
-  stop_pkg_by_id,sql};
+  stop_pkg_by_id,sql,create_app};
 
 mod store;
 
@@ -111,7 +111,8 @@ async fn main() {
           launch_app_by_id,
           stop_pkg_by_id,
           sql,
-          kill
+          kill,
+          create_app
           ])
         .menu(menu)
         .on_menu_event(|event| {
@@ -130,5 +131,5 @@ async fn main() {
           })
         .plugin(tauri_plugin_store::Builder::default().build())
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .expect("error while running vcluster");
 }
