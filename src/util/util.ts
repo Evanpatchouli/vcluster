@@ -436,3 +436,19 @@ export function objectifyFlattedFormData(data: any) {
 
   return _data1;
 }
+
+export function getSystemMode() {
+  // window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  //   const newColorScheme = e.matches ? "dark" : "light";
+  //   console.log(newColorScheme);
+  // });
+  let mode: "dark" | "light" = "dark";
+  try {
+    mode =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+  } catch (error) {}
+  return mode;
+}

@@ -195,11 +195,15 @@ export const counterSlice = createSlice({
         case "system":
           Object.keys(state.vars).forEach(
             (key: keyof typeof state.vars | (string & {})) => {
+              let systemMode = window.matchMedia("(prefers-color-scheme: dark)")
+                .matches
+                ? "dark"
+                : "light";
               document.documentElement.style.setProperty(
                 // @ts-ignore
                 _state.vars[key].cssVar,
                 // @ts-ignore
-                _state.vars[key].custom
+                _state.vars[key][systemMode]
               );
             }
           );
