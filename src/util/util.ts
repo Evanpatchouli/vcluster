@@ -32,7 +32,7 @@ const AlertMap = {
  * @param content message content
  * @returns
  */
-export const msg = (content: string, severity: AlertColor) => {
+export const msg = (content: string, severity: AlertColor = "info") => {
   // useAppDispatch(showMsg({
   //   content, severity, counter:null
   // }));
@@ -51,7 +51,7 @@ export const msg = (content: string, severity: AlertColor) => {
  * @param content message content
  * @returns
  */
-export const msg3s = (content: string, severity: AlertColor) => {
+export const msg3s = (content: string, severity: AlertColor = "info") => {
   toast(content, {
     duration: 3000,
     icon: AlertMap[severity]?.icon,
@@ -78,7 +78,11 @@ export const msg3s = (content: string, severity: AlertColor) => {
  * @param msec milliseconds timeout
  * @returns
  */
-export const msgms = (content: string, severity: AlertColor, msec?: number) => {
+export const msgms = (
+  content: string,
+  severity: AlertColor = "info",
+  msec?: number
+) => {
   if (msec && msec < 0) {
     return console.warn("timout cannot be negative");
   }
@@ -407,3 +411,28 @@ export const useReactive = <T extends Object = {}>(initialState: T) => {
 
   return [state, setReactive] as const;
 };
+
+// make data properties like start.script => start: { script }, notice some make like x.y.z => x : {y : {z}}, how deep is the depth is unknown.
+export function objectifyFlattedFormData(data: any) {
+  const _data = JSONX.reparse(data);
+  const _data1 = {};
+
+  Object.keys(_data).forEach((key) => {
+    const keys = key.split(".");
+    let temp = _data1;
+
+    for (let i = 0; i < keys.length; i++) {
+      const k = keys[i];
+      if (i === keys.length - 1) {
+        temp[k] = _data[key];
+      } else {
+        if (!temp[k]) {
+          temp[k] = {};
+        }
+        temp = temp[k];
+      }
+    }
+  });
+
+  return _data1;
+}

@@ -6,7 +6,7 @@ const useForm = <T = any>(
     {
       value: T[keyof T] | undefined | null;
       required?: boolean;
-      validator?: (value?: T[keyof T]) => string | undefined;
+      validator?: (value?: T[keyof T] | null) => string | undefined;
     }
   >,
   formRef: React.RefObject<HTMLFormElement>
@@ -16,10 +16,33 @@ const useForm = <T = any>(
   type FormSchema = typeof formSchema;
 
   const onSubmit =
-    (handler: (formData: T) => void) =>
+    (
+      handler: (formData: T) => void,
+      validates?: boolean | keyof T | (keyof T)[]
+    ) =>
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!formController.validates()) {
+      let fieldsTovalidate = validates;
+      switch (typeof validates) {
+        case "boolean":
+          if (validates) {
+            fieldsTovalidate = undefined;
+          } else {
+            fieldsTovalidate = [];
+          }
+          break;
+        case "string":
+          fieldsTovalidate = [validates];
+          break;
+        case "object":
+          fieldsTovalidate = (fieldsTovalidate as (keyof T)[])?.filter(
+            (field) => {
+              return Object.keys(formSchema).includes(field as string);
+            }
+          );
+          break;
+      }
+      if (!formController.validates(fieldsTovalidate as any)) {
         return;
       }
       const formData = formController.gets();
@@ -50,13 +73,18 @@ const useForm = <T = any>(
       });
     },
     validate: (key: keyof FormSchema) => {
-      const data = new FormData(formRef.current as HTMLFormElement);
       const validator = formSchema[key].validator;
       const value = formController.get(key);
+      if (value === undefined || value === null || `${value}`.trim() === "") {
+        if (formSchema[key].required) {
+          msg(`${String(key)} is required`, "warning");
+          return false;
+        }
+      }
       if (validator) {
         const error = validator(value);
         if (error) {
-          msg(error, "error");
+          msg(error, "warning");
           return false;
         }
       }

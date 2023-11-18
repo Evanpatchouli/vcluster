@@ -7,12 +7,26 @@ export type LabelProps = {
   required?: boolean;
 } & React.ComponentProps<typeof InputLabel>;
 
-export default function Label({ children, text, required, style, ...props }: LabelProps) {
+export default function Label({
+  children,
+  text,
+  required,
+  style,
+  ...props
+}: LabelProps) {
   return (
     <div className="vcluster-label">
-      {required && <InputLabel required style={{ paddingRight: "0.5rem", color: "red" }} />}
-      <InputLabel style={{ paddingRight: "1rem", color: "var(--color-view__text)", ...style }} {...props}>
-        {text}
+      {required && (
+        <InputLabel required style={{ paddingRight: "0.5rem", color: "red" }} />
+      )}
+      <InputLabel
+        style={{
+          color: props.color ? void 0 : "var(--color-view__text)",
+          ...style,
+        }}
+        {...props}
+      >
+        <span style={{ paddingRight: "0.5rem" }}>{text}</span>
         {children}
       </InputLabel>
     </div>

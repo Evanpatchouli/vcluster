@@ -150,3 +150,88 @@
   flex-direction: row;
   gap: 0.5em;
 }
+
+.app-creator {
+  position: relative;
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  *::-webkit-scrollbar-track {
+    display: none;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    display: none;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    display: none;
+  }
+
+  & .MuiDialogTitle-root {
+    top: 0%;
+    position: sticky;
+    background-color: #ffffff;
+    box-shadow: #e6e5e5 0px 0px 5px 0px;
+    margin-bottom: 16px;
+    z-index: 1;
+  }
+
+  & .MuiDialogContent-root {
+    max-width: 80vw;
+    padding-inline: 48px;
+  }
+
+  & .app-creator-form__footer {
+    position: sticky;
+    bottom: 0%;
+    background-color: #ffffff;
+    box-shadow: #e6e5e5 0px 0px 5px 0px;
+    z-index: 1;
+
+    & button:not(.shadowed-btn) {
+      box-shadow: none;
+    }
+  }
+}
+
+.app-creator-form {
+  max-height: 80vh;
+  width: 40vw;
+  max-width: 600px;
+  min-width: 460px;
+
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  & input {
+    box-shadow: var(--element-boxshadow) !important;
+  }
+
+  & .row {
+    margin-bottom: 16px;
+  }
+}
+
+.line-label {
+  padding-block: 8px !important;
+}
+
+.app-creator-form__desc-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.app-creator-form__name-port {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.app-creator-form__name-port__subapp-port {
+  width: 100px;
+}

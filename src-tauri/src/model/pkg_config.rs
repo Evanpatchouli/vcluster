@@ -29,6 +29,7 @@ impl Crud<Cluster,Cluster> for Cluster {
   async fn sel_by_pk(pk: &str) -> Option<Cluster>  {
     let rb = RB.clone();
     let sql = format!("SELECT * FROM `cluster` WHERE id={:?}", pk);
+    println!("sql: {}", sql);
     return rb.query_decode::<Option<Cluster>>(&sql, vec![]).await.unwrap();
   }
 

@@ -100,8 +100,18 @@ const en_US = {
   "Load Default": "Load Default",
   "Save": "Save",
   "Apply": "Apply",
+  "$createAppTitle": "Create a new App",
+  "Add an app": "Add an app",
+  "Start app by script": "Start app by script",
+  "Log outputs": "Log outputs",
+  "Use apis": "Use apis",
+  "$aliveApiDesc": "request api for checking alive",
+  "$startApiDesc": "request api for starting app",
+  "$stopApiDesc": "request api for stopping app",
+  "$restartApiDesc": "request api for restarting app",
 }
 export {
   en_US
 }
 
+export type Locale = keyof typeof en_US

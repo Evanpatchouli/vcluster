@@ -15,6 +15,7 @@ import {
 import { AppsValidor, PkgValidor } from "./valid";
 import { Button, Switch } from "@mui/material";
 import Label from "../../unit/Label";
+import { Locale } from "../../locale/en_US";
 
 type AppSetter = SetStateAction<VCluster.ServiceConfig[]>;
 
@@ -102,7 +103,9 @@ function CreatView() {
         <div className="row">
           <Label
             required={boolify(app.useScript)}
-            text="Start app by script : "
+            text={`${intl.formatMessage({
+              id: "Start app by script",
+            })} : `}
           >
             <Switch
               checked={boolify(app.useScript)}
@@ -152,7 +155,12 @@ function CreatView() {
           </>
         )}
         <div className="row">
-          <Label required={boolify(app.useLog)} text="Log outputs : ">
+          <Label
+            required={boolify(app.useLog)}
+            text={`${intl.formatMessage({
+              id: "Log outputs",
+            })} : `}
+          >
             <Switch
               checked={boolify(app.useLog)}
               onChange={(e) => {
@@ -181,7 +189,12 @@ function CreatView() {
           </div>
         )}
         <div className="row">
-          <Label required={boolify(app.useApi)} text="Use apis : ">
+          <Label
+            required={boolify(app.useApi)}
+            text={`${intl.formatMessage({
+              id: "Use apis",
+            })} : `}
+          >
             <Switch
               checked={boolify(app.useApi)}
               onChange={(e) => {
@@ -207,9 +220,11 @@ function CreatView() {
                   apps[idx] = app;
                   setApps(apps);
                 }}
-                placeholder={intl.formatMessage({
-                  id: "request api for checking alive...",
-                })}
+                placeholder={
+                  intl.formatMessage({
+                    id: "$aliveApiDesc" as Locale,
+                  }) + "..."
+                }
               />
             </div>
             <div className="row">
@@ -222,9 +237,11 @@ function CreatView() {
                   apps[idx] = app;
                   setApps(apps);
                 }}
-                placeholder={intl.formatMessage({
-                  id: "request api for starting...",
-                })}
+                placeholder={
+                  intl.formatMessage({
+                    id: "$startApiDesc" as Locale,
+                  }) + "..."
+                }
               />
             </div>
             <div className="row">
@@ -237,9 +254,11 @@ function CreatView() {
                   apps[idx] = app;
                   setApps(apps);
                 }}
-                placeholder={intl.formatMessage({
-                  id: "request api for stopping...",
-                })}
+                placeholder={
+                  intl.formatMessage({
+                    id: "$stopApiDesc" as Locale,
+                  }) + "..."
+                }
               />
             </div>
             <div className="row">
@@ -252,9 +271,11 @@ function CreatView() {
                   apps[idx] = app;
                   setApps(apps);
                 }}
-                placeholder={intl.formatMessage({
-                  id: "request api for restarting...",
-                })}
+                placeholder={
+                  intl.formatMessage({
+                    id: "$restartApiDesc" as Locale,
+                  }) + "..."
+                }
               />
             </div>
           </>
@@ -290,7 +311,9 @@ function CreatView() {
           console.log(form);
           let valid_result = PkgValidor.safeParse(form);
           if (!valid_result.success) {
-            const firsetError: VCluster.ZodErrorMessage = JSON.parse(valid_result.error.message)[0];
+            const firsetError: VCluster.ZodErrorMessage = JSON.parse(
+              valid_result.error.message
+            )[0];
             console.error(firsetError.message);
             return msg3s(
               intl.formatMessage({

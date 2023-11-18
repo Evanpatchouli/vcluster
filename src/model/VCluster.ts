@@ -1,10 +1,10 @@
-export class ServiceConfig  {
-  id?: string = '';
-  cluster_id?: string = '';
+export class ServiceConfig {
+  id?: string = "";
+  cluster_id?: string = "";
   /** name of this app*/
-  name: string = '';
+  name: string = "";
   /** description of this app*/
-  desc: string = '';
+  desc: string = "";
   /** which net-port will this app use*/
   port?: number = 0;
   start: {
@@ -24,30 +24,35 @@ export class ServiceConfig  {
     restart?: string;
     stop?: string;
   } = {
-    alive: '',
-    start: '',
-    restart: '',
-    stop: '',
+    alive: "",
+    start: "",
+    restart: "",
+    stop: "",
   };
   useApi?: number = 0;
 
   constructor() {
     this.start = {
-      path: "", script: ""
+      path: "",
+      script: "",
     };
   }
 
-  buildfromApp(app: ServiceConfig){
+  buildfromApp(app: Partial<ServiceConfig>) {
     this.id = app.id;
-    this.name = app.name;
-    this.desc = app.desc;
+    this.cluster_id = app.cluster_id;
+    this.name = app.name || "";
+    this.desc = app.desc || "";
     this.port = app.port;
-    this.start = app.start;
+    this.start = app.start || {
+      path: "",
+      script: "",
+    };
     this.log = app.log;
     return this;
   }
 
-  static newfromApp(app: ServiceConfig){
+  static newfromApp(app: Partial<ServiceConfig>) {
     let s = new ServiceConfig();
     s.buildfromApp(app);
     return s;
@@ -58,9 +63,9 @@ export class PkgConfig {
   id?: string;
   name: string = "";
   desc: string = "";
-  apps: ServiceConfig[] = []
+  apps: ServiceConfig[] = [];
 
-  buildfromPkg(pkg: PkgConfig){
+  buildfromPkg(pkg: PkgConfig) {
     this.id = pkg.id;
     this.name = pkg.name;
     this.desc = pkg.desc;
@@ -68,7 +73,7 @@ export class PkgConfig {
     return this;
   }
 
-  static newfromPkg(pkg: PkgConfig){
+  static newfromPkg(pkg: PkgConfig) {
     let p = new PkgConfig();
     p.id = pkg.id;
     p.name = pkg.name;

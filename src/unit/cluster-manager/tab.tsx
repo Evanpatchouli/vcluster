@@ -66,7 +66,6 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
   const notify = useNotify();
   useEffect(() => {
     Api.getall_cluster().then((result) => {
-      // console.log(result);
       dispatch(setClusters(result.data as VCluster.PkgConfig[]));
     });
   }, []);
@@ -432,7 +431,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                     >
                       <ListItemText
                         style={{ paddingRight: "10rem" }}
-                        primary={app.name}
+                        primary={app.name || "Unknown" }
                       />
                     </ListItemButton>
                   );

@@ -100,6 +100,15 @@ const zh_CN = {
   "Load Default": "采用默认",
   "Save": "保存",
   "Apply": "应用",
+  "$createAppTitle": "创建一个新应用",
+  "Add an app": "添加应用",
+  "Start app by script": "通过脚本启动应用",
+  "Log outputs": "日志输出",
+  "Use apis": "使用api",
+  "$aliveApiDesc": "检查应用是否存活的api",
+  "$startApiDesc": "启动应用的api",
+  "$stopApiDesc": "停止应用的api",
+  "$restartApiDesc": "重启应用的api",
 }
 export {
   zh_CN
