@@ -1,16 +1,20 @@
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  InputAdornment,
+  MenuItem,
+  Select,
   Switch,
   TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
 import { useRef } from "react";
-import { msg, useReactive } from "../../util/util";
+import { keysToCamelCase, msg, useReactive } from "../../util/util";
 import useForm from "../../util/form";
 import Label from "../Label";
 import Api from "../../api";
@@ -21,11 +25,14 @@ import { formatForm } from "./formatter";
 import { useAppDispatch } from "../../store/hook";
 import { setClusters } from "../../store/clusters/clusters.reducer";
 import { Locale } from "../../locale/en_US";
+import ApiInput from "../api-input/api.input";
+import { Method } from "axios";
 
 export type AppCreatorProps = {
   open: boolean;
   setOpen: (value: boolean) => void;
   initialData?: Partial<VCluster.PkgConfig>;
+  type?: "create" | "edit";
 };
 
 const AppCreator: React.FC<AppCreatorProps> = (props) => {
@@ -34,6 +41,7 @@ const AppCreator: React.FC<AppCreatorProps> = (props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [app, appSetter] = useReactive({
     name: "",
+    port: void 0 as number | undefined,
     desc: "",
     useScript: 0,
     useLog: 0,
@@ -43,10 +51,22 @@ const AppCreator: React.FC<AppCreatorProps> = (props) => {
       script: "",
     },
     api: {
-      live: "",
-      start: "",
-      stop: "",
-      restart: "",
+      alive: {
+        method: "GET" as Method,
+        url: "",
+      },
+      start: {
+        method: "GET" as Method,
+        url: "",
+      },
+      stop: {
+        method: "GET" as Method,
+        url: "",
+      },
+      restart: {
+        method: "GET" as Method,
+        url: "",
+      },
     },
   });
   const form = useForm<FormSchema>(
@@ -63,6 +83,7 @@ const AppCreator: React.FC<AppCreatorProps> = (props) => {
   function reset() {
     appSetter({
       name: "",
+      port: void 0,
       desc: "",
       useScript: 0,
       useLog: 0,
@@ -72,10 +93,22 @@ const AppCreator: React.FC<AppCreatorProps> = (props) => {
         script: "",
       },
       api: {
-        live: "",
-        start: "",
-        stop: "",
-        restart: "",
+        alive: {
+          method: "GET",
+          url: "",
+        },
+        start: {
+          method: "GET",
+          url: "",
+        },
+        stop: {
+          method: "GET",
+          url: "",
+        },
+        restart: {
+          method: "GET",
+          url: "",
+        },
       },
     });
     void 0;
@@ -97,38 +130,42 @@ const AppCreator: React.FC<AppCreatorProps> = (props) => {
         className="app-creator-form"
         ref={formRef}
         onSubmit={form.onSubmit((formData) => {
-          const postData: Partial<VCluster.ServiceConfig> = formatForm(
-            formData,
-            "submit"
-          );
+          const postData: ServiceConfig = formatForm(formData, "submit");
           console.log(formatForm(postData, "submit"));
           Api.create_app(
             ServiceConfig.newfromApp({
               ...postData,
             })
-          ).then((res) => {
-            if (!res.ok) {
-              msg(res.msg || "Something wrong with vcluster", "error");
-            } else {
-              msg("App created successfully", "success");
-              props.setOpen(false);
-              form.reset();
-              reset();
-              Api.getall_cluster()
-                .then((result) => {
-                  dispatch(setClusters(result.data as VCluster.PkgConfig[]));
-                })
-                .catch((err) => {
-                  msg(err.msg || "Something wrong with vcluster", "error");
-                });
-            }
-          });
+          )
+            .then((res) => {
+              if (!res.ok) {
+                msg(res.msg, "error");
+              } else {
+                msg("App created successfully", "success");
+                props.setOpen(false);
+                form.reset();
+                reset();
+                Api.getall_cluster()
+                  .then((result) => {
+                    dispatch(setClusters(keysToCamelCase(result.data) as VCluster.PkgConfig[]));
+                  })
+                  .catch((err) => {
+                    msg(err.msg, "error");
+                  });
+              }
+            })
+            .catch((err) => {
+              msg(err.msg, "error");
+            });
         }, true)}
       >
         <DialogTitle textAlign={"left"}>
           <Typography variant={"h5"} style={{ fontWeight: "bold" }}>
             {intl.formatMessage({
-              id: "$createAppTitle" as Locale,
+              id:
+                (props.type ?? "create") === "create"
+                  ? "$createAppTitle"
+                  : ("$editAppTitle" as Locale),
             })}
           </Typography>
         </DialogTitle>
@@ -288,84 +325,77 @@ const AppCreator: React.FC<AppCreatorProps> = (props) => {
           {boolify(app.useApi) && (
             <>
               <div className="row">
-                <input
-                  className="api-live"
-                  title="api of checking is this app alive"
-                  name="api.live"
-                  placeholder={
-                    intl.formatMessage({
-                      id: "$aliveApiDesc" as Locale,
-                    }) + "..."
-                  }
-                  style={{ width: "100%" }}
+                <ApiInput
+                  label={intl.formatMessage({
+                    id: "$aliveApiDesc" as Locale,
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: "$aliveApiDesc" as Locale,
+                  })}
+                  title="api of checking if this app is alive"
+                  name="api.alive.url"
+                  defaultValue={app.api.alive.url}
+                  method={app.api.alive.method}
+                  methodName="api.alive.method"
                 />
               </div>
               <div className="row">
-                <input
-                  className="api-start"
+                <ApiInput
+                  label={intl.formatMessage({
+                    id: "$startApiDesc" as Locale,
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: "$startApiDesc" as Locale,
+                  })}
                   title="api of starting up this app"
-                  name="api.start"
-                  placeholder={
-                    intl.formatMessage({
-                      id: "$startApiDesc" as Locale,
-                    }) + "..."
-                  }
-                  style={{ width: "100%" }}
+                  name="api.start.url"
+                  defaultValue={app.api.start.url}
+                  method={app.api.start.method}
+                  methodName="api.start.method"
                 />
               </div>
               <div className="row">
-                <input
-                  className="api-stop"
+                <ApiInput
+                  label={intl.formatMessage({
+                    id: "$stopApiDesc" as Locale,
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: "$stopApiDesc" as Locale,
+                  })}
                   title="api of stopping this app"
-                  name="api.stop"
-                  onChange={(e) => {
-                    // app.api = app.api ?? {};
-                    // app.api.stop = e.target.value;
-                    // apps[idx] = app;
-                    // setApps(apps);
-                  }}
-                  placeholder={
-                    intl.formatMessage({
-                      id: "$stopApiDesc" as Locale,
-                    }) + "..."
-                  }
-                  style={{ width: "100%" }}
+                  name="api.stop.url"
+                  defaultValue={app.api.stop.url}
+                  method={app.api.stop.method}
+                  methodName="api.stop.method"
                 />
               </div>
               <div className="row">
-                <input
-                  className="api-restart"
-                  title="api of restarting up this app"
-                  name="api.restart"
-                  onChange={(e) => {
-                    // app.api = app.api ?? {};
-                    // app.api.restart = e.target.value;
-                    // apps[idx] = app;
-                    // setApps(apps);
-                  }}
+                <ApiInput
+                  label={intl.formatMessage({
+                    id: "$restartApiDesc" as Locale,
+                  })}
                   placeholder={
                     intl.formatMessage({
                       id: "$restartApiDesc" as Locale,
                     }) + "..."
                   }
-                  style={{ width: "100%" }}
+                  title="api of restarting up this app"
+                  name="api.restart.url"
+                  defaultValue={app.api.restart.url}
+                  method={app.api.restart.method}
+                  methodName="api.restart.method"
                 />
               </div>
             </>
           )}
         </DialogContent>
         <DialogActions className="app-creator-form__footer">
-          <Button
-            type="button"
-            className="shadowed-btn"
-            variant="text"
-            onClick={handleCancelClick}
-          >
+          <Button type="button" variant="text" onClick={handleCancelClick}>
             {intl.formatMessage({
               id: "cancel" as Locale,
             })}
           </Button>
-          <Button type="reset" variant="outlined" onClick={reset}>
+          <Button type="reset" variant="text" onClick={reset}>
             {intl.formatMessage({
               id: "reset" as Locale,
             })}

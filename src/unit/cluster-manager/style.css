@@ -5,6 +5,7 @@
   overflow: auto;
   overflow-y: scroll;
   scroll-behavior: smooth;
+
   &::-webkit-scrollbar {
     width: 16px;
     background-color: rgb(24, 24, 24);
@@ -48,6 +49,11 @@
       background-color: var(--bg-color-usefule-element-hover);
     }
   }
+}
+
+/** We need to show poptip */
+*:has(> .app-menu) {
+  overflow: visible !important;
 }
 
 .pkg-menu,
@@ -151,6 +157,12 @@
   gap: 0.5em;
 }
 
+.prefix-api-input {
+  & * {
+    border: none !important;
+  }
+}
+
 .app-creator {
   position: relative;
 
@@ -205,10 +217,6 @@
 
   box-sizing: border-box;
   overflow-x: hidden;
-
-  & input {
-    box-shadow: var(--element-boxshadow) !important;
-  }
 
   & .row {
     margin-bottom: 16px;

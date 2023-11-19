@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
+import { ServiceConfig } from "../model/VCluster";
 
 export const launch_pkg_by_id = async (id: String) => {
   return await invoke<VCluster.Resp<null>>("launch_pkg_by_id", { pkgId: id });
@@ -27,7 +28,7 @@ export const del_app_by_pk = async (pk: String) => {
   return await invoke<VCluster.Resp<null>>("del_app_by_pk", { pk });
 };
 
-export const create_app = async (app: VCluster.ServiceConfig) => {
+export const create_app = async (app: ServiceConfig) => {
   return await invoke<VCluster.Resp<null>>("create_app", { app });
 };
 

@@ -1,5 +1,6 @@
 declare namespace VCluster {
-  class ServiceConfig {
+  type ApiMethod = "GET" | "POST" | "PUT" | "DELETE";
+  interface ServiceConfig {
     id?: string;
     cluster_id?: string;
     /** name of this app*/
@@ -21,16 +22,28 @@ declare namespace VCluster {
     useLog?: number;
 
     api?: {
-      alive?: string;
-      start?: string;
-      restart?: string;
-      stop?: string;
+      alive?: {
+        url?: string;
+        method?: ApiMethod;
+      };
+      start?: {
+        url?: string;
+        method?: ApiMethod;
+      };
+      restart?: {
+        url?: string;
+        method?: ApiMethod;
+      };
+      stop?: {
+        url?: string;
+        method?: ApiMethod;
+      };
     };
     useApi?: number;
 
-    buildfromApp(app: ServiceConfig): ServiceConfig;
+    buildfromApp(app: Partial<ServiceConfig>): ServiceConfig;
 
-    static newfromApp(app: ServiceConfig): ServiceConfig;
+    static newfromApp(app: Partial<ServiceConfig>): ServiceConfig;
   }
   class PkgConfig {
     id?: string;
@@ -104,8 +117,13 @@ declare namespace VCluster {
     saveOnChange: boolean;
     save(): Promise<void>;
     values(): Promise<TautiStoreState>;
-    set(key: VCluster.Hint<keyof TautiStoreState>, value: TautiStoreState[keyof TautiStoreState]): Promise<void>;
-    get(key: VCluster.Hint<keyof TautiStoreState>): Promise<TautiStoreState[keyof TautiStoreState]>;
+    set(
+      key: VCluster.Hint<keyof TautiStoreState>,
+      value: TautiStoreState[keyof TautiStoreState]
+    ): Promise<void>;
+    get(
+      key: VCluster.Hint<keyof TautiStoreState>
+    ): Promise<TautiStoreState[keyof TautiStoreState]>;
     del(key: VCluster.Hint<keyof TautiStoreState>): Promise<void>;
     clear(): Promise<void>;
     get updatedAt(): Promise<string>;
@@ -122,5 +140,5 @@ declare namespace VCluster {
 
   type Settings = {
     notification: boolean;
-  }
+  };
 }

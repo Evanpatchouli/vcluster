@@ -1,6 +1,9 @@
+import { Method } from "axios";
+
 export type FormSchema = {
   cluster_id: string;
   name: string;
+  port: number;
   desc: string;
   useScript: "on" | null;
   "start.path": string;
@@ -8,10 +11,14 @@ export type FormSchema = {
   useLog: "on" | null;
   log: string;
   useApi: "on" | null;
-  "api.live": string;
-  "api.start": string;
-  "api.stop": string;
-  "api.restart": string;
+  "api.alive.url": string;
+  "api.alive.method": Method;
+  "api.start.url": string;
+  "api.start.method": Method;
+  "api.stop.url": string;
+  "api.stop.method": Method;
+  "api.restart.url": string;
+  "api.restart.method": Method;
 };
 export function AppFormSchema(options: {
   required: {
@@ -26,9 +33,18 @@ export function AppFormSchema(options: {
     name: {
       value: "",
       required: true,
-      validator(value) {
+      validator(value: any) {
         if ((value?.length ?? 0) > 10) {
           return "Name too long";
+        }
+      },
+    },
+    port: {
+      value: "",
+      required: true,
+      validator(value: any) {
+        if (isNaN(value)) {
+          return "Port must be a number";
         }
       },
     },
@@ -60,20 +76,36 @@ export function AppFormSchema(options: {
       value: null,
       required: options.required.useApi ?? false,
     },
-    "api.live": {
+    "api.alive.url": {
       value: "",
       required: options.required.useApi ?? false,
     },
-    "api.start": {
+    "api.alive.method": {
+      value: "GET",
+      required: options.required.useApi ?? false,
+    },
+    "api.start.url": {
       value: "",
       required: options.required.useApi ?? false,
     },
-    "api.stop": {
+    "api.start.method": {
+      value: "GET",
+      required: options.required.useApi ?? false,
+    },
+    "api.stop.url": {
       value: "",
       required: options.required.useApi ?? false,
     },
-    "api.restart": {
+    "api.stop.method": {
+      value: "GET",
+      required: options.required.useApi ?? false,
+    },
+    "api.restart.url": {
       value: "",
+      required: options.required.useApi ?? false,
+    },
+    "api.restart.method": {
+      value: "GET",
       required: options.required.useApi ?? false,
     },
   };

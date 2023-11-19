@@ -101,6 +101,7 @@ const en_US = {
   "Save": "Save",
   "Apply": "Apply",
   "$createAppTitle": "Create a new App",
+  "$editAppTitle": "Configure an App",
   "Add an app": "Add an app",
   "Start app by script": "Start app by script",
   "Log outputs": "Log outputs",

@@ -1,0 +1,5 @@
+.md-styled {
+  & input {
+    box-shadow: none;
+  }
+}

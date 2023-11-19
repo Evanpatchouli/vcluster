@@ -18,16 +18,23 @@ export class ServiceConfig {
   log?: string = "log.txt";
   useLog?: number = 1;
 
-  api?: {
-    alive?: string;
-    start?: string;
-    restart?: string;
-    stop?: string;
-  } = {
-    alive: "",
-    start: "",
-    restart: "",
-    stop: "",
+  api = {
+    alive: {
+      url: "",
+      method: "GET" as VCluster.ApiMethod,
+    },
+    start: {
+      url: "",
+      method: "GET" as VCluster.ApiMethod,
+    },
+    restart: {
+      url: "",
+      method: "GET" as VCluster.ApiMethod,
+    },
+    stop: {
+      url: "",
+      method: "GET" as VCluster.ApiMethod,
+    },
   };
   useApi?: number = 0;
 

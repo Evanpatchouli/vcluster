@@ -32,11 +32,11 @@ const AlertMap = {
  * @param content message content
  * @returns
  */
-export const msg = (content: string, severity: AlertColor = "info") => {
+export const msg = (content?: string, severity: AlertColor = "info") => {
   // useAppDispatch(showMsg({
   //   content, severity, counter:null
   // }));
-  toast(content, {
+  toast(content || "Something wrong with vcluster", {
     duration: 2000,
     icon: AlertMap[severity]?.icon,
     iconTheme: {
@@ -51,8 +51,8 @@ export const msg = (content: string, severity: AlertColor = "info") => {
  * @param content message content
  * @returns
  */
-export const msg3s = (content: string, severity: AlertColor = "info") => {
-  toast(content, {
+export const msg3s = (content?: string, severity: AlertColor = "info") => {
+  toast(content || "Something wrong with vcluster", {
     duration: 3000,
     icon: AlertMap[severity]?.icon,
     iconTheme: {
@@ -79,14 +79,14 @@ export const msg3s = (content: string, severity: AlertColor = "info") => {
  * @returns
  */
 export const msgms = (
-  content: string,
+  content?: string,
   severity: AlertColor = "info",
   msec?: number
 ) => {
   if (msec && msec < 0) {
     return console.warn("timout cannot be negative");
   }
-  toast(content, {
+  toast(content || "Something wrong with vcluster", {
     duration: msec || 2000,
     icon: AlertMap[severity]?.icon,
     iconTheme: {
@@ -413,9 +413,9 @@ export const useReactive = <T extends Object = {}>(initialState: T) => {
 };
 
 // make data properties like start.script => start: { script }, notice some make like x.y.z => x : {y : {z}}, how deep is the depth is unknown.
-export function objectifyFlattedFormData(data: any) {
+export function objectifyFlattedFormData<T extends object>(data: T) {
   const _data = JSONX.reparse(data);
-  const _data1 = {};
+  const _data1: T = {} as T;
 
   Object.keys(_data).forEach((key) => {
     const keys = key.split(".");
@@ -424,11 +424,15 @@ export function objectifyFlattedFormData(data: any) {
     for (let i = 0; i < keys.length; i++) {
       const k = keys[i];
       if (i === keys.length - 1) {
+        // @ts-ignore
         temp[k] = _data[key];
       } else {
+        // @ts-ignore
         if (!temp[k]) {
+          // @ts-ignore
           temp[k] = {};
         }
+        // @ts-ignore
         temp = temp[k];
       }
     }

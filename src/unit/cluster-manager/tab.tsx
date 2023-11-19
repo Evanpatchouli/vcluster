@@ -26,6 +26,7 @@ import {
   ListItemText,
   Modal,
   Popover,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -49,11 +50,13 @@ import {
   useLoading,
   useNotify,
   useReactive,
+  keysToCamelCase,
 } from "../../util/util";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Emoji } from "../../util/constans";
 import AppCreator from "./app.creator";
+import Poptip from "../poptip";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -66,7 +69,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
   const notify = useNotify();
   useEffect(() => {
     Api.getall_cluster().then((result) => {
-      dispatch(setClusters(result.data as VCluster.PkgConfig[]));
+      dispatch(setClusters(keysToCamelCase(result.data) as VCluster.PkgConfig[]));
     });
   }, []);
 
@@ -377,6 +380,14 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     minusLoading("alive");
   };
 
+  const startAppByApi = async () => {
+    const curApp = getCurApp();
+    await axios.request({
+      url: curApp?.api?.start?.url,
+      method: curApp?.api?.start?.method,
+    });
+  };
+
   const [appCreator, setAppCreator] = useReactive({
     open: false,
   });
@@ -431,7 +442,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                     >
                       <ListItemText
                         style={{ paddingRight: "10rem" }}
-                        primary={app.name || "Unknown" }
+                        primary={app.name || "Unknown"}
                       />
                     </ListItemButton>
                   );
@@ -577,14 +588,23 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
           {more && (
             <>
               <div
-                onClick={checkAppAlive}
+                onClick={getCurApp()?.useApi ? checkAppAlive : void 0}
                 className="row space-between col-center"
               >
                 <span>
                   <FormattedMessage id="Alive" /> (api)
                 </span>
                 <span className="context-menu-item-icons">
-                  {loading.alive ? (
+                  {!getCurApp()?.useApi ? (
+                    <Poptip title="useApi is not opened" placement="top">
+                      <Forbid
+                        fill="red"
+                        onClick={() => {
+                          console.log(getCurApp());
+                        }}
+                      />
+                    </Poptip>
+                  ) : loading.alive ? (
                     <Loading
                       className={loading.alive ? "loading-active" : "invisible"}
                     />
@@ -599,19 +619,49 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                   )}
                 </span>
               </div>
-              <div onClick={checkAppAlive}>
+              <div
+                onClick={getCurApp()?.useApi ? startAppByApi : void 0}
+                className="row space-between col-center"
+              >
                 <span>
                   <FormattedMessage id="Start" /> (api)
                 </span>
+                <span className="context-menu-item-icons">
+                  {!getCurApp()?.useApi ? (
+                    <Poptip title="useApi is not opened" placement="top">
+                      <Forbid fill="red" />
+                    </Poptip>
+                  ) : null}
+                </span>
               </div>
-              <div onClick={checkAppAlive}>
+              <div
+                onClick={getCurApp()?.useApi ? void 0 : void 0}
+                className="row space-between col-center"
+              >
                 <span>
                   <FormattedMessage id="Stop" /> (api)
                 </span>
+                <span className="context-menu-item-icons">
+                  {!getCurApp()?.useApi ? (
+                    <Poptip title="useApi is not opened" placement="top">
+                      <Forbid fill="red" />
+                    </Poptip>
+                  ) : null}
+                </span>
               </div>
-              <div onClick={checkAppAlive}>
+              <div
+                onClick={getCurApp()?.useApi ? void 0 : void 0}
+                className="row space-between col-center"
+              >
                 <span>
                   <FormattedMessage id="Restart" /> (api)
+                </span>
+                <span className="context-menu-item-icons">
+                  {!getCurApp()?.useApi ? (
+                    <Poptip title="useApi is not opened" placement="top">
+                      <Forbid fill="red" />
+                    </Poptip>
+                  ) : null}
                 </span>
               </div>
             </>

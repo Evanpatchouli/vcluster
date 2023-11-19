@@ -35,10 +35,14 @@ CREATE TABLE IF NOT EXISTS "subapp" (
   "use_script" integer,
   "log" text,
   "use_log" integer,
-  "api_alive" text,
-  "api_start" text,
-  "api_stop" text,
-  "api_restart" text,
+  "api_alive_url" text,
+  "api_alive_method" text,
+  "api_start_url" text,
+  "api_start_method" text,
+  "api_stop_url" text,
+  "api_stop_method" text,
+  "api_restart_url" text,
+  "api_restart_method" text,
   "use_api" integer,
   PRIMARY KEY ("id")
 );

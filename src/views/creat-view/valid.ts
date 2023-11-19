@@ -1,5 +1,6 @@
 import { useIntl } from "react-intl";
 import { z } from "zod";
+import { PkgConfig } from "../../model/VCluster";
 
 export const PkgValidor = z.object({
   name: z.string().nonempty("cluster name cannot be empty"),
@@ -14,12 +15,7 @@ export const PkgValidor = z.object({
         script: z.string().nullable(),
       }).nullable(),
       useScript: z.number(),
-      api: z.object({
-        alive: z.string().nullable(),
-        start: z.string().nullable(),
-        restart: z.string().nullable(),
-        stop: z.string().nullable(),
-      }).nullable(),
+      api: z.object({}).nullable(),
       useApi: z.number(),
       log: z.string().nullable(),
       useLog: z.number(),
@@ -32,7 +28,7 @@ export const PkgValidor = z.object({
  * @param apps 
  * @returns 
  */
-export const AppsValidor = (apps: VCluster.PkgConfig['apps']) => {
+export const AppsValidor = (apps: PkgConfig['apps']) => {
   return apps.map((app, idx) => {
     const startValidor = app.useScript ? z.object({
       path: z.string().nonempty("start path cannot be empty"),
@@ -43,15 +39,39 @@ export const AppsValidor = (apps: VCluster.PkgConfig['apps']) => {
     }).nullable();
     const logValidor = app.useLog ? z.string().nonempty("log path cannot be empty") : z.string().nullable();
     const apiValidor = app.useApi? z.object({ 
-      alive: z.string().nullable(),
-      start: z.string().nonempty("start api cannot be empty"),
-      restart: z.string().nullable(),
-      stop: z.string().nullable(),
+      alive: z.object({
+        url: z.string().nullable(),
+        method: z.string().nonempty("api method cannot be empty"),
+      }),
+      stop: z.object({
+        url: z.string().nullable(),
+        method: z.string().nonempty("api method cannot be empty"),
+      }),
+      start: z.object({
+        url: z.string().nullable(),
+        method: z.string().nonempty("api method cannot be empty"),
+      }),
+      restart: z.object({
+        url: z.string().nullable(),
+        method: z.string().nonempty("api method cannot be empty"),
+      }),
     }) : z.object({
-      alive: z.string().nullable(),
-      start: z.string().nullable(),
-      restart: z.string().nullable(),
-      stop: z.string().nullable(),
+      alive: z.object({
+        url: z.string().nullable(),
+        method: z.string().nullable(),
+      }),
+      stop: z.object({
+        url: z.string().nullable(),
+        method: z.string().nullable(),
+      }),
+      start: z.object({
+        url: z.string().nullable(),
+        method: z.string().nullable(),
+      }),
+      restart: z.object({
+        url: z.string().nullable(),
+        method: z.string().nullable(),
+      }),
     }).nullable();
     const appValidor = z.object({
       name: z.string().nonempty("subapp name cannot be empty"),

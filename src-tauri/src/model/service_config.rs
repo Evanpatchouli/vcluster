@@ -32,10 +32,14 @@ pub struct SubApp {
     pub use_script: Option<u32>,
     pub log: Option<String>,
     pub use_log: Option<u32>,
-    pub api_alive: Option<String>,
-    pub api_start: Option<String>,
-    pub api_stop: Option<String>,
-    pub api_restart: Option<String>,
+    pub api_alive_url: Option<String>,
+    pub api_alive_method: Option<String>,
+    pub api_start_url: Option<String>,
+    pub api_start_method: Option<String>,
+    pub api_stop_url: Option<String>,
+    pub api_stop_method: Option<String>,
+    pub api_restart_url: Option<String>,
+    pub api_restart_method: Option<String>,
     pub use_api: Option<u32>,
 }
 
@@ -85,10 +89,14 @@ impl Crud<SubApp, SubApp> for SubApp {
             use_script: None,
             log: None,
             use_log: None,
-            api_alive: None,
-            api_start: None,
-            api_stop: None,
-            api_restart: None,
+            api_alive_url: None,
+            api_alive_method: None,
+            api_start_url: None,
+            api_start_method: None,
+            api_stop_url: None,
+            api_stop_method: None,
+            api_restart_url: None,
+            api_restart_method: None,
             use_api: None,
         }
     }
@@ -132,10 +140,38 @@ impl ServiceConfig {
             log: record.log,
             use_log: record.use_log,
             api: Some(AppApi {
-                alive: record.api_alive,
-                start: record.api_start,
-                stop: record.api_stop,
-                restart: record.api_restart,
+                alive: {
+                    let url: String = record.api_alive_url.unwrap();
+                    let method: String = record.api_alive_method.unwrap();
+                    super::app_api::Api {
+                        url: Some(url),
+                        method: Some(method),
+                    }
+                },
+                start: {
+                    let url: String = record.api_start_url.unwrap();
+                    let method: String = record.api_start_method.unwrap();
+                    super::app_api::Api {
+                        url: Some(url),
+                        method: Some(method),
+                    }
+                },
+                stop: {
+                    let url: String = record.api_stop_url.unwrap();
+                    let method: String = record.api_stop_method.unwrap();
+                    super::app_api::Api {
+                        url: Some(url),
+                        method: Some(method),
+                    }
+                },
+                restart: {
+                    let url: String = record.api_restart_url.unwrap();
+                    let method: String = record.api_restart_method.unwrap();
+                    super::app_api::Api {
+                        url: Some(url),
+                        method: Some(method),
+                    }
+                },
             }),
             use_api: record.use_api,
         }
@@ -154,10 +190,14 @@ impl ServiceConfig {
             use_script: self_copy.use_script,
             log: self_copy.log,
             use_log: self_copy.use_log,
-            api_alive: self_copy.api.clone().unwrap().alive,
-            api_start: self_copy.api.clone().unwrap().start,
-            api_stop: self_copy.api.clone().unwrap().stop,
-            api_restart: self_copy.api.clone().unwrap().restart,
+            api_alive_url: self_copy.api.clone().unwrap().alive.url,
+            api_alive_method: self_copy.api.clone().unwrap().alive.method,
+            api_start_url: self_copy.api.clone().unwrap().start.url,
+            api_start_method: self_copy.api.clone().unwrap().start.method,
+            api_stop_url: self_copy.api.clone().unwrap().stop.url,
+            api_stop_method: self_copy.api.clone().unwrap().stop.method,
+            api_restart_url: self_copy.api.clone().unwrap().restart.url,
+            api_restart_method: self_copy.api.clone().unwrap().restart.method,
             use_api: self_copy.use_api,
         }
     }

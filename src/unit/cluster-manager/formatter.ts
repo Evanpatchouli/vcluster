@@ -12,6 +12,7 @@ export const formatForm = (_data: any, type: "init" | "submit") => {
     const form = {
       cluster_id: data.cluster_id,
       name: data.name,
+      port: Number(data.port),
       desc: data.desc,
       use_script: data.use_script,
       use_log: data.use_log,
@@ -22,10 +23,22 @@ export const formatForm = (_data: any, type: "init" | "submit") => {
       },
       log: data.log,
       api: {
-        live: data.api.live,
-        start: data.api.start,
-        stop: data.api.stop,
-        restart: data.api.restart,
+        alive: {
+          url: data.api.alive.url,
+          method: data.api.alive.method,
+        },
+        start: {
+          url: data.api.start.url,
+          method: data.api.start.method,
+        },
+        stop: {
+          url: data.api.stop.url,
+          method: data.api.stop.method,
+        },
+        restart: {
+          url: data.api.restart.url,
+          method: data.api.restart.method,
+        },
       },
     };
     form.use_script = form.use_script === "on";

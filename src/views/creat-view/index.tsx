@@ -16,13 +16,14 @@ import { AppsValidor, PkgValidor } from "./valid";
 import { Button, Switch } from "@mui/material";
 import Label from "../../unit/Label";
 import { Locale } from "../../locale/en_US";
+import ApiInput from "../../unit/api-input/api.input";
 
-type AppSetter = SetStateAction<VCluster.ServiceConfig[]>;
+type AppSetter = SetStateAction<ServiceConfig[]>;
 
 function CreatView() {
   const intl = useIntl();
   const forceUpdate = useForceUpdate();
-  const [apps, _setApps] = React.useState<VCluster.ServiceConfig[]>([
+  const [apps, _setApps] = React.useState<ServiceConfig[]>([
     new ServiceConfig(),
   ]);
   const setApps: (
@@ -38,7 +39,7 @@ function CreatView() {
     }
   };
   const [, setAppDoms] = React.useState(getAppDoms);
-  const [pkg, setPkg] = React.useState<VCluster.PkgConfig>(new PkgConfig());
+  const [pkg, setPkg] = React.useState<PkgConfig>(new PkgConfig());
   const getForm = () => {
     let form = pkg;
     form.apps = apps;
@@ -210,72 +211,106 @@ function CreatView() {
         </div>
         {boolify(app.useApi) && (
           <>
-            <div className="row">
-              <input
-                className="api-live"
-                title="api of checking is this app alive"
+            <div className="row" style={{ marginBottom: 16 }}>
+              <ApiInput
+                label={intl.formatMessage({
+                  id: "$aliveApiDesc" as Locale,
+                })}
+                placeholder={intl.formatMessage({
+                  id: "$aliveApiDesc" as Locale,
+                })}
+                title="api of checking if this app is alive"
+                name="api.alive.url"
+                defaultValue={app.api.alive.url}
+                method={app.api.alive.method}
+                methodName="api.alive.method"
                 onChange={(e) => {
-                  app.api = app.api ?? {};
-                  app.api.alive = e.target.value;
+                  app.api.alive.url = e.target.value;
                   apps[idx] = app;
                   setApps(apps);
                 }}
-                placeholder={
-                  intl.formatMessage({
-                    id: "$aliveApiDesc" as Locale,
-                  }) + "..."
-                }
+                onMethodChange={(e) => {
+                  app.api.alive.method = e.target.value as VCluster.ApiMethod;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
               />
             </div>
-            <div className="row">
-              <input
-                className="api-start"
+            <div className="row" style={{ marginBottom: 16 }}>
+              <ApiInput
+                label={intl.formatMessage({
+                  id: "$startApiDesc" as Locale,
+                })}
+                placeholder={intl.formatMessage({
+                  id: "$startApiDesc" as Locale,
+                })}
                 title="api of starting up this app"
+                name="api.start.url"
+                defaultValue={app.api.start.url}
+                method={app.api.start.method}
+                methodName="api.start.method"
                 onChange={(e) => {
-                  app.api = app.api ?? {};
-                  app.api.start = e.target.value;
+                  app.api.start.url = e.target.value;
                   apps[idx] = app;
                   setApps(apps);
                 }}
-                placeholder={
-                  intl.formatMessage({
-                    id: "$startApiDesc" as Locale,
-                  }) + "..."
-                }
+                onMethodChange={(e) => {
+                  app.api.start.method = e.target.value as VCluster.ApiMethod;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
               />
             </div>
-            <div className="row">
-              <input
-                className="api-stop"
+            <div className="row" style={{ marginBottom: 16 }}>
+              <ApiInput
+                label={intl.formatMessage({
+                  id: "$stopApiDesc" as Locale,
+                })}
+                placeholder={intl.formatMessage({
+                  id: "$stopApiDesc" as Locale,
+                })}
                 title="api of stopping this app"
+                name="api.stop.url"
+                defaultValue={app.api.stop.url}
+                method={app.api.stop.method}
+                methodName="api.stop.method"
                 onChange={(e) => {
-                  app.api = app.api ?? {};
-                  app.api.stop = e.target.value;
+                  app.api.stop.url = e.target.value;
                   apps[idx] = app;
                   setApps(apps);
                 }}
-                placeholder={
-                  intl.formatMessage({
-                    id: "$stopApiDesc" as Locale,
-                  }) + "..."
-                }
+                onMethodChange={(e) => {
+                  app.api.stop.method = e.target.value as VCluster.ApiMethod;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
               />
             </div>
-            <div className="row">
-              <input
-                className="api-restart"
-                title="api of restarting up this app"
-                onChange={(e) => {
-                  app.api = app.api ?? {};
-                  app.api.restart = e.target.value;
-                  apps[idx] = app;
-                  setApps(apps);
-                }}
+            <div className="row" style={{ marginBottom: 16 }}>
+              <ApiInput
+                label={intl.formatMessage({
+                  id: "$restartApiDesc" as Locale,
+                })}
                 placeholder={
                   intl.formatMessage({
                     id: "$restartApiDesc" as Locale,
                   }) + "..."
                 }
+                title="api of restarting up this app"
+                name="api.restart.url"
+                defaultValue={app.api.restart.url}
+                method={app.api.restart.method}
+                methodName="api.restart.method"
+                onChange={(e) => {
+                  app.api.restart.url = e.target.value;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
+                onMethodChange={(e) => {
+                  app.api.restart.method = e.target.value as VCluster.ApiMethod;
+                  apps[idx] = app;
+                  setApps(apps);
+                }}
               />
             </div>
           </>

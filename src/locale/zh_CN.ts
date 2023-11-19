@@ -101,6 +101,7 @@ const zh_CN = {
   "Save": "保存",
   "Apply": "应用",
   "$createAppTitle": "创建一个新应用",
+  "$editAppTitle": "配置一个应用",
   "Add an app": "添加应用",
   "Start app by script": "通过脚本启动应用",
   "Log outputs": "日志输出",
