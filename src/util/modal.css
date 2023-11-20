@@ -1,0 +1,38 @@
+.confirm-modal {
+  position: fixed;
+  top: calc(50% - 40px);
+  left: 50%;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  min-height: 160px;
+
+  .confirm-modal__content {
+    height: calc(100% - 78px);
+  }
+
+  & .confirm-modal__actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    height: 44px;
+    padding-right: 6px;
+    margin-bottom: 2px;
+  }
+
+  .confirm-modal__actions__button--cancel {
+    color: dodgerblue;
+  }
+
+  .confirm-modal__actions__button--confirm {
+    color: #fff;
+    background-color: dodgerblue;
+  }
+
+  .confirm-modal__actions__button {
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+}

@@ -57,6 +57,7 @@ import axios from "axios";
 import { Emoji } from "../../util/constans";
 import AppCreator from "./app.creator";
 import Poptip from "../poptip";
+import { useModal } from "../../util/modal";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -69,7 +70,9 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
   const notify = useNotify();
   useEffect(() => {
     Api.getall_cluster().then((result) => {
-      dispatch(setClusters(keysToCamelCase(result.data) as VCluster.PkgConfig[]));
+      dispatch(
+        setClusters(keysToCamelCase(result.data) as VCluster.PkgConfig[])
+      );
     });
   }, []);
 
@@ -320,7 +323,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     return await Api.kill_port(port as number);
   }
 
-  const handleAppKillClick = async () => {
+  const handleAppKillConfirm = async () => {
     plusLoading("kill");
     const res = await killApp();
     minusLoading("kill");
@@ -330,6 +333,19 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
       msgms("Kill action fails", "error", 2000);
     }
     closeAppMenu();
+  };
+
+  const modal = useModal({
+    type: "info",
+    children: `Do you confirm to kill the app ? It only works when the app is running locally and the port is occupied.`,
+    onConfirm: async (close: Function) => {
+      await handleAppKillConfirm();
+      close();
+    },
+  });
+
+  const handleAppKillClick = () => {
+    modal.open();
   };
 
   const handleAppStopClick = async () => {
@@ -716,6 +732,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
           </div>
         </Card>
       </Modal>
+      {<modal.Render />}
       <AppCreator
         open={appCreator.open}
         setOpen={(v: boolean) => {
