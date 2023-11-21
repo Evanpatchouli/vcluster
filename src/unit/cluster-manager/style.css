@@ -183,12 +183,12 @@
   }
 
   & .MuiDialogTitle-root {
-    top: 0%;
     position: sticky;
+    top: 0%;
+    z-index: 1;
+    margin-bottom: 16px;
     background-color: #ffffff;
     box-shadow: #e6e5e5 0px 0px 5px 0px;
-    margin-bottom: 16px;
-    z-index: 1;
   }
 
   & .MuiDialogContent-root {
@@ -199,9 +199,9 @@
   & .app-creator-form__footer {
     position: sticky;
     bottom: 0%;
+    z-index: 1;
     background-color: #ffffff;
     box-shadow: #e6e5e5 0px 0px 5px 0px;
-    z-index: 1;
 
     & button:not(.shadowed-btn) {
       box-shadow: none;
@@ -210,12 +210,11 @@
 }
 
 .app-creator-form {
-  max-height: 80vh;
-  width: 40vw;
-  max-width: 600px;
-  min-width: 460px;
-
   box-sizing: border-box;
+  width: 40vw;
+  min-width: 460px;
+  max-width: 600px;
+  max-height: 80vh;
   overflow-x: hidden;
 
   & .row {
@@ -236,10 +235,43 @@
 
 .app-creator-form__name-port {
   display: flex;
-  justify-content: space-between;
   gap: 6px;
+  justify-content: space-between;
 }
 
 .app-creator-form__name-port__subapp-port {
   width: 100px;
+}
+
+.cluster-manager-tab__confirm-modal-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  padding-right: 0em;
+}
+.cluster-manager-tab__confirm-modal-title__donot-show-again {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > .cluster-manager-tab__confirm-modal-title__donot-show-again__text {
+    position: relative;
+    width: 8em;
+
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: -moz-fit-content;
+      width: fit-content;
+      height: 1em;
+      color: #7e7e7e;
+      /* border-radius: 50%; */
+      transform: translateY(-60%);
+      content: "Don't show again";
+    }
+  }
 }

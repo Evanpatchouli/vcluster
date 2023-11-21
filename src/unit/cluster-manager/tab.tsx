@@ -20,6 +20,7 @@ import {
   Button,
   Card,
   CardContent,
+  Checkbox,
   Collapse,
   List,
   ListItemButton,
@@ -35,12 +36,8 @@ import * as Api from "../../api";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { RootState, clustersReducer } from "../../store/store";
-import { useAppDispatch } from "../../store/hook";
-import {
-  setClusters,
-  moveOne,
-  moveOneApp,
-} from "../../store/clusters/clusters.reducer";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { setClusters, moveOne, moveOneApp } from "../../store/clusters/clusters.reducer";
 import {
   routeTo,
   msgms,
@@ -58,6 +55,7 @@ import { Emoji } from "../../util/constans";
 import AppCreator from "./app.creator";
 import Poptip from "../poptip";
 import { useModal } from "../../util/modal";
+import { setSetting } from "../../store/settings/settings.reducer";
 
 function mapStateToProps(state: RootState) {
   const { clustersReducer } = state;
@@ -67,12 +65,11 @@ function mapStateToProps(state: RootState) {
 function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
   const link = useNavigate();
   const dispatch = useAppDispatch;
+  const settings = useAppSelector((state) => state.settingsReducer);
   const notify = useNotify();
   useEffect(() => {
     Api.getall_cluster().then((result) => {
-      dispatch(
-        setClusters(keysToCamelCase(result.data) as VCluster.PkgConfig[])
-      );
+      dispatch(setClusters(keysToCamelCase(result.data) as VCluster.PkgConfig[]));
     });
   }, []);
 
@@ -104,16 +101,13 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     delModal: false,
   });
 
-  const [delModalMeta, setDelModalMeta] =
-    useState<VCluster.ClusterManagerDelModalMeta>({
-      confirmLoading: false,
-      type: "cluster",
-    });
+  const [delModalMeta, setDelModalMeta] = useState<VCluster.ClusterManagerDelModalMeta>({
+    confirmLoading: false,
+    type: "cluster",
+  });
 
-  const delModalConfirmLoading = () =>
-    setDelModalMeta((pre) => ({ ...pre, confirmLoading: true }));
-  const delModalConfirmLoadingEnd = () =>
-    setDelModalMeta((pre) => ({ ...pre, confirmLoading: false }));
+  const delModalConfirmLoading = () => setDelModalMeta((pre) => ({ ...pre, confirmLoading: true }));
+  const delModalConfirmLoadingEnd = () => setDelModalMeta((pre) => ({ ...pre, confirmLoading: false }));
 
   const showPkgMenu = (e: React.MouseEvent, idx: number, id: string) => {
     setPkgMenu((pre) => {
@@ -147,12 +141,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
     id: "",
   });
 
-  const showAppMenu = (
-    e: React.MouseEvent,
-    cluster_id: string,
-    idx: number,
-    id: string
-  ) => {
+  const showAppMenu = (e: React.MouseEvent, cluster_id: string, idx: number, id: string) => {
     setAppMenu((pre) => {
       return {
         show: true,
@@ -245,9 +234,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
       if (res.ok) {
         msg("Action success", "success");
         // moveOneApp
-        dispatch(
-          moveOneApp({ cluster_idx: pkgMenu.idx, app_idx: appMenu.idx })
-        );
+        dispatch(moveOneApp({ cluster_idx: pkgMenu.idx, app_idx: appMenu.idx }));
       } else {
         throw new Error(res.msg);
       }
@@ -337,6 +324,28 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
 
   const modal = useModal({
     type: "info",
+    title: (
+      <div className="cluster-manager-tab__confirm-modal-title">
+        <div>Tip </div>
+        <div className="cluster-manager-tab__confirm-modal-title__donot-show-again" style={{ fontSize: 12 }}>
+          <Checkbox
+            checked={settings.showConfirmOnKill ? false : true}
+            onChange={(e) => {
+              dispatch(
+                setSetting({
+                  showConfirmOnKill: e.target.checked ? false : true,
+                })
+              );
+              if (e.target.checked) {
+                msg("Will not show next time", "info");
+              }
+            }}
+            style={{ margin: 0 }}
+          />
+          <div className="cluster-manager-tab__confirm-modal-title__donot-show-again__text"> </div>
+        </div>
+      </div>
+    ),
     children: `Do you confirm to kill the app ? It only works when the app is running locally and the port is occupied.`,
     onConfirm: async (close: Function) => {
       await handleAppKillConfirm();
@@ -345,7 +354,11 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
   });
 
   const handleAppKillClick = () => {
-    modal.open();
+    if (settings.showConfirmOnKill) {
+      modal.open();
+    } else {
+      handleAppKillConfirm();
+    }
   };
 
   const handleAppStopClick = async () => {
@@ -447,19 +460,9 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                       key={subidx}
                       sx={{ pl: 4 }}
                       className="subapp-item"
-                      onContextMenu={(e) =>
-                        showAppMenu(
-                          e,
-                          pkg.id as string,
-                          subidx,
-                          app.id as string
-                        )
-                      }
+                      onContextMenu={(e) => showAppMenu(e, pkg.id as string, subidx, app.id as string)}
                     >
-                      <ListItemText
-                        style={{ paddingRight: "10rem" }}
-                        primary={app.name || "Unknown"}
-                      />
+                      <ListItemText style={{ paddingRight: "10rem" }} primary={app.name || "Unknown"} />
                     </ListItemButton>
                   );
                 })}
@@ -531,30 +534,19 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
         }}
       >
         <div className="app-menu">
-          <div
-            onClick={handleAppLanuchClick}
-            className="row space-between col-center"
-          >
+          <div onClick={handleAppLanuchClick} className="row space-between col-center">
             <FormattedMessage id="Launch" />
             <GoStart />
           </div>
-          <div
-            onClick={handleAppLanuchClick}
-            className="row space-between col-center"
-          >
+          <div onClick={handleAppLanuchClick} className="row space-between col-center">
             <span>
               <FormattedMessage id="Launch" /> (api)
             </span>
           </div>
-          <div
-            onClick={handleAppRelaunchClick}
-            className="row space-between col-center"
-          >
+          <div onClick={handleAppRelaunchClick} className="row space-between col-center">
             <FormattedMessage id="Relaunch" />
             <span className="context-menu-item-icons">
-              <Loading
-                className={loading.relaunchApi ? "loading-active" : "invisible"}
-              />
+              <Loading className={loading.relaunchApi ? "loading-active" : "invisible"} />
               <Refresh />
             </span>
           </div>
@@ -563,15 +555,10 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
               <FormattedMessage id="Relaunch" /> (api)
             </span>
             <span>
-              <Loading
-                className={loading.relaunchApi ? "loading-active" : "invisible"}
-              />
+              <Loading className={loading.relaunchApi ? "loading-active" : "invisible"} />
             </span>
           </div>
-          <div
-            onClick={handleAppStopClick}
-            className="row space-between col-center"
-          >
+          <div onClick={handleAppStopClick} className="row space-between col-center">
             <span>
               <FormattedMessage id="Stop" /> (api)
             </span>
@@ -579,17 +566,12 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
               <ApiIcon />
             </span>
           </div>
-          <div
-            onClick={handleAppKillClick}
-            className="row space-between col-center"
-          >
+          <div onClick={handleAppKillClick} className="row space-between col-center">
             <span>
               <FormattedMessage id="Kill" /> (port)
             </span>
             <span className="context-menu-item-icons">
-              <Loading
-                className={loading.kill ? "loading-active" : "invisible"}
-              />
+              <Loading className={loading.kill ? "loading-active" : "invisible"} />
               <Close />
             </span>
           </div>
@@ -603,10 +585,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
           </div>
           {more && (
             <>
-              <div
-                onClick={getCurApp()?.useApi ? checkAppAlive : void 0}
-                className="row space-between col-center"
-              >
+              <div onClick={getCurApp()?.useApi ? checkAppAlive : void 0} className="row space-between col-center">
                 <span>
                   <FormattedMessage id="Alive" /> (api)
                 </span>
@@ -621,24 +600,13 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                       />
                     </Poptip>
                   ) : loading.alive ? (
-                    <Loading
-                      className={loading.alive ? "loading-active" : "invisible"}
-                    />
+                    <Loading className={loading.alive ? "loading-active" : "invisible"} />
                   ) : (
-                    <Status
-                      theme="two-tone"
-                      fill={[
-                        "#9b9b9b",
-                        status.app1 === "online" ? "#b8e986" : "red",
-                      ]}
-                    />
+                    <Status theme="two-tone" fill={["#9b9b9b", status.app1 === "online" ? "#b8e986" : "red"]} />
                   )}
                 </span>
               </div>
-              <div
-                onClick={getCurApp()?.useApi ? startAppByApi : void 0}
-                className="row space-between col-center"
-              >
+              <div onClick={getCurApp()?.useApi ? startAppByApi : void 0} className="row space-between col-center">
                 <span>
                   <FormattedMessage id="Start" /> (api)
                 </span>
@@ -650,10 +618,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                   ) : null}
                 </span>
               </div>
-              <div
-                onClick={getCurApp()?.useApi ? void 0 : void 0}
-                className="row space-between col-center"
-              >
+              <div onClick={getCurApp()?.useApi ? void 0 : void 0} className="row space-between col-center">
                 <span>
                   <FormattedMessage id="Stop" /> (api)
                 </span>
@@ -665,10 +630,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
                   ) : null}
                 </span>
               </div>
-              <div
-                onClick={getCurApp()?.useApi ? void 0 : void 0}
-                className="row space-between col-center"
-              >
+              <div onClick={getCurApp()?.useApi ? void 0 : void 0} className="row space-between col-center">
                 <span>
                   <FormattedMessage id="Restart" /> (api)
                 </span>
@@ -682,10 +644,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
               </div>
             </>
           )}
-          <div
-            onClick={handleMoreClick}
-            className="row space-between col-center"
-          >
+          <div onClick={handleMoreClick} className="row space-between col-center">
             <FormattedMessage id={more ? "Less" : "More"} />
             {more ? <Less /> : <More />}
           </div>
@@ -720,12 +679,7 @@ function Tab({ pkgs }: { pkgs: VCluster.PkgConfig[] }) {
               disabled={delModalMeta.confirmLoading}
             >
               <div className="line">
-                {delModalMeta.confirmLoading && (
-                  <Loading
-                    className="loading-active"
-                    style={{ marginRight: "0.5em" }}
-                  />
-                )}
+                {delModalMeta.confirmLoading && <Loading className="loading-active" style={{ marginRight: "0.5em" }} />}
                 <span>Confirm</span>
               </div>
             </Button>
