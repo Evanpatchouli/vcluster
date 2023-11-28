@@ -1,9 +1,10 @@
 import { Loading } from "@icon-park/react";
 import { Button, Card, CardContent, Modal, Typography } from "@mui/material";
 import { Emoji } from "./constans";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./modal.css";
+import RippleButton from "../unit/ripple-button/ripple-button";
 
 export interface ModalMeta {
   type?: "info" | "warning" | "error" | "success";
@@ -55,6 +56,18 @@ export const ConfirmModal: React.FC<
     }
   };
   const typeKey = getTitle(props.type);
+
+  useEffect(() => {
+    try {
+      if ("paintWorklet" in CSS) {
+        // @ts-ignore
+        CSS.paintWorklet.addModule("ripple.js");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
   return (
     <Modal
       open={open}
@@ -77,7 +90,7 @@ export const ConfirmModal: React.FC<
           </Typography>
         </CardContent>
         <div className="confirm-modal__actions">
-          <button
+          <RippleButton
             className="confirm-modal__actions__button confirm-modal__actions__button--cancel"
             // size="small"
             onClick={async () => {
@@ -90,11 +103,10 @@ export const ConfirmModal: React.FC<
             // disabled={delModalMeta.confirmLoading}
           >
             {props.cancelText ?? "Cancel"}
-          </button>
-          <button
+          </RippleButton>
+          <RippleButton
             className="confirm-modal__actions__button confirm-modal__actions__button--confirm"
-            // size="small"
-            // variant="contained"
+            rippleColor="#ffffff7a"
             color={typeKey.toUpperCase() as any}
             onClick={async () => {
               if (props.onConfirm) {
@@ -114,7 +126,7 @@ export const ConfirmModal: React.FC<
               )}
               <span>{props.confirmText ?? "Confirm"}</span>
             </div>
-          </button>
+          </RippleButton>
         </div>
       </Card>
     </Modal>
