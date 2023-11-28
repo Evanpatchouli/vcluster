@@ -10,7 +10,7 @@ export interface ModalMeta {
   type?: "info" | "warning" | "error" | "success";
   id?: string;
   confirmLoading?: boolean;
-  title?: string;
+  title?: React.ReactNode;
   onConfirm?: (close: Function) => Promise<void>;
   onCancel?: (close: Function) => Promise<void>;
   confirmText?: string;
@@ -82,8 +82,10 @@ export const ConfirmModal: React.FC<
       <Card className="confirm-modal">
         <CardContent className="confirm-modal__content">
           <Typography gutterBottom variant="h5" component="div">
-            {Emoji[typeKey]}
-            {props.title ?? typeKey}
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.2em" }}>
+              {Emoji[typeKey]}
+              {props.title ?? typeKey}
+            </div>
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {props.children}
@@ -118,12 +120,7 @@ export const ConfirmModal: React.FC<
             disabled={props.confirmLoading}
           >
             <div className="line">
-              {props.confirmLoading && (
-                <Loading
-                  className="loading-active"
-                  style={{ marginRight: "0.5em" }}
-                />
-              )}
+              {props.confirmLoading && <Loading className="loading-active" style={{ marginRight: "0.5em" }} />}
               <span>{props.confirmText ?? "Confirm"}</span>
             </div>
           </RippleButton>
