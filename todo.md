@@ -6,5 +6,6 @@
 - [ ] support launch by request api
 - [ ] support cluster config template
 - [ ] make tab-drawer flexible
-- [ ] support add a subapp to a cluster
+- [x] support add a subapp to a cluster
 - [ ] support listen state of cluster and its apps
+- [ ] support setting default start method

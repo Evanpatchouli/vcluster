@@ -1,7 +1,0 @@
-.ripple-button {
-  --ripple-color: rgba(31, 143, 255, 0.5);
-  --ripple-x: 50%;
-  --ripple-y: 50%;
-  --ripple-time: 0;
-  background-image: paint(ripple);
-}
