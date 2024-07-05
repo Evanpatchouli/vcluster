@@ -89,6 +89,7 @@ const en_US = {
   "URL": "URL",
   "type": "type",
   "select type": "select type",
+  "do importing": "do importing",
   "$go-create": "No account? Create now!",
   "username...": "username...",
   "password...": "password...",
@@ -110,6 +111,7 @@ const en_US = {
   "$startApiDesc": "request api for starting app",
   "$stopApiDesc": "request api for stopping app",
   "$restartApiDesc": "request api for restarting app",
+  "Select a json file to import": "Select a json file to import",
 }
 export {
   en_US

@@ -40,6 +40,18 @@
             "args": []
           }
         ]
+      },
+      "fs": {
+        "all": true,
+        "copyFile": true,
+        "createDir": true,
+        "exists": true,
+        "readDir": true,
+        "readFile": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "writeFile": true
       }
     },
     "bundle": {

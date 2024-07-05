@@ -1,4 +1,15 @@
-import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, Tab, Tabs } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Tab,
+  Tabs,
+  TextField,
+} from "@mui/material";
+import { SeoFolder, FileCode } from "@icon-park/react";
 import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import "./index.css";
@@ -60,9 +71,54 @@ export default function Importer(props: ImporterProps) {
     };
   }
 
+  const [jsonFilePickerBtnAble, setJsonFilePickerBtnAble] = useState(true);
+
   const [importType, setImportType] = useState<"file" | "url">("file");
   const setImportTypeToFile = () => setImportType("file");
   const setImportTypeToUrl = () => setImportType("url");
+
+  const handleLoadJson = async () => {
+    setJsonFilePickerBtnAble(false);
+    // @ts-ignore experimental web api support
+    if (window.showOpenFilePicker) {
+      try {
+        // @ts-ignore experimental web api support - 获取文件处理句柄
+        const [fileHandle] = (await window.showOpenFilePicker?.({
+          types: [
+            {
+              description: "Json file",
+              accept: {
+                "application/*": [".json"],
+              },
+            },
+          ],
+          excludeAcceptAllOption: true,
+          multiple: false,
+        })) as FileSystemFileHandle[];
+        const fileData: File = await fileHandle.getFile?.();
+        // console.log(fileData);
+        let reader = new FileReader();
+        reader.onload = function (evt) {
+          let jsonResult = JSON.parse((evt.target?.result as string) ?? "{}");
+          console.log(jsonResult);
+        };
+        reader.readAsText(fileData, "UTF-8");
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setJsonFilePickerBtnAble(true);
+      }
+    } else {
+      setJsonFilePickerBtnAble(true);
+    }
+  };
+
+  const [url, setUrl] = useState("");
+
+  const handleSubmit = () => {
+    // @todo
+    closeDialog();
+  };
 
   return (
     <Dialog
@@ -77,7 +133,11 @@ export default function Importer(props: ImporterProps) {
         {intl.formatMessage({
           id: "Import a cluster",
         })}
-        <span className="importer-dialog-header-desc">{curTab ? "do importing" : "select type"}</span>
+        <span className="importer-dialog-header-desc">
+          {intl.formatMessage({
+            id: curTab ? "do importing" : "select type",
+          })}
+        </span>
       </DialogTitle>
       <DialogContent>
         {/* <Tabs
@@ -135,11 +195,25 @@ export default function Importer(props: ImporterProps) {
           <TabPanel value={curTab} index={1}>
             {importType === "file" ? (
               <>
-                <span>File</span>
+                <Button
+                  disabled={!jsonFilePickerBtnAble}
+                  startIcon={<FileCode />}
+                  onClick={handleLoadJson}
+                >
+                  {intl.formatMessage({
+                    id: "Select a json file to import",
+                  })}
+                </Button>
               </>
             ) : (
               <>
-                <span>URL</span>
+                <TextField
+                  label={intl.formatMessage({
+                    id: "URL",
+                  })}
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                />
               </>
             )}
           </TabPanel>
@@ -152,7 +226,7 @@ export default function Importer(props: ImporterProps) {
               id: "cancel",
             })}
           </Button>
-          <Button variant="contained">
+          <Button variant="contained" onClick={handleSubmit}>
             {intl.formatMessage({
               id: "submit",
             })}

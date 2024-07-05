@@ -7,8 +7,20 @@ import {
 import { FormattedMessage } from "react-intl";
 import "./tab.css";
 import { Button } from "@mui/material";
+import { useState } from "react";
+import Importer from "../import-dialog";
 
-function Tab() {
+interface CreateClusterTabProps {
+  tabClick?: (idx: number, path?: string) => void;
+}
+
+function Tab(props: CreateClusterTabProps) {
+  const [importer, setImporter] = useState(false);
+  const handleImportClick = () => {
+    // 目前无效，不知道为何传不进来
+    props.tabClick?.(4);
+    setImporter(true);
+  };
   return (
     <div className="create-cluster-tab">
       <Button
@@ -28,6 +40,7 @@ function Tab() {
         className="line"
         variant="text"
         style={{ width: "100%", display: "block" }}
+        onClick={handleImportClick}
       >
         <Import className="create-cluster-tab-item__icon" size={14}></Import>
         <span className="create-cluster-tab-item__text">
@@ -57,6 +70,7 @@ function Tab() {
           <FormattedMessage id="create a template" />
         </span>
       </Button>
+      <Importer open={importer} setOpen={setImporter} />
     </div>
   );
 }

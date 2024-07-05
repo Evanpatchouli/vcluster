@@ -89,6 +89,7 @@ const zh_CN = {
   "URL": "网址",
   "type": "类型",
   "select type": "选择类型",
+  "do importing": "进行导入",
   "$go-create": "没有账号？立即创建！",
   "username...": "用户名...",
   "password...": "密码...",
@@ -110,6 +111,7 @@ const zh_CN = {
   "$startApiDesc": "启动应用的api",
   "$stopApiDesc": "停止应用的api",
   "$restartApiDesc": "重启应用的api",
+  "Select a json file to import": "选择一个Json文件导入",
 }
 export {
   zh_CN
